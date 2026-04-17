@@ -31,7 +31,7 @@
 4. PDF出力 or 画像保存 → 印刷/LINE共有
 
 ## フェーズ
-- Phase 1: 運動ライブラリ表示 + 選択 + PDF出力（MVP）
-- Phase 2: テンプレート保存・呼び出し
-- Phase 3: 運動メニュー追加、カスタムイラストアップロード
-- Phase 4: QRコードで患者に共有（患者用閲覧画面）
+- [Phase 1: MVP（運動ライブラリ + 選択 + PDF出力）](./tasks/phase1-mvp.md) ← 現在
+- [Phase 2: テンプレート保存・呼び出し](./tasks/phase2-templates.md)
+- [Phase 3: 運動メニュー追加・カスタムイラスト](./tasks/phase3-expansion.md)
+- [Phase 4: QRコード共有・患者用閲覧](./tasks/phase4-sharing.md)

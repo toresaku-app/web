@@ -11,6 +11,9 @@
 - expo-sqlite (ローカルDB、バックエンド不要)
 - expo-print / expo-sharing (PDF出力・共有)
 
+## デザイン
+- UIデザインガイド: DESIGN.md を参照（カラー、タイポグラフィ、コンポーネント仕様）
+
 ## ディレクトリ構成
 - app/ - Expo Routerのページ
 - src/components/ - UIコンポーネント
@@ -36,6 +39,12 @@
 - anyの使用禁止
 - console.logを本番コードに残さない
 - NativeWindのクラス名で直接スタイリング（StyleSheet不使用）
+
+## タスク管理ルール
+- 全体計画: plan.md → 各フェーズの詳細: tasks/phase*.md
+- タスク完了時: 該当のtasks/phase*.mdのチェックボックスを[x]に更新すること
+- 新課題発見時: plan.mdに追記し、対応するtasks/*.mdも作成or更新すること
+- タスク管理ファイルの更新はClaude側が責任を持つ（ユーザーに手動更新させない）
 
 ## 禁止事項
 - 「この運動で治る」等の効能表現
