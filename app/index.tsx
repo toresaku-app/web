@@ -62,10 +62,10 @@ export default function ExerciseLibrary() {
         <View className="flex-row items-center justify-between px-5 pb-0.5 pt-1">
           <View className="flex-row items-center gap-2">
             <View className="h-[22px] w-[22px] items-center justify-center rounded-md bg-navy">
-              <Text className="text-[10px] font-extrabold text-white">R</Text>
+              <Text className="text-[10px] font-extrabold text-white">ト</Text>
             </View>
             <Text className="text-[13px] font-semibold text-ink">
-              RehabHEP
+              トレさく
             </Text>
           </View>
         </View>

@@ -9,6 +9,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
@@ -291,10 +292,11 @@ export default function PreviewScreen() {
     useHepStore();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const handleExport = async () => {
+    setIsExporting(true);
     try {
-      // イラストのローカルURIを解決
       const imageUris: Record<string, string> = {};
       for (const sel of selectedExercises) {
         const source = ILLUSTRATIONS[sel.exerciseId];
@@ -310,9 +312,20 @@ export default function PreviewScreen() {
         width: 595,
         height: 842,
       });
+      setIsExporting(false);
+      // モーダルが閉じてから共有シートを表示
+      await new Promise((r) => setTimeout(r, 500));
       await shareAsync(uri, { UTI: ".pdf", mimeType: "application/pdf" });
     } catch {
-      Alert.alert("エラー", "PDF出力に失敗しました");
+      setIsExporting(false);
+      Alert.alert(
+        "PDF出力エラー",
+        "指導書の生成に失敗しました。もう一度お試しください。",
+        [
+          { text: "キャンセル", style: "cancel" },
+          { text: "再試行", onPress: handleExport },
+        ]
+      );
     }
   };
 
@@ -414,13 +427,20 @@ export default function PreviewScreen() {
       <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-3">
         <Pressable
           onPress={handleExport}
-          className="h-[56px] items-center justify-center rounded-[14px] bg-navy"
-          style={{
-            shadowColor: "#0B2545",
-            shadowOpacity: 0.35,
-            shadowRadius: 16,
-            shadowOffset: { width: 0, height: 8 },
-          }}
+          disabled={isExporting}
+          className={`h-[56px] items-center justify-center rounded-[14px] ${
+            isExporting ? "bg-ink3" : "bg-navy"
+          }`}
+          style={
+            isExporting
+              ? undefined
+              : {
+                  shadowColor: "#0B2545",
+                  shadowOpacity: 0.35,
+                  shadowRadius: 16,
+                  shadowOffset: { width: 0, height: 8 },
+                }
+          }
         >
           <Text className="text-base font-bold text-white">
             PDFを出力・共有
@@ -430,6 +450,21 @@ export default function PreviewScreen() {
           端末内で完結 · クラウド送信なし
         </Text>
       </View>
+
+      {/* ローディングオーバーレイ */}
+      {isExporting && (
+        <View className="absolute bottom-0 left-0 right-0 top-0 items-center justify-center bg-black/40">
+          <View className="items-center rounded-2xl bg-card px-10 py-8">
+            <ActivityIndicator size="large" color="#0B2545" />
+            <Text className="mt-4 text-base font-bold text-ink">
+              PDF生成中...
+            </Text>
+            <Text className="mt-1 text-sm text-ink2">
+              しばらくお待ちください
+            </Text>
+          </View>
+        </View>
+      )}
     </KeyboardAvoidingView>
   );
 }
