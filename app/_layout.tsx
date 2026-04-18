@@ -5,12 +5,14 @@ export default function RootLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: "#2563EB" },
-        headerTintColor: "#fff",
+        headerStyle: { backgroundColor: "#FFFFFF" },
+        headerTintColor: "#0F172A",
         headerTitleStyle: { fontWeight: "bold" },
+        headerShadowVisible: false,
+        headerBackTitle: "戻る",
       }}
     >
-      <Stack.Screen name="index" options={{ title: "運動ライブラリ" }} />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="preview" options={{ title: "指導書プレビュー" }} />
     </Stack>
   );

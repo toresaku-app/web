@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { View, Text, FlatList, Pressable, TextInput } from "react-native";
 import { useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { EXERCISES } from "../src/constants/exercises";
 import { useHepStore } from "../src/stores/hepStore";
 import { ExerciseCard } from "../src/components/ExerciseCard";
@@ -55,44 +56,75 @@ export default function ExerciseLibrary() {
   const selectedCount = selectedExercises.length;
 
   return (
-    <View className="flex-1 bg-surface">
-      {/* 検索バー */}
-      <View className="px-4 pt-2">
-        <TextInput
-          className="rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-text-primary"
-          placeholder="運動名・ターゲットで検索..."
-          placeholderTextColor="#94A3B8"
-          value={searchText}
-          onChangeText={setSearchText}
-          clearButtonMode="while-editing"
-        />
+    <SafeAreaView className="flex-1 bg-card" edges={["top"]}>
+      {/* ヘッダー */}
+      <View className="border-b border-line bg-card">
+        <View className="flex-row items-center justify-between px-5 pb-0.5 pt-1">
+          <View className="flex-row items-center gap-2">
+            <View className="h-[22px] w-[22px] items-center justify-center rounded-md bg-navy">
+              <Text className="text-[10px] font-extrabold text-white">R</Text>
+            </View>
+            <Text className="text-[13px] font-semibold text-ink">
+              RehabHEP
+            </Text>
+          </View>
+        </View>
+        <View className="px-5 pb-3.5 pt-1.5">
+          <Text className="text-[26px] font-bold tracking-tight text-ink">
+            運動ライブラリ
+          </Text>
+          <Text className="mt-1 text-[13px] text-ink2">
+            処方する運動を選択してください ·{" "}
+            <Text className="font-semibold text-navy">
+              {filteredExercises.length}件
+            </Text>
+          </Text>
+        </View>
+
+        {/* 検索バー */}
+        <View className="px-5 pb-3">
+          <View className="h-[42px] flex-row items-center rounded-[11px] border border-line bg-[#F4F6FA] px-3.5">
+            <Text className="mr-2 text-ink3">🔍</Text>
+            <TextInput
+              className="flex-1 text-[14px] text-ink"
+              placeholder="運動名・部位・筋で検索"
+              placeholderTextColor="#94A3B8"
+              value={searchText}
+              onChangeText={setSearchText}
+              clearButtonMode="while-editing"
+            />
+          </View>
+        </View>
       </View>
 
-      {/* 部位フィルタ */}
-      <FilterBar
-        filters={BODY_PART_FILTERS}
-        selected={bodyPartFilter}
-        onSelect={(v) => setBodyPartFilter(v as "すべて" | BodyPart)}
-      />
-
-      {/* 姿勢フィルタ */}
-      <FilterBar
-        filters={POSTURE_FILTERS}
-        selected={postureFilter}
-        onSelect={(v) => setPostureFilter(v as "すべて" | Posture)}
-      />
+      {/* フィルタ */}
+      <View className="border-b border-line bg-card py-2">
+        <FilterBar
+          label="部位"
+          filters={BODY_PART_FILTERS}
+          selected={bodyPartFilter}
+          onSelect={(v) => setBodyPartFilter(v as "すべて" | BodyPart)}
+        />
+        <FilterBar
+          label="姿勢"
+          filters={POSTURE_FILTERS}
+          selected={postureFilter}
+          onSelect={(v) => setPostureFilter(v as "すべて" | Posture)}
+        />
+      </View>
 
       {/* 運動リスト */}
       <FlatList
         data={filteredExercises}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
+        className="bg-surface"
+        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
         ListEmptyComponent={
           <View className="items-center py-20">
-            <Text className="text-lg text-text-secondary">
+            <Text className="text-lg text-ink2">
               該当する運動がありません
             </Text>
-            <Text className="mt-2 text-sm text-text-secondary">
+            <Text className="mt-2 text-sm text-ink3">
               フィルタや検索条件を変更してください
             </Text>
           </View>
@@ -114,17 +146,28 @@ export default function ExerciseLibrary() {
 
       {/* 下部CTA */}
       {selectedCount > 0 && (
-        <View className="absolute bottom-0 left-0 right-0 border-t border-gray-200 bg-white px-4 pb-8 pt-4">
+        <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-3">
           <Pressable
             onPress={() => router.push("/preview")}
-            className="items-center rounded-xl bg-primary py-4"
+            className="h-[56px] flex-row items-center justify-center rounded-[14px] bg-navy"
+            style={{
+              shadowColor: "#0B2545",
+              shadowOpacity: 0.35,
+              shadowRadius: 16,
+              shadowOffset: { width: 0, height: 8 },
+            }}
           >
-            <Text className="text-lg font-bold text-white">
-              指導書を作成（{selectedCount}種目）
+            <Text className="text-base font-bold text-white">
+              指導書を作成
             </Text>
+            <View className="ml-2.5 rounded-full bg-white/20 px-2.5 py-0.5">
+              <Text className="text-[13px] font-bold text-white">
+                {selectedCount}
+              </Text>
+            </View>
           </Pressable>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
