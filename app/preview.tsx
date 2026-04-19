@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  findNodeHandle,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
@@ -393,7 +394,7 @@ export default function PreviewScreen() {
           <View className="h-[3px] flex-1 rounded-full bg-line" />
         </View>
 
-        {selectedExercises
+        {[...selectedExercises]
           .sort((a, b) => a.order - b.order)
           .map((sel, idx) => {
             const ex = EXERCISES.find((e) => e.id === sel.exerciseId);
@@ -650,8 +651,10 @@ function ExerciseEditCard({
                 multiline
                 onFocus={() => {
                   setTimeout(() => {
-                    noteRef.current?.measureLayout(
-                      scrollRef.current as any,
+                    const scrollNode = findNodeHandle(scrollRef.current);
+                    if (!noteRef.current || !scrollNode) return;
+                    noteRef.current.measureLayout(
+                      scrollNode,
                       (_x, y) => {
                         scrollRef.current?.scrollTo({ y: y - 100, animated: true });
                       },

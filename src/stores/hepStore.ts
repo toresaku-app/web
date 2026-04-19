@@ -48,7 +48,8 @@ export const useHepStore = create<HepState>((set) => ({
       ),
     })),
 
-  reorderExercises: (exercises) => set({ selectedExercises: exercises }),
+  reorderExercises: (exercises) =>
+    set({ selectedExercises: exercises.map((e, i) => ({ ...e, order: i })) }),
 
   clearAll: () => set({ selectedExercises: [] }),
 }));
