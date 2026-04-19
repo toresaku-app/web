@@ -1,8 +1,8 @@
 # Phase 1.5: iOSリリース準備
 
 ## 1. MVP残タスク（リリース前に必須）
-- [ ] アプリアイコン作成（1024x1024px）
-- [ ] スプラッシュスクリーン画像作成
+- [x] アプリアイコン作成（1024x1024px）
+- [x] スプラッシュスクリーン画像作成（アイコン流用）
 - [x] PDF出力時のローディング表示（モーダル + ActivityIndicator）
 - [x] エラーハンドリング強化（リトライボタン付きアラート）
 
@@ -13,11 +13,11 @@
 - [ ] App Store用のキーワード
 
 ## 3. EAS Build セットアップ
-- [ ] `eas-cli` インストール（`npm install -g eas-cli`）
-- [ ] `eas login` でExpoアカウントにログイン
-- [ ] `eas build:configure` で eas.json 生成
-- [ ] app.json に `ios.bundleIdentifier` を設定（例: `com.yourname.rehabhep`）
-- [ ] `eas build --platform ios --profile preview` でテストビルド確認
+- [x] eas-cli インストール済み（v18.3.0）
+- [x] Expoアカウントログイン済み（ryuseisato）
+- [x] app.json に `ios.bundleIdentifier` 設定（com.ryuseisato.toresaku）
+- [x] `npx expo prebuild --platform ios` でネイティブプロジェクト生成
+- [x] Xcodeで実機ビルド確認
 
 ## 4. Apple Developer 準備
 - [ ] Apple Developer Program に登録済みか確認（年額 $99）

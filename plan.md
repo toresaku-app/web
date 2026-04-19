@@ -31,7 +31,8 @@
 4. PDF出力 or 画像保存 → 印刷/LINE共有
 
 ## フェーズ
-- [Phase 1: MVP（運動ライブラリ + 選択 + PDF出力）](./tasks/phase1-mvp.md) ← 現在
+- [Phase 1: MVP（運動ライブラリ + 選択 + PDF出力）](./tasks/phase1-mvp.md) ← ほぼ完了
+- [Phase 1.5: iOSリリース準備](./tasks/phase1.5-ios-release.md) ← 現在
 - [Phase 2: テンプレート保存・呼び出し](./tasks/phase2-templates.md)
 - [Phase 3: 運動メニュー追加・カスタムイラスト](./tasks/phase3-expansion.md)
 - [Phase 4: QRコード共有・患者用閲覧](./tasks/phase4-sharing.md)

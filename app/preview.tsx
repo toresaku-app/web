@@ -18,6 +18,7 @@ import { ILLUSTRATIONS } from "../src/constants/illustrations";
 import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import { Asset } from "expo-asset";
+import * as FileSystem from "expo-file-system/legacy";
 import { SelectedExercise } from "../src/types/exercise";
 
 const FREQUENCY_OPTIONS = [
@@ -90,7 +91,7 @@ function renderPage(
       ? `
     <div class="note">
       <div class="note-icon">！</div>
-      <div>
+      <div class="note-content">
         <div class="note-label">注　意</div>
         <div class="note-body">${esc(sel.notes)}</div>
       </div>
@@ -159,124 +160,119 @@ function generateHtml(
 <meta charset="utf-8"/>
 <title>自主トレーニング指導書</title>
 <style>
-  @page { size: A4; margin: 12mm; }
+  @page { size: A4; margin: 10mm; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     font-family: "Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
     color: #0F172A;
-    -webkit-font-smoothing: antialiased;
   }
 
   .page {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    page-break-inside: avoid;
   }
   .break { page-break-after: always; }
 
-  /* ヘッダー */
+  /* ── ヘッダー ── */
   .page-header {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    padding-bottom: 6px; border-bottom: 3px solid #0B2545;
-    flex-shrink: 0;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding-bottom: 8px; border-bottom: 3px solid #0B2545;
   }
-  .title { font-size: 18pt; font-weight: 700; color: #0B2545; line-height: 1.1; }
-  .issue { font-size: 10pt; color: #475569; margin-top: 3px; }
+  .title { font-size: 18pt; font-weight: 700; color: #0B2545; line-height: 1.2; }
+  .issue { font-size: 9pt; color: #475569; margin-top: 2px; }
   .page-badge {
-    padding: 3px 8px; border-radius: 6px;
+    padding: 4px 10px; border-radius: 6px;
     background: #0B2545; color: #fff;
-    font-size: 10pt; font-weight: 700; white-space: nowrap;
+    font-size: 9pt; font-weight: 700; white-space: nowrap;
   }
 
-  /* タイトル */
-  .title-block { padding: 6px 0; flex-shrink: 0; }
-  .tags { display: flex; gap: 6px; margin-bottom: 6px; }
-  .tag { padding: 2px 8px; border-radius: 5px; font-size: 10pt; font-weight: 700; }
+  /* ── タイトルブロック ── */
+  .title-block { padding: 8px 0 6px; }
+  .tags { display: flex; gap: 6px; margin-bottom: 4px; }
+  .tag {
+    padding: 2px 8px; border-radius: 5px;
+    font-size: 9pt; font-weight: 700;
+  }
   .tag-navy { background: #EEF2F9; color: #0B2545; }
   .tag-teal { background: #E6F4F2; color: #0F766E; }
-  .ex-name { font-size: 28pt; font-weight: 700; color: #0F172A; line-height: 1.15; }
+  .ex-name { font-size: 22pt; font-weight: 700; color: #0F172A; line-height: 1.2; }
 
-  /* イラスト — flex:1で残りスペースを吸収、注意が増えたら縮む */
+  /* ── イラスト ── */
   .illust {
-    flex: 1 1 0;
-    min-height: 80px;
-    max-height: 200px;
+    height: 220px;
     border-radius: 10px;
     background: #F7F9FC; border: 1px solid #E6EAF0;
     display: flex; align-items: center; justify-content: center;
     overflow: hidden; padding: 8px;
-    margin-top: 4px;
+    margin-top: 6px;
   }
   .illust img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .illust-placeholder { font-size: 12pt; color: #94A3B8; }
+  .illust-placeholder { font-size: 11pt; color: #94A3B8; }
 
-  /* 処方 */
-  .rx-strip { display: flex; gap: 5px; margin-top: 6px; flex-shrink: 0; }
+  /* ── 処方ストリップ ── */
+  .rx-strip { display: flex; gap: 6px; margin-top: 10px; }
   .rx-cell {
     flex: 1; border: 2px solid #0B2545; border-radius: 8px;
     background: #fff; overflow: hidden;
   }
-  .rx-cell-wide { flex: 1.6; }
+  .rx-cell-wide { flex: 1.5; }
   .rx-label {
     background: #0B2545; color: #fff;
-    font-size: 9pt; font-weight: 700; letter-spacing: 1.5px;
+    font-size: 8pt; font-weight: 700; letter-spacing: 1.5px;
     padding: 2px 6px; text-align: center;
   }
   .rx-body {
-    padding: 4px 6px;
+    padding: 4px;
     display: flex; align-items: center; justify-content: center;
   }
   .rx-value {
     font-size: 28pt; font-weight: 700; color: #0B2545;
     line-height: 1; font-variant-numeric: tabular-nums;
   }
-  .rx-unit { font-size: 12pt; font-weight: 700; color: #0F172A; margin-left: 2px; }
-  .rx-text { font-size: 16pt; font-weight: 700; color: #0F172A; text-align: center; }
+  .rx-unit { font-size: 11pt; font-weight: 700; color: #0F172A; margin-left: 2px; }
+  .rx-text { font-size: 14pt; font-weight: 700; color: #0F172A; text-align: center; }
 
-  /* ポイント */
-  .points { margin-top: 6px; flex-shrink: 0; }
+  /* ── やり方のポイント ── */
+  .points { margin-top: 10px; }
   .points-heading { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
   .points-bar { width: 4px; height: 16px; background: #0B2545; border-radius: 2px; }
-  .points-title { font-size: 14pt; font-weight: 700; color: #0F172A; }
+  .points-title { font-size: 12pt; font-weight: 700; color: #0F172A; }
+  .points-list { }
   .pt-row {
-    display: flex; gap: 8px; align-items: flex-start;
-    padding: 3px 0; border-bottom: 1px solid #E6EAF0;
+    display: flex; gap: 8px; align-items: center;
+    padding: 5px 0; border-bottom: 1px solid #E6EAF0;
   }
   .pt-last { border-bottom: none; }
   .pt-num {
     width: 20px; height: 20px; border-radius: 5px;
     background: #0B2545; color: #fff;
     display: flex; align-items: center; justify-content: center;
-    font-size: 10pt; font-weight: 700; flex-shrink: 0;
+    font-size: 9pt; font-weight: 700; flex-shrink: 0;
   }
-  .pt-body { font-size: 12pt; color: #0F172A; line-height: 1.45; padding-top: 1px; flex: 1; }
+  .pt-body { font-size: 11pt; color: #0F172A; line-height: 1.5; flex: 1; }
 
-  /* 注意 */
+  /* ── 注意ボックス ── */
   .note {
-    margin-top: 6px; padding: 8px 12px;
+    margin-top: 8px; padding: 8px 12px;
     background: #FBEAEA; border: 1px solid #F5D2D2;
     border-left: 5px solid #B91C1C; border-radius: 6px;
-    display: flex; gap: 8px; align-items: flex-start;
-    flex-shrink: 0;
+    display: flex; gap: 8px; align-items: center;
   }
   .note-icon {
-    width: 22px; height: 22px; border-radius: 11px;
+    width: 24px; height: 24px; border-radius: 12px;
     background: #B91C1C; color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 14pt; font-weight: 700; flex-shrink: 0;
   }
-  .note-label { font-size: 9pt; font-weight: 700; color: #B91C1C; letter-spacing: 1px; }
-  .note-body { font-size: 11pt; color: #7F1D1D; line-height: 1.4; }
+  .note-content { flex: 1; }
+  .note-label { font-size: 8pt; font-weight: 700; color: #B91C1C; letter-spacing: 1.5px; margin-bottom: 1px; }
+  .note-body { font-size: 10pt; color: #7F1D1D; line-height: 1.4; font-weight: 500; }
 
-  /* フッター — 常にページ最下部 */
+  /* ── フッター ── */
   .page-footer {
-    margin-top: auto;
+    margin-top: 8px;
     padding-top: 6px; border-top: 1px solid #E6EAF0;
     display: flex; justify-content: space-between; align-items: center;
-    font-size: 8pt; color: #94A3B8;
-    flex-shrink: 0;
+    font-size: 7pt; color: #94A3B8;
   }
   .page-num { color: #475569; font-weight: 500; }
 </style>
@@ -297,21 +293,23 @@ export default function PreviewScreen() {
   const handleExport = async () => {
     setIsExporting(true);
     try {
+      // イラストをBase64に変換してPDFに埋め込む
       const imageUris: Record<string, string> = {};
       for (const sel of selectedExercises) {
         const source = ILLUSTRATIONS[sel.exerciseId];
         if (source) {
           const asset = Asset.fromModule(source as number);
           await asset.downloadAsync();
-          imageUris[sel.exerciseId] = asset.localUri || "";
+          if (asset.localUri) {
+            const base64 = await FileSystem.readAsStringAsync(asset.localUri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+            imageUris[sel.exerciseId] = `data:image/png;base64,${base64}`;
+          }
         }
       }
       const html = generateHtml(selectedExercises, imageUris);
-      const { uri } = await printToFileAsync({
-        html,
-        width: 595,
-        height: 842,
-      });
+      const { uri } = await printToFileAsync({ html });
       setIsExporting(false);
       // モーダルが閉じてから共有シートを表示
       await new Promise((r) => setTimeout(r, 500));
