@@ -25,12 +25,9 @@
 - [ ] Bundle ID を登録（Certificates, Identifiers & Profiles）
 
 ## 5. プライバシー・法的対応
-- [ ] プライバシーポリシー作成（ローカルオンリーなので簡潔でOK）
-  - 個人情報を収集しない旨
-  - データはデバイス内にのみ保存される旨
-  - 外部サーバーへの送信なしの旨
-- [ ] プライバシーポリシーをホスティング（GitHub Pages等）
-- [ ] 利用規約の作成（任意だが推奨）
+- [x] プライバシーポリシー作成
+- [x] プライバシーポリシーをホスティング → https://toresaku-app.github.io/privacy-policy/
+- [x] 利用規約の作成 → https://toresaku-app.github.io/privacy-policy/terms.html
 - [ ] App Store の「App Privacy」セクション入力（Data Not Collected）
 
 ## 6. App Store 素材準備

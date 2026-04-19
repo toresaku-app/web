@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { View, Text, FlatList, Pressable, TextInput } from "react-native";
+import { useState, useMemo, useCallback } from "react";
+import { View, Text, FlatList, Pressable, TextInput, Linking } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { EXERCISES } from "../src/constants/exercises";
@@ -142,6 +142,30 @@ export default function ExerciseLibrary() {
             }}
           />
         )}
+        ListFooterComponent={
+          <View className="mt-4 flex-row justify-center gap-4 pb-4">
+            <Pressable
+              onPress={() =>
+                Linking.openURL(
+                  "https://toresaku-app.github.io/privacy-policy/"
+                )
+              }
+            >
+              <Text className="text-xs text-ink3 underline">
+                プライバシーポリシー
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() =>
+                Linking.openURL(
+                  "https://toresaku-app.github.io/privacy-policy/terms.html"
+                )
+              }
+            >
+              <Text className="text-xs text-ink3 underline">利用規約</Text>
+            </Pressable>
+          </View>
+        }
       />
 
       {/* 下部CTA */}
