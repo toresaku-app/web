@@ -293,6 +293,7 @@ export default function PreviewScreen() {
 
   const handleExport = async () => {
     setIsExporting(true);
+    let fileUri: string | null = null;
     try {
       // イラストをBase64に変換してPDFに埋め込む
       const imageUris: Record<string, string> = {};
@@ -311,8 +312,8 @@ export default function PreviewScreen() {
       }
       const html = generateHtml(selectedExercises, imageUris);
       const { uri } = await printToFileAsync({ html });
+      fileUri = uri;
       setIsExporting(false);
-      // モーダルが閉じてから共有シートを表示
       await new Promise((r) => setTimeout(r, 500));
       await shareAsync(uri, { UTI: ".pdf", mimeType: "application/pdf" });
     } catch {
@@ -325,6 +326,11 @@ export default function PreviewScreen() {
           { text: "再試行", onPress: handleExport },
         ]
       );
+    } finally {
+      // 共有完了後（またはエラー時）に一時ファイルを削除
+      if (fileUri) {
+        await FileSystem.deleteAsync(fileUri, { idempotent: true });
+      }
     }
   };
 
@@ -649,6 +655,9 @@ function ExerciseEditCard({
                 value={sel.notes}
                 onChangeText={(text) => onUpdate({ notes: text })}
                 multiline
+                autoCorrect={false}
+                autoComplete="off"
+                spellCheck={false}
                 onFocus={() => {
                   setTimeout(() => {
                     const scrollNode = findNodeHandle(scrollRef.current);
