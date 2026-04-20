@@ -69,9 +69,21 @@ export default function PrintScreen() {
         >
           ← 戻る
         </button>
-        <span style={{ color: "#fff", fontSize: 14 }}>
-          ブラウザの共有→プリントでPDF保存
-        </span>
+        <button
+          onClick={() => window.print()}
+          style={{
+            color: "#fff",
+            background: "#0EA5E9",
+            border: "none",
+            borderRadius: 8,
+            padding: "8px 16px",
+            fontSize: 14,
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          印刷 / PDF保存
+        </button>
       </div>
       <style
         dangerouslySetInnerHTML={{
