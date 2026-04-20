@@ -88,6 +88,8 @@ export default function PrintScreen() {
       <style
         dangerouslySetInnerHTML={{
           __html: `
+            html, body { overflow: auto !important; height: auto !important; }
+            #root { height: auto !important; overflow: auto !important; }
             ${PDF_STYLE}
             @media print {
               #print-toolbar { display: none !important; }
