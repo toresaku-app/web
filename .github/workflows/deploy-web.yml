@@ -29,6 +29,13 @@ jobs:
 
       - run: npx expo export --platform web
 
+      # Fix asset paths for GitHub Pages subdirectory (/web/)
+      - name: Rewrite asset paths for /web/ subdirectory
+        run: |
+          sed -i 's|href="/_expo/|href="/web/_expo/|g' dist/index.html
+          sed -i 's|src="/_expo/|src="/web/_expo/|g' dist/index.html
+          sed -i 's|href="/favicon.ico|href="/web/favicon.ico|g' dist/index.html
+
       # SPA fallback: copy index.html to 404.html
       - run: cp dist/index.html dist/404.html
 
