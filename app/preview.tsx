@@ -317,12 +317,35 @@ export default function PreviewScreen() {
           }
         }
         const html = generateHtml(selectedExercises, imageUris);
-        // 現在のページを指導書HTMLに書き換えて印刷
-        document.open();
-        document.write(html);
-        document.close();
-        // 少し待ってから印刷ダイアログを表示
-        setTimeout(() => window.print(), 500);
+        // オーバーレイで指導書HTMLを表示（戻るボタン付き）
+        const overlay = document.createElement("div");
+        overlay.id = "pdf-overlay";
+        overlay.style.cssText =
+          "position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;background:#fff;overflow:auto;";
+        const toolbar = document.createElement("div");
+        toolbar.style.cssText =
+          "position:sticky;top:0;z-index:10000;background:#0B2545;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;";
+        const backBtn = document.createElement("button");
+        backBtn.textContent = "← 戻る";
+        backBtn.style.cssText =
+          "color:#fff;background:none;border:none;font-size:16px;font-weight:bold;cursor:pointer;";
+        backBtn.onclick = () => document.body.removeChild(overlay);
+        const printBtn = document.createElement("button");
+        printBtn.textContent = "🖨 印刷 / PDF保存";
+        printBtn.style.cssText =
+          "color:#fff;background:#0EA5E9;border:none;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:bold;cursor:pointer;";
+        printBtn.onclick = () => {
+          toolbar.style.display = "none";
+          window.print();
+          toolbar.style.display = "flex";
+        };
+        toolbar.appendChild(backBtn);
+        toolbar.appendChild(printBtn);
+        const content = document.createElement("div");
+        content.innerHTML = html;
+        overlay.appendChild(toolbar);
+        overlay.appendChild(content);
+        document.body.appendChild(overlay);
       } catch {
         alert("PDF出力に失敗しました。もう一度お試しください。");
       } finally {
