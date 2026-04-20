@@ -317,18 +317,15 @@ export default function PreviewScreen() {
           }
         }
         const html = generateHtml(selectedExercises, imageUris);
-        // 戻るボタン付きのHTMLに書き換え
-        const wrappedHtml = html.replace(
-          "</body>",
-          `<div id="back-toolbar" style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#0B2545;padding:12px 16px;display:flex;justify-content:center;">
-            <button onclick="history.back()" style="color:#fff;background:none;border:1px solid #fff;border-radius:8px;padding:8px 24px;font-size:16px;font-weight:bold;cursor:pointer;">← 戻る</button>
-          </div>
-          <style>@media print { #back-toolbar { display: none !important; } } body { padding-top: 52px; }</style>
-          </body>`
-        );
+        // ページを指導書HTMLに書き換えて印刷ダイアログを表示
         document.open();
-        document.write(wrappedHtml);
+        document.write(html);
         document.close();
+        setTimeout(() => {
+          window.print();
+          // 印刷後にアプリに戻る
+          window.location.reload();
+        }, 500);
       } catch {
         alert("PDF出力に失敗しました。もう一度お試しください。");
       } finally {
