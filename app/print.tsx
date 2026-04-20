@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Platform } from "react-native";
+import { useEffect, useState, useRef } from "react";
+import { View, Text, Pressable, Platform, ScrollView, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
 import { ILLUSTRATIONS } from "../src/constants/illustrations";
@@ -10,6 +10,8 @@ export default function PrintScreen() {
   const { selectedExercises } = useHepStore();
   const router = useRouter();
   const [bodyHtml, setBodyHtml] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const contentRef = useRef<View>(null);
 
   useEffect(() => {
     if (Platform.OS !== "web") {
@@ -35,69 +37,64 @@ export default function PrintScreen() {
       }
       const html = generateBodyHtml(selectedExercises, imageUris);
       setBodyHtml(html);
+      setLoading(false);
     })();
   }, []);
 
-  if (Platform.OS !== "web" || !bodyHtml) return null;
+  useEffect(() => {
+    if (Platform.OS !== "web" || !bodyHtml) return;
+    // 印刷用スタイルをheadに追加
+    const style = document.createElement("style");
+    style.id = "print-page-style";
+    style.textContent = `
+      ${PDF_STYLE}
+      @media print {
+        #root > div > div:first-child { display: none !important; }
+        body, html { overflow: auto !important; height: auto !important; }
+        #root { display: block !important; height: auto !important; overflow: visible !important; }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      const el = document.getElementById("print-page-style");
+      if (el) el.remove();
+    };
+  }, [bodyHtml]);
+
+  if (Platform.OS !== "web") return null;
+
+  if (loading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="#0B2545" />
+        <Text className="mt-4 text-base font-bold text-ink">指導書を準備中...</Text>
+      </View>
+    );
+  }
 
   return (
-    // @ts-ignore - web-only HTML rendering
-    <div style={{ minHeight: "100vh", background: "#fff" }}>
-      <div
-        id="print-toolbar"
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10000,
-          background: "#0B2545",
-          padding: "12px 16px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <button
-          onClick={() => router.back()}
-          style={{
-            color: "#fff",
-            background: "none",
-            border: "none",
-            fontSize: 16,
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
+    <View className="flex-1 bg-white">
+      {/* ツールバー */}
+      <View className="flex-row items-center justify-between bg-[#0B2545] px-4 py-3">
+        <Pressable onPress={() => router.back()}>
+          <Text className="text-base font-bold text-white">← 戻る</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => window.print()}
+          className="rounded-lg bg-[#0EA5E9] px-4 py-2"
         >
-          ← 戻る
-        </button>
-        <button
-          onClick={() => window.print()}
-          style={{
-            color: "#fff",
-            background: "#0EA5E9",
-            border: "none",
-            borderRadius: 8,
-            padding: "8px 16px",
-            fontSize: 14,
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          印刷 / PDF保存
-        </button>
-      </div>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            html, body { overflow: auto !important; height: auto !important; }
-            #root { height: auto !important; overflow: auto !important; }
-            ${PDF_STYLE}
-            @media print {
-              #print-toolbar { display: none !important; }
-            }
-          `,
-        }}
-      />
-      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
-    </div>
+          <Text className="text-sm font-bold text-white">印刷 / PDF保存</Text>
+        </Pressable>
+      </View>
+
+      {/* 指導書HTML */}
+      <ScrollView className="flex-1 bg-white" contentContainerStyle={{ padding: 8 }}>
+        <View
+          ref={contentRef}
+          // @ts-ignore - dangerouslySetInnerHTML is web-only
+          dangerouslySetInnerHTML={{ __html: bodyHtml }}
+        />
+      </ScrollView>
+    </View>
   );
 }
