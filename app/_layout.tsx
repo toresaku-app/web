@@ -27,6 +27,7 @@ export default function RootLayout() {
       >
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="preview" options={{ title: "指導書プレビュー" }} />
+        <Stack.Screen name="print" options={{ headerShown: false }} />
       </Stack>
       {isBackground && (
         <View className="absolute bottom-0 left-0 right-0 top-0 bg-white" />
