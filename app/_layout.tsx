@@ -1,12 +1,13 @@
 import "../global.css";
 import { useEffect, useState } from "react";
-import { AppState, View } from "react-native";
+import { AppState, Platform, View } from "react-native";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
   const [isBackground, setIsBackground] = useState(false);
 
   useEffect(() => {
+    if (Platform.OS === "web") return;
     const sub = AppState.addEventListener("change", (state) => {
       setIsBackground(state !== "active");
     });

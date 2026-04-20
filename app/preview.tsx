@@ -16,10 +16,18 @@ import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
 import { EXERCISES } from "../src/constants/exercises";
 import { ILLUSTRATIONS } from "../src/constants/illustrations";
-import { printToFileAsync } from "expo-print";
-import { shareAsync } from "expo-sharing";
 import { Asset } from "expo-asset";
-import * as FileSystem from "expo-file-system/legacy";
+
+// Native-only modules - lazy imported to avoid web bundler errors
+let printToFileAsync: typeof import("expo-print").printToFileAsync;
+let shareAsync: typeof import("expo-sharing").shareAsync;
+let FileSystem: typeof import("expo-file-system/legacy");
+
+if (Platform.OS !== "web") {
+  import("expo-print").then((m) => (printToFileAsync = m.printToFileAsync));
+  import("expo-sharing").then((m) => (shareAsync = m.shareAsync));
+  import("expo-file-system/legacy").then((m) => (FileSystem = m));
+}
 import { SelectedExercise } from "../src/types/exercise";
 
 const FREQUENCY_OPTIONS = [
@@ -293,9 +301,41 @@ export default function PreviewScreen() {
 
   const handleExport = async () => {
     setIsExporting(true);
+
+    if (Platform.OS === "web") {
+      try {
+        // Web: イラストのURLをそのまま使用
+        const imageUris: Record<string, string> = {};
+        for (const sel of selectedExercises) {
+          const source = ILLUSTRATIONS[sel.exerciseId];
+          if (source) {
+            const asset = Asset.fromModule(source as number);
+            await asset.downloadAsync();
+            if (asset.localUri || asset.uri) {
+              imageUris[sel.exerciseId] = asset.localUri || asset.uri;
+            }
+          }
+        }
+        const html = generateHtml(selectedExercises, imageUris);
+        const printWindow = window.open("", "_blank");
+        if (printWindow) {
+          printWindow.document.write(html);
+          printWindow.document.close();
+          printWindow.onload = () => {
+            printWindow.print();
+          };
+        }
+      } catch {
+        alert("PDF出力に失敗しました。もう一度お試しください。");
+      } finally {
+        setIsExporting(false);
+      }
+      return;
+    }
+
+    // Native: expo-print + expo-sharing
     let fileUri: string | null = null;
     try {
-      // イラストをBase64に変換してPDFに埋め込む
       const imageUris: Record<string, string> = {};
       for (const sel of selectedExercises) {
         const source = ILLUSTRATIONS[sel.exerciseId];
@@ -327,7 +367,6 @@ export default function PreviewScreen() {
         ]
       );
     } finally {
-      // 共有完了後（またはエラー時）に一時ファイルを削除
       if (fileUri) {
         await FileSystem.deleteAsync(fileUri, { idempotent: true });
       }
@@ -335,6 +374,13 @@ export default function PreviewScreen() {
   };
 
   const handleClearAll = () => {
+    if (Platform.OS === "web") {
+      if (window.confirm("選択した運動をすべて解除しますか？")) {
+        clearAll();
+        router.back();
+      }
+      return;
+    }
     Alert.alert("確認", "選択した運動をすべて解除しますか？", [
       { text: "キャンセル", style: "cancel" },
       {
@@ -524,7 +570,7 @@ function ExerciseEditCard({
           <View className="h-[60px] w-[78px] items-center justify-center overflow-hidden rounded-[9px] border border-line bg-[#F4F6FA] p-0.5">
             <Image
               source={illustration}
-              className="h-full w-full"
+              style={{ width: "100%", height: "100%" }}
               resizeMode="contain"
             />
           </View>
@@ -659,6 +705,7 @@ function ExerciseEditCard({
                 autoComplete="off"
                 spellCheck={false}
                 onFocus={() => {
+                  if (Platform.OS === "web") return;
                   setTimeout(() => {
                     const scrollNode = findNodeHandle(scrollRef.current);
                     if (!noteRef.current || !scrollNode) return;

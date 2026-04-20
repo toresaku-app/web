@@ -1,4 +1,4 @@
-export type Posture = "臥位" | "側臥位" | "座位" | "立位";
+export type Posture = "臥位" | "側臥位" | "座位" | "立位" | "四つ這い";
 export type Category = "筋トレ" | "ストレッチ" | "体幹";
 export type BodyPart = "下肢" | "体幹" | "上肢";
 

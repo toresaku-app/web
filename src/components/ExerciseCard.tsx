@@ -32,7 +32,7 @@ export function ExerciseCard({ exercise, isSelected, onToggle }: Props) {
         >
           <Image
             source={illustration}
-            className="h-full w-full"
+            style={{ width: "100%", height: "100%" }}
             resizeMode="contain"
           />
         </View>

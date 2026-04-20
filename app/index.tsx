@@ -21,6 +21,7 @@ const POSTURE_FILTERS: ("すべて" | Posture)[] = [
   "側臥位",
   "座位",
   "立位",
+  "四つ這い",
 ];
 
 export default function ExerciseLibrary() {
