@@ -317,15 +317,12 @@ export default function PreviewScreen() {
           }
         }
         const html = generateHtml(selectedExercises, imageUris);
-        // BlobURLで新しいタブに開く（ポップアップブロッカー回避）
-        const blob = new Blob([html], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        // 現在のページを指導書HTMLに書き換えて印刷
+        document.open();
+        document.write(html);
+        document.close();
+        // 少し待ってから印刷ダイアログを表示
+        setTimeout(() => window.print(), 500);
       } catch {
         alert("PDF出力に失敗しました。もう一度お試しください。");
       } finally {
