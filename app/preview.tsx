@@ -317,53 +317,16 @@ export default function PreviewScreen() {
           }
         }
         const html = generateHtml(selectedExercises, imageUris);
-        // bodyの中身とstyleを抽出
-        const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/);
-        const styleMatch = html.match(/<style>([\s\S]*?)<\/style>/);
-        const bodyContent = bodyMatch ? bodyMatch[1] : "";
-        const styleContent = styleMatch ? styleMatch[1] : "";
-
-        // 印刷用コンテナを#rootの外に追加
-        const container = document.createElement("div");
-        container.id = "web-print-container";
-        container.innerHTML = bodyContent;
-
-        // 印刷用スタイルを追加
-        const style = document.createElement("style");
-        style.id = "web-print-style";
-        style.textContent = `
-          #web-print-container { display: none; }
-          @media print {
-            #root { display: none !important; }
-            #web-print-container {
-              display: block !important;
-            }
-            ${styleContent}
-          }
-        `;
-        document.head.appendChild(style);
-        document.body.appendChild(container);
-
-        // 画像読み込み完了を待つ
-        const images = container.querySelectorAll("img");
-        const loadPromises = Array.from(images).map(
-          (img) =>
-            new Promise<void>((resolve) => {
-              if (img.complete) return resolve();
-              img.onload = () => resolve();
-              img.onerror = () => resolve();
-            })
-        );
-        await Promise.all(loadPromises);
-
-        window.print();
-
-        // 印刷後にクリーンアップ
-        document.body.removeChild(container);
-        document.head.removeChild(style);
+        // 現在のページを指導書HTMLに書き換えて印刷
+        document.open();
+        document.write(html);
+        document.close();
+        // 少し待ってから印刷ダイアログを表示
+        setTimeout(() => window.print(), 500);
       } catch {
         alert("PDF出力に失敗しました。もう一度お試しください。");
-        window.location.reload();
+      } finally {
+        setIsExporting(false);
       }
       return;
     }
@@ -551,7 +514,6 @@ export default function PreviewScreen() {
           </View>
         </View>
       )}
-
     </KeyboardAvoidingView>
   );
 }
