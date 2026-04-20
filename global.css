@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media print {
+  /* アプリUIを非表示にして印刷プレビューの内容だけ印刷 */
+  #root {
+    display: none !important;
+  }
+  #web-print-container {
+    display: block !important;
+  }
+}
