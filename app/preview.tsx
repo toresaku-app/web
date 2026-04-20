@@ -331,8 +331,11 @@ export default function PreviewScreen() {
             })
         );
         await Promise.all(loadPromises);
+        // afterprint イベントで印刷ダイアログが閉じた後にリロード
+        window.onafterprint = () => {
+          window.location.href = window.location.origin + window.location.pathname;
+        };
         window.print();
-        window.location.reload();
       } catch {
         alert("PDF出力に失敗しました。もう一度お試しください。");
         window.location.reload();
