@@ -48,9 +48,12 @@ export default function PrintScreen() {
     style.textContent = `
       ${PDF_STYLE}
       @media print {
-        #root > div > div:first-child { display: none !important; }
-        body, html { overflow: auto !important; height: auto !important; }
-        #root { display: block !important; height: auto !important; overflow: visible !important; }
+        #print-toolbar { display: none !important; }
+        html, body, #root, #root > div, #root > div > div {
+          display: block !important;
+          height: auto !important;
+          overflow: visible !important;
+        }
       }
     `;
     document.head.appendChild(style);
@@ -74,7 +77,7 @@ export default function PrintScreen() {
   return (
     <View className="flex-1 bg-white">
       {/* ツールバー */}
-      <View className="flex-row items-center justify-between bg-[#0B2545] px-4 py-3">
+      <View id="print-toolbar" className="flex-row items-center justify-between bg-[#0B2545] px-4 py-3">
         <Pressable onPress={() => router.back()}>
           <Text className="text-base font-bold text-white">← 戻る</Text>
         </Pressable>
