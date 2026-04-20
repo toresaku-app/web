@@ -298,7 +298,6 @@ export default function PreviewScreen() {
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
   const [isExporting, setIsExporting] = useState(false);
-  const [webPrintHtml, setWebPrintHtml] = useState<string | null>(null);
 
   const handleExport = async () => {
     setIsExporting(true);
@@ -318,16 +317,25 @@ export default function PreviewScreen() {
           }
         }
         const html = generateHtml(selectedExercises, imageUris);
-        // bodyの中身だけ抽出
-        const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/);
-        const styleMatch = html.match(/<style>([\s\S]*?)<\/style>/);
-        const bodyContent = bodyMatch ? bodyMatch[1] : html;
-        const styleContent = styleMatch ? styleMatch[1] : "";
-        setWebPrintHtml(`<style>${styleContent}</style>${bodyContent}`);
-        setIsExporting(false);
+        document.open();
+        document.write(html);
+        document.close();
+        // 全画像の読み込み完了を待ってから印刷
+        const images = document.querySelectorAll("img");
+        const loadPromises = Array.from(images).map(
+          (img) =>
+            new Promise<void>((resolve) => {
+              if (img.complete) return resolve();
+              img.onload = () => resolve();
+              img.onerror = () => resolve();
+            })
+        );
+        await Promise.all(loadPromises);
+        window.print();
+        window.location.reload();
       } catch {
         alert("PDF出力に失敗しました。もう一度お試しください。");
-        setIsExporting(false);
+        window.location.reload();
       }
       return;
     }
@@ -516,43 +524,6 @@ export default function PreviewScreen() {
         </View>
       )}
 
-      {/* Web印刷プレビュー */}
-      {Platform.OS === "web" && webPrintHtml && (
-        <View
-          className="absolute bottom-0 left-0 right-0 top-0 bg-white"
-          style={{ zIndex: 9999 }}
-        >
-          <View className="flex-row items-center justify-between bg-[#0B2545] px-4 py-3">
-            <Pressable onPress={() => setWebPrintHtml(null)}>
-              <Text className="text-base font-bold text-white">← 戻る</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                // 印刷用コンテナをbodyに追加して印刷（#rootは@media printで非表示）
-                const container = document.createElement("div");
-                container.id = "web-print-container";
-                container.style.display = "none";
-                container.innerHTML = webPrintHtml;
-                document.body.appendChild(container);
-                window.print();
-                document.body.removeChild(container);
-              }}
-              className="rounded-lg bg-[#0EA5E9] px-5 py-2"
-            >
-              <Text className="text-sm font-bold text-white">
-                印刷 / PDF保存
-              </Text>
-            </Pressable>
-          </View>
-          <ScrollView className="flex-1">
-            <View
-              style={{ padding: 8 }}
-              // @ts-ignore - dangerouslySetInnerHTML is web-only
-              dangerouslySetInnerHTML={{ __html: webPrintHtml }}
-            />
-          </ScrollView>
-        </View>
-      )}
     </KeyboardAvoidingView>
   );
 }
