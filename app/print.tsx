@@ -41,7 +41,7 @@ export default function PrintScreen() {
       const wrappedHtml = html.replace(
         "</body>",
         `<div id="print-toolbar" style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#0B2545;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;">
-          <button onclick="history.back()" style="color:#fff;background:none;border:none;font-size:16px;font-weight:bold;cursor:pointer;">← 戻る</button>
+          <button onclick="window.location.href=window.location.pathname.replace('/print','/preview')" style="color:#fff;background:none;border:none;font-size:16px;font-weight:bold;cursor:pointer;">← 戻る</button>
           ${printButton}
         </div>
         <style>
