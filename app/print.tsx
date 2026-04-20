@@ -34,11 +34,15 @@ export default function PrintScreen() {
       }
       const html = generateHtml(selectedExercises, imageUris);
       // 戻るボタンを追加したHTMLに書き換え
+      const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+      const printButton = isMobile
+        ? `<span style="color:#94A3B8;font-size:13px;">共有 → プリントでPDF保存</span>`
+        : `<button onclick="window.print()" style="color:#fff;background:#0EA5E9;border:none;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:bold;cursor:pointer;">印刷 / PDF保存</button>`;
       const wrappedHtml = html.replace(
         "</body>",
         `<div id="print-toolbar" style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#0B2545;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;">
           <button onclick="history.back()" style="color:#fff;background:none;border:none;font-size:16px;font-weight:bold;cursor:pointer;">← 戻る</button>
-          <button onclick="window.print()" style="color:#fff;background:#0EA5E9;border:none;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:bold;cursor:pointer;">印刷 / PDF保存</button>
+          ${printButton}
         </div>
         <style>
           body { padding-top: 52px; }
