@@ -409,7 +409,7 @@ export default function PreviewScreen() {
           運動ライブラリから指導したい運動を選択してください
         </Text>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => router.replace("/")}
           className="mt-6 rounded-xl bg-navy px-8 py-3"
         >
           <Text className="font-bold text-white">運動を選ぶ</Text>
