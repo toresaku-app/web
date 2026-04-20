@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { View, Text, Pressable, Platform, ScrollView, ActivityIndicator } from "react-native";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { View, Text, Pressable, Platform, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
 import { ILLUSTRATIONS } from "../src/constants/illustrations";
@@ -11,7 +11,6 @@ export default function PrintScreen() {
   const router = useRouter();
   const [bodyHtml, setBodyHtml] = useState<string>("");
   const [loading, setLoading] = useState(true);
-  const contentRef = useRef<View>(null);
 
   useEffect(() => {
     if (Platform.OS !== "web") {
@@ -87,14 +86,21 @@ export default function PrintScreen() {
         </Pressable>
       </View>
 
-      {/* 指導書HTML */}
-      <ScrollView className="flex-1 bg-white" contentContainerStyle={{ padding: 8 }}>
-        <View
-          ref={contentRef}
-          // @ts-ignore - dangerouslySetInnerHTML is web-only
-          dangerouslySetInnerHTML={{ __html: bodyHtml }}
-        />
-      </ScrollView>
+      {/* 指導書HTML - Web専用のdivでレンダリング */}
+      <PrintContent html={bodyHtml} />
     </View>
+  );
+}
+
+function PrintContent({ html }: { html: string }) {
+  const ref = useCallback((node: HTMLDivElement | null) => {
+    if (node) {
+      node.innerHTML = html;
+    }
+  }, [html]);
+
+  return (
+    // @ts-ignore - web-only ref callback with HTMLDivElement
+    <div ref={ref} style={{ flex: 1, overflow: "auto", padding: 8, background: "#fff" }} />
   );
 }
