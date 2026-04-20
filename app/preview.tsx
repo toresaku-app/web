@@ -317,25 +317,15 @@ export default function PreviewScreen() {
           }
         }
         const html = generateHtml(selectedExercises, imageUris);
-        // iframeで印刷（モバイルのポップアップブロッカーを回避）
-        const iframe = document.createElement("iframe");
-        iframe.style.position = "fixed";
-        iframe.style.right = "0";
-        iframe.style.bottom = "0";
-        iframe.style.width = "0";
-        iframe.style.height = "0";
-        iframe.style.border = "none";
-        document.body.appendChild(iframe);
-        const doc = iframe.contentDocument || iframe.contentWindow?.document;
-        if (doc) {
-          doc.open();
-          doc.write(html);
-          doc.close();
-          iframe.onload = () => {
-            iframe.contentWindow?.print();
-            setTimeout(() => document.body.removeChild(iframe), 1000);
-          };
-        }
+        // BlobURLで新しいタブに開く（ポップアップブロッカー回避）
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
       } catch {
         alert("PDF出力に失敗しました。もう一度お試しください。");
       } finally {
