@@ -7,7 +7,7 @@ import { Asset } from "expo-asset";
 import { generateHtml } from "../src/utils/generateHtml";
 
 export default function PrintScreen() {
-  const { selectedExercises } = useHepStore();
+  const { selectedExercises, sheetPurpose } = useHepStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function PrintScreen() {
           }
         }
       }
-      const html = generateHtml(selectedExercises, imageUris);
+      const html = generateHtml(selectedExercises, imageUris, sheetPurpose);
       // 戻るボタンを追加したHTMLに書き換え
       const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
       const printButton = isMobile

@@ -25,6 +25,7 @@ export interface SelectedExercise {
   holdSeconds?: number;
   frequency: string;
   notes: string;
+  purpose: string;
   order: number;
 }
 

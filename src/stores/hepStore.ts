@@ -6,15 +6,18 @@ import { EXERCISES } from "../constants/exercises";
 
 interface HepState {
   selectedExercises: SelectedExercise[];
+  sheetPurpose: string;
   addExercise: (exerciseId: string) => void;
   removeExercise: (exerciseId: string) => void;
   updateExercise: (exerciseId: string, updates: Partial<SelectedExercise>) => void;
   reorderExercises: (exercises: SelectedExercise[]) => void;
+  setSheetPurpose: (purpose: string) => void;
   clearAll: () => void;
 }
 
 const storeCreator: StateCreator<HepState> = (set) => ({
   selectedExercises: [],
+  sheetPurpose: "",
 
   addExercise: (exerciseId: string) =>
     set((state) => {
@@ -31,6 +34,7 @@ const storeCreator: StateCreator<HepState> = (set) => ({
         holdSeconds: exercise.defaultHoldSeconds,
         frequency: "1日2〜3回",
         notes: "",
+        purpose: "",
         order: state.selectedExercises.length,
       };
       return { selectedExercises: [...state.selectedExercises, newExercise] };
@@ -53,7 +57,9 @@ const storeCreator: StateCreator<HepState> = (set) => ({
   reorderExercises: (exercises: SelectedExercise[]) =>
     set({ selectedExercises: exercises.map((e, i) => ({ ...e, order: i })) }),
 
-  clearAll: () => set({ selectedExercises: [] }),
+  setSheetPurpose: (purpose: string) => set({ sheetPurpose: purpose }),
+
+  clearAll: () => set({ selectedExercises: [], sheetPurpose: "" }),
 });
 
 const isWeb = Platform.OS === "web";

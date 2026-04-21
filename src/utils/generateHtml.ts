@@ -36,7 +36,8 @@ function renderPage(
   index: number,
   total: number,
   isLast: boolean,
-  imageUri?: string
+  imageUri?: string,
+  sheetPurpose?: string
 ): string {
   const rxCells: string[] = [
     rxCell("回数", String(sel.reps), "回"),
@@ -79,12 +80,15 @@ function renderPage(
       <div class="page-badge">第 ${index} 枚 / 全 ${total} 枚</div>
     </header>
 
+    ${sheetPurpose ? `<div class="sheet-purpose">目的：${esc(sheetPurpose)}</div>` : ""}
+
     <div class="title-block">
       <div class="tags">
         <span class="tag tag-navy">${esc(ex.posture)}</span>
         <span class="tag tag-teal">ターゲット：${esc(ex.target)}</span>
       </div>
       <h1 class="ex-name">${esc(ex.name)}</h1>
+      ${sel.purpose ? `<div class="ex-purpose">${esc(sel.purpose)}</div>` : ""}
     </div>
 
     <div class="illust">
@@ -136,6 +140,13 @@ export const PDF_STYLE = `
     font-size: 9pt; font-weight: 700; white-space: nowrap;
   }
 
+  /* ── 指導書の目的 ── */
+  .sheet-purpose {
+    font-size: 10pt; font-weight: 500; color: #0B2545;
+    padding: 4px 8px; margin-top: 6px;
+    background: #EEF2F9; border-radius: 5px;
+  }
+
   /* ── タイトルブロック ── */
   .title-block { padding: 8px 0 6px; }
   .tags { display: flex; gap: 6px; margin-bottom: 4px; }
@@ -146,6 +157,7 @@ export const PDF_STYLE = `
   .tag-navy { background: #EEF2F9; color: #0B2545; }
   .tag-teal { background: #E6F4F2; color: #0F766E; }
   .ex-name { font-size: 22pt; font-weight: 700; color: #0F172A; line-height: 1.2; }
+  .ex-purpose { font-size: 10pt; color: #475569; margin-top: 2px; }
 
   /* ── イラスト ── */
   .illust {
@@ -230,16 +242,18 @@ export const PDF_STYLE = `
 
 export function generateHtml(
   selectedExercises: SelectedExercise[],
-  imageUris: Record<string, string>
+  imageUris: Record<string, string>,
+  sheetPurpose?: string
 ) {
   const sorted = [...selectedExercises].sort((a, b) => a.order - b.order);
   const total = sorted.length;
+  const purpose = sheetPurpose?.trim() || undefined;
 
   const pages = sorted
     .map((sel, i) => {
       const ex = EXERCISES.find((e) => e.id === sel.exerciseId);
       if (!ex) return "";
-      return renderPage(sel, ex, i + 1, total, i === sorted.length - 1, imageUris[sel.exerciseId]);
+      return renderPage(sel, ex, i + 1, total, i === sorted.length - 1, imageUris[sel.exerciseId], purpose);
     })
     .join("\n");
 

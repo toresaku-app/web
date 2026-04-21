@@ -48,7 +48,7 @@ const FREQUENCY_OPTIONS = [
 
 
 export default function PreviewScreen() {
-  const { selectedExercises, updateExercise, removeExercise, clearAll } =
+  const { selectedExercises, updateExercise, removeExercise, clearAll, sheetPurpose, setSheetPurpose } =
     useHepStore();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
@@ -80,7 +80,7 @@ export default function PreviewScreen() {
           }
         }
       }
-      const html = generateHtml(selectedExercises, imageUris);
+      const html = generateHtml(selectedExercises, imageUris, sheetPurpose);
       const { uri } = await printToFileAsync({ html });
       fileUri = uri;
       setIsExporting(false);
@@ -167,6 +167,23 @@ export default function PreviewScreen() {
           <Pressable onPress={handleClearAll}>
             <Text className="text-sm text-warn">すべて解除</Text>
           </Pressable>
+        </View>
+
+        {/* 指導書の目的 */}
+        <View className="mb-3">
+          <Text className="mb-1.5 text-[11px] font-semibold tracking-widest text-ink3">
+            指導書の目的（任意）
+          </Text>
+          <TextInput
+            className="rounded-lg border border-line bg-[#F4F6FA] px-3 py-2.5 text-[13px] text-ink"
+            placeholder="例: 退院後の自主トレ、転倒予防プログラム"
+            placeholderTextColor="#94A3B8"
+            value={sheetPurpose}
+            onChangeText={setSheetPurpose}
+            autoCorrect={false}
+            autoComplete="off"
+            spellCheck={false}
+          />
         </View>
 
         {/* プログレスバー */}
@@ -371,6 +388,23 @@ function ExerciseEditCard({
       {/* 展開エリア */}
       {expanded && (
         <View className="border-t border-line p-3.5">
+          {/* この運動の目的 */}
+          <View className="mb-3.5">
+            <Text className="mb-2 text-[11px] font-semibold tracking-widest text-ink3">
+              この運動の目的（任意）
+            </Text>
+            <TextInput
+              className="rounded-lg border border-line bg-[#F4F6FA] px-3 py-2 text-[13px] text-ink"
+              placeholder="例: 膝の安定性向上、筋力維持"
+              placeholderTextColor="#94A3B8"
+              value={sel.purpose}
+              onChangeText={(text) => onUpdate({ purpose: text })}
+              autoCorrect={false}
+              autoComplete="off"
+              spellCheck={false}
+            />
+          </View>
+
           {/* 頻度 */}
           <View className="mb-3.5">
             <Text className="mb-2 text-[11px] font-semibold tracking-widest text-ink3">
