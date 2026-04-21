@@ -40,7 +40,31 @@ jobs:
       # SEO meta tags + OGP + structured data
       - name: Inject SEO meta tags and structured data
         run: |
-          sed -i 's|</head>|<link rel="manifest" href="/web/manifest.json" />\n<meta name="theme-color" content="#0B2545" />\n<meta name="description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要・オフライン対応。" />\n<meta name="keywords" content="自主トレ,指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく,自主トレ指導書作成,リハビリ運動イラスト,患者教育ツール" />\n<link rel="canonical" href="https://toresaku-app.github.io/web/" />\n<meta property="og:title" content="トレさく | 自主トレ指導書をサクッと作成" />\n<meta property="og:description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料。" />\n<meta property="og:type" content="website" />\n<meta property="og:url" content="https://toresaku-app.github.io/web/" />\n<meta property="og:locale" content="ja_JP" />\n<meta property="og:site_name" content="トレさく" />\n<meta name="twitter:card" content="summary_large_image" />\n<meta name="twitter:title" content="トレさく | 自主トレ指導書をサクッと作成" />\n<meta name="twitter:description" content="理学療法士のための自主トレ指導書作成アプリ。完全無料・アカウント不要。" />\n<meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" />\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"理学療法士が自主トレーニング指導書を簡単に作成できる無料アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレを中心に22種類以上の運動を収録しています。各運動にはイラストとやり方のポイントが付いています。"}}]}</script>\n</head>|' dist/index.html
+          python3 << 'PYEOF'
+          with open("dist/index.html", "r") as f:
+              html = f.read()
+          seo_tags = """<link rel="manifest" href="/web/manifest.json" />
+          <meta name="theme-color" content="#0B2545" />
+          <meta name="description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要・オフライン対応。" />
+          <meta name="keywords" content="自主トレ,指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく,自主トレ指導書作成,リハビリ運動イラスト,患者教育ツール" />
+          <link rel="canonical" href="https://toresaku-app.github.io/web/" />
+          <meta property="og:title" content="トレさく | 自主トレ指導書をサクッと作成" />
+          <meta property="og:description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料。" />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://toresaku-app.github.io/web/" />
+          <meta property="og:locale" content="ja_JP" />
+          <meta property="og:site_name" content="トレさく" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="トレさく | 自主トレ指導書をサクッと作成" />
+          <meta name="twitter:description" content="理学療法士のための自主トレ指導書作成アプリ。完全無料・アカウント不要。" />
+          <meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" />
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"理学療法士が自主トレーニング指導書を簡単に作成できる無料アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレを中心に22種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"iPhone（iOS）アプリとしてApp Storeで配信予定。Web版はPC・スマホのブラウザからもご利用いただけます。"}}]}</script>
+          """
+          html = html.replace("</head>", seo_tags + "</head>")
+          with open("dist/index.html", "w") as f:
+              f.write(html)
+          PYEOF
 
       # robots.txt with AI crawler settings
       - name: Create robots.txt
