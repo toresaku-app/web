@@ -24,9 +24,15 @@ let shareAsync: typeof import("expo-sharing").shareAsync;
 let FileSystem: typeof import("expo-file-system/legacy");
 
 if (Platform.OS !== "web") {
-  import("expo-print").then((m) => (printToFileAsync = m.printToFileAsync));
-  import("expo-sharing").then((m) => (shareAsync = m.shareAsync));
-  import("expo-file-system/legacy").then((m) => (FileSystem = m));
+  import("expo-print")
+    .then((m) => (printToFileAsync = m.printToFileAsync))
+    .catch(() => console.warn("expo-print failed to load"));
+  import("expo-sharing")
+    .then((m) => (shareAsync = m.shareAsync))
+    .catch(() => console.warn("expo-sharing failed to load"));
+  import("expo-file-system/legacy")
+    .then((m) => (FileSystem = m))
+    .catch(() => console.warn("expo-file-system failed to load"));
 }
 import { SelectedExercise } from "../src/types/exercise";
 import { generateHtml } from "../src/utils/generateHtml";
@@ -63,9 +69,9 @@ export default function PreviewScreen() {
       for (const sel of selectedExercises) {
         const source = ILLUSTRATIONS[sel.exerciseId];
         if (source) {
-          const asset = Asset.fromModule(source as number);
+          const asset = Asset.fromModule(source);
           await asset.downloadAsync();
-          if (asset.localUri) {
+          if (asset.localUri && FileSystem) {
             const base64 = await FileSystem.readAsStringAsync(asset.localUri, {
               encoding: FileSystem.EncodingType.Base64,
             });

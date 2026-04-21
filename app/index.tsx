@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import { View, Text, FlatList, Pressable, TextInput, Linking } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -104,13 +104,13 @@ export default function ExerciseLibrary() {
           label="部位"
           filters={BODY_PART_FILTERS}
           selected={bodyPartFilter}
-          onSelect={(v) => setBodyPartFilter(v as "すべて" | BodyPart)}
+          onSelect={setBodyPartFilter}
         />
         <FilterBar
           label="姿勢"
           filters={POSTURE_FILTERS}
           selected={postureFilter}
-          onSelect={(v) => setPostureFilter(v as "すべて" | Posture)}
+          onSelect={setPostureFilter}
         />
       </View>
 

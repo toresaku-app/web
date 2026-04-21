@@ -1,13 +1,13 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 
-interface Props {
+interface Props<T extends string = string> {
   label: string;
-  filters: string[];
-  selected: string;
-  onSelect: (value: string) => void;
+  filters: T[];
+  selected: T;
+  onSelect: (value: T) => void;
 }
 
-export function FilterBar({ label, filters, selected, onSelect }: Props) {
+export function FilterBar<T extends string>({ label, filters, selected, onSelect }: Props<T>) {
   return (
     <View className="px-5 py-1">
       <Text className="mb-1.5 text-[10px] font-semibold tracking-widest text-ink3">

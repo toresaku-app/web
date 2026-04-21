@@ -256,18 +256,3 @@ ${pages}
 </html>`;
 }
 
-export function generateBodyHtml(
-  selectedExercises: SelectedExercise[],
-  imageUris: Record<string, string>
-) {
-  const sorted = [...selectedExercises].sort((a, b) => a.order - b.order);
-  const total = sorted.length;
-
-  return sorted
-    .map((sel, i) => {
-      const ex = EXERCISES.find((e) => e.id === sel.exerciseId);
-      if (!ex) return "";
-      return renderPage(sel, ex, i + 1, total, i === sorted.length - 1, imageUris[sel.exerciseId]);
-    })
-    .join("\n");
-}

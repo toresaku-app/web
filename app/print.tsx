@@ -25,7 +25,7 @@ export default function PrintScreen() {
       for (const sel of selectedExercises) {
         const source = ILLUSTRATIONS[sel.exerciseId];
         if (source) {
-          const asset = Asset.fromModule(source as number);
+          const asset = Asset.fromModule(source);
           await asset.downloadAsync();
           if (asset.localUri || asset.uri) {
             imageUris[sel.exerciseId] = asset.localUri || asset.uri;

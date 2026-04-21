@@ -1,6 +1,4 @@
-import { ImageSourcePropType } from "react-native";
-
-export const ILLUSTRATIONS: Record<string, ImageSourcePropType> = {
+export const ILLUSTRATIONS: Record<string, number> = {
   "patella-setting": require("../../assets/illustrations/patella-setting.png"),
   slr: require("../../assets/illustrations/slr.png"),
   bridge: require("../../assets/illustrations/bridge.png"),
