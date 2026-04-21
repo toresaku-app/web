@@ -158,20 +158,6 @@ export default function PreviewScreen() {
         {/* ヘッダー */}
         <View className="mb-3 flex-row items-center justify-between">
           <View className="flex-row items-center gap-2">
-            <Pressable onPress={() => {
-              if (Platform.OS === "web") {
-                if (window.confirm("運動ライブラリに戻りますか？編集内容は保持されます。")) {
-                  router.replace("/");
-                }
-              } else {
-                Alert.alert("確認", "運動ライブラリに戻りますか？", [
-                  { text: "キャンセル", style: "cancel" },
-                  { text: "戻る", onPress: () => router.replace("/") },
-                ]);
-              }
-            }}>
-              <Text className="text-sm font-bold text-navy">← 運動ライブラリ</Text>
-            </Pressable>
             <View className="rounded-md bg-[#EEF2F9] px-2 py-0.5">
               <Text className="text-[11.5px] font-semibold text-navy">
                 {selectedExercises.length}種目
