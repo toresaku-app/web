@@ -104,7 +104,7 @@ function renderPage(
 
   if (landscape) {
     return `
-    <section class="page${isLast ? "" : " break"}">
+    <section class="page landscape${isLast ? "" : " break"}">
       ${header}
       ${titleBlock}
       ${illustBlock}
@@ -264,7 +264,19 @@ export const PDF_STYLE = `
   }
   .page-num { color: #475569; font-weight: 500; }
 
-
+  /* ── 横向き時のコンパクト化 ── */
+  .landscape .page-header { padding-bottom: 4px; }
+  .landscape .sheet-purpose { margin-top: 3px; padding: 2px 8px; }
+  .landscape .title-block { padding: 4px 0 3px; }
+  .landscape .illust { height: 150px; margin-top: 4px; padding: 4px; }
+  .landscape .rx-strip { margin-top: 6px; gap: 4px; }
+  .landscape .rx-label { padding: 1px 6px; }
+  .landscape .rx-body { padding: 2px; }
+  .landscape .points { margin-top: 6px; }
+  .landscape .points-heading { margin-bottom: 2px; }
+  .landscape .pt-row { padding: 3px 0; }
+  .landscape .note { margin-top: 5px; padding: 5px 10px; }
+  .landscape .page-footer { margin-top: 5px; padding-top: 3px; }
 `;
 
 export function generateHtml(
