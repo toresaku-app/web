@@ -19,7 +19,7 @@ function BackToLibrary() {
   };
   return (
     <Pressable onPress={handleBack} style={{ marginLeft: 4 }}>
-      <Text style={{ fontSize: 16, color: "#0B2545", fontWeight: "600" }}>← 戻る</Text>
+      <Text style={{ fontSize: 20, color: "#0B2545" }}>←</Text>
     </Pressable>
   );
 }
