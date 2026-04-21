@@ -29,6 +29,9 @@ jobs:
 
       - run: npx expo export --platform web
 
+      # Google Search Console verification
+      - run: sed -i 's|</head>|<meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" /></head>|' dist/index.html
+
       # SPA fallback: copy index.html to 404.html
       - run: cp dist/index.html dist/404.html
 
