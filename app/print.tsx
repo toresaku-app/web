@@ -45,9 +45,15 @@ export default function PrintScreen() {
           ${printButton}
         </div>
         <style>
-          body { padding-top: 52px; }
+          body { padding-top: 52px; -webkit-user-select: none; user-select: none; }
           @media print { #print-toolbar { display: none !important; } body { padding-top: 0; } }
         </style>
+        <script>
+          document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+          document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); }
+          });
+        </script>
         </body>`
       );
       document.open();
