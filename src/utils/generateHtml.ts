@@ -132,17 +132,17 @@ export const PDF_STYLE = `
     display: flex; align-items: flex-start; justify-content: space-between;
     padding-bottom: 8px; border-bottom: 3px solid #0B2545;
   }
-  .title { font-size: 18pt; font-weight: 700; color: #0B2545; line-height: 1.2; }
-  .issue { font-size: 11pt; color: #475569; margin-top: 2px; }
+  .title { font-size: 20pt; font-weight: 700; color: #0B2545; line-height: 1.2; }
+  .issue { font-size: 12pt; color: #475569; margin-top: 2px; }
   .page-badge {
     padding: 4px 10px; border-radius: 6px;
     background: #0B2545; color: #fff;
-    font-size: 11pt; font-weight: 700; white-space: nowrap;
+    font-size: 12pt; font-weight: 700; white-space: nowrap;
   }
 
   /* ── 指導書の目的 ── */
   .sheet-purpose {
-    font-size: 12pt; font-weight: 500; color: #0B2545;
+    font-size: 13pt; font-weight: 500; color: #0B2545;
     padding: 4px 8px; margin-top: 6px;
     background: #EEF2F9; border-radius: 5px;
   }
@@ -152,12 +152,12 @@ export const PDF_STYLE = `
   .tags { display: flex; gap: 6px; margin-bottom: 4px; }
   .tag {
     padding: 2px 8px; border-radius: 5px;
-    font-size: 11pt; font-weight: 700;
+    font-size: 12pt; font-weight: 700;
   }
   .tag-navy { background: #EEF2F9; color: #0B2545; }
   .tag-teal { background: #E6F4F2; color: #0F766E; }
-  .ex-name { font-size: 22pt; font-weight: 700; color: #0F172A; line-height: 1.2; }
-  .ex-purpose { font-size: 12pt; color: #475569; margin-top: 2px; }
+  .ex-name { font-size: 24pt; font-weight: 700; color: #0F172A; line-height: 1.2; }
+  .ex-purpose { font-size: 13pt; color: #475569; margin-top: 2px; }
 
   /* ── イラスト ── */
   .illust {
@@ -180,7 +180,7 @@ export const PDF_STYLE = `
   .rx-cell-wide { flex: 1.5; }
   .rx-label {
     background: #0B2545; color: #fff;
-    font-size: 10pt; font-weight: 700; letter-spacing: 1.5px;
+    font-size: 11pt; font-weight: 700; letter-spacing: 1.5px;
     padding: 2px 6px; text-align: center;
   }
   .rx-body {
@@ -191,14 +191,14 @@ export const PDF_STYLE = `
     font-size: 28pt; font-weight: 700; color: #0B2545;
     line-height: 1; font-variant-numeric: tabular-nums;
   }
-  .rx-unit { font-size: 13pt; font-weight: 700; color: #0F172A; margin-left: 2px; }
-  .rx-text { font-size: 16pt; font-weight: 700; color: #0F172A; text-align: center; }
+  .rx-unit { font-size: 14pt; font-weight: 700; color: #0F172A; margin-left: 2px; }
+  .rx-text { font-size: 17pt; font-weight: 700; color: #0F172A; text-align: center; }
 
   /* ── やり方のポイント ── */
   .points { margin-top: 10px; }
   .points-heading { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
   .points-bar { width: 4px; height: 16px; background: #0B2545; border-radius: 2px; }
-  .points-title { font-size: 14pt; font-weight: 700; color: #0F172A; }
+  .points-title { font-size: 15pt; font-weight: 700; color: #0F172A; }
   .points-list { }
   .pt-row {
     display: flex; gap: 8px; align-items: center;
@@ -209,9 +209,9 @@ export const PDF_STYLE = `
     width: 20px; height: 20px; border-radius: 5px;
     background: #0B2545; color: #fff;
     display: flex; align-items: center; justify-content: center;
-    font-size: 11pt; font-weight: 700; flex-shrink: 0;
+    font-size: 12pt; font-weight: 700; flex-shrink: 0;
   }
-  .pt-body { font-size: 13pt; color: #0F172A; line-height: 1.5; flex: 1; }
+  .pt-body { font-size: 14pt; color: #0F172A; line-height: 1.5; flex: 1; }
 
   /* ── 注意ボックス ── */
   .note {
@@ -227,15 +227,15 @@ export const PDF_STYLE = `
     font-size: 14pt; font-weight: 700; flex-shrink: 0;
   }
   .note-content { flex: 1; }
-  .note-label { font-size: 10pt; font-weight: 700; color: #B91C1C; letter-spacing: 1.5px; margin-bottom: 1px; }
-  .note-body { font-size: 12pt; color: #7F1D1D; line-height: 1.4; font-weight: 500; }
+  .note-label { font-size: 11pt; font-weight: 700; color: #B91C1C; letter-spacing: 1.5px; margin-bottom: 1px; }
+  .note-body { font-size: 13pt; color: #7F1D1D; line-height: 1.4; font-weight: 500; }
 
   /* ── フッター ── */
   .page-footer {
     margin-top: 8px;
     padding-top: 6px; border-top: 1px solid #E6EAF0;
     display: flex; justify-content: space-between; align-items: center;
-    font-size: 9pt; color: #94A3B8;
+    font-size: 10pt; color: #94A3B8;
   }
   .page-num { color: #475569; font-weight: 500; }
 `;
