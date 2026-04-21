@@ -269,6 +269,16 @@ jobs:
             </div>
           </div>
 
+          <div class="section" style="padding-top:24px;padding-bottom:24px">
+            <div style="background:#EEF2F9;border-radius:12px;padding:20px;display:flex;gap:16px;align-items:center">
+              <div style="font-size:40px;flex-shrink:0">👨‍⚕️</div>
+              <div>
+                <p style="font-size:14px;font-weight:700;color:#0B2545;margin-bottom:4px">現役理学療法士が監修</p>
+                <p style="font-size:13px;color:#475569">収録されている運動メニュー・指導内容は、臨床経験を持つ現役の理学療法士が監修しています。エビデンスに基づいた運動を厳選し、安全にご利用いただけるよう配慮しています。</p>
+              </div>
+            </div>
+          </div>
+
           <div class="disclaimer">
             <p>※本アプリは運動指導書の作成・出力ツールであり、疾病の診断・治療・予防を目的とするものではありません。運動内容の判断は医療専門職が行ってください。</p>
           </div>
