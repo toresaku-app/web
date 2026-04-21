@@ -106,7 +106,7 @@ export default function PreviewScreen() {
     if (Platform.OS === "web") {
       if (window.confirm("選択した運動をすべて解除しますか？")) {
         clearAll();
-        router.back();
+        router.replace("/");
       }
       return;
     }
@@ -157,6 +157,9 @@ export default function PreviewScreen() {
         {/* ヘッダー */}
         <View className="mb-3 flex-row items-center justify-between">
           <View className="flex-row items-center gap-2">
+            <Pressable onPress={() => router.replace("/")}>
+              <Text className="text-sm font-bold text-navy">← 運動ライブラリ</Text>
+            </Pressable>
             <View className="rounded-md bg-[#EEF2F9] px-2 py-0.5">
               <Text className="text-[11.5px] font-semibold text-navy">
                 {selectedExercises.length}種目
