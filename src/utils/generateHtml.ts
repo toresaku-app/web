@@ -107,20 +107,16 @@ function renderPage(
     <section class="page${isLast ? "" : " break"}">
       ${header}
       ${titleBlock}
-      <div class="landscape-body">
-        <div class="landscape-left">${illustBlock}</div>
-        <div class="landscape-right">
-          <div class="rx-strip">${rxCells.join("")}</div>
-          <div class="points">
-            <div class="points-heading">
-              <div class="points-bar"></div>
-              <div class="points-title">やり方のポイント</div>
-            </div>
-            <div class="points-list">${pointsHtml}</div>
-          </div>
-          ${noteHtml}
+      ${illustBlock}
+      <div class="rx-strip">${rxCells.join("")}</div>
+      <div class="points">
+        <div class="points-heading">
+          <div class="points-bar"></div>
+          <div class="points-title">やり方のポイント</div>
         </div>
+        <div class="points-list">${pointsHtml}</div>
       </div>
+      ${noteHtml}
       ${footer}
     </section>`;
   }
@@ -268,19 +264,7 @@ export const PDF_STYLE = `
   }
   .page-num { color: #475569; font-weight: 500; }
 
-  /* ── Landscape レイアウト ── */
-  .landscape-body {
-    display: flex; gap: 16px; margin-top: 8px;
-  }
-  .landscape-left {
-    flex: 0 0 45%;
-  }
-  .landscape-left .illust {
-    height: 180px; margin-top: 0;
-  }
-  .landscape-right {
-    flex: 1;
-  }
+
 `;
 
 export function generateHtml(
