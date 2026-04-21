@@ -88,7 +88,7 @@ export default function ExerciseLibrary() {
             <Text className="mr-2 text-ink3">🔍</Text>
             <TextInput
               className="flex-1 text-[14px] text-ink"
-              placeholder="運動名・部位・筋で検索"
+              placeholder="運動名・英名・部位で検索"
               placeholderTextColor="#94A3B8"
               value={searchText}
               onChangeText={setSearchText}

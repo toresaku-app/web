@@ -15,7 +15,7 @@ export function FilterBar<T extends string>({ label, filters, selected, onSelect
       </Text>
       <ScrollView
         horizontal
-        showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={true}
       >
         <View className="flex-row gap-1.5">
           {filters.map((filter) => (

@@ -43,6 +43,7 @@ const FREQUENCY_OPTIONS = [
   "1日2〜3回",
   "毎日",
   "週3回",
+  "カスタム",
 ];
 
 
@@ -157,7 +158,18 @@ export default function PreviewScreen() {
         {/* ヘッダー */}
         <View className="mb-3 flex-row items-center justify-between">
           <View className="flex-row items-center gap-2">
-            <Pressable onPress={() => router.replace("/")}>
+            <Pressable onPress={() => {
+              if (Platform.OS === "web") {
+                if (window.confirm("運動ライブラリに戻りますか？編集内容は保持されます。")) {
+                  router.replace("/");
+                }
+              } else {
+                Alert.alert("確認", "運動ライブラリに戻りますか？", [
+                  { text: "キャンセル", style: "cancel" },
+                  { text: "戻る", onPress: () => router.replace("/") },
+                ]);
+              }
+            }}>
               <Text className="text-sm font-bold text-navy">← 運動ライブラリ</Text>
             </Pressable>
             <View className="rounded-md bg-[#EEF2F9] px-2 py-0.5">
@@ -329,8 +341,13 @@ function ExerciseEditCard({
           </View>
         </View>
 
-        <View className="h-7 w-7 items-center justify-center rounded-lg border border-line bg-[#F4F6FA]">
-          <Text className="text-xs text-ink2">{expanded ? "▼" : "▶"}</Text>
+        <View className="items-center gap-1">
+          <View className="h-7 w-7 items-center justify-center rounded-lg border border-line bg-[#F4F6FA]">
+            <Text className="text-xs text-ink2">{expanded ? "▼" : "▶"}</Text>
+          </View>
+          {!expanded && sel.notes.trim() !== "" && (
+            <Text className="text-[10px] text-warn">📝</Text>
+          )}
         </View>
       </Pressable>
 
@@ -374,28 +391,48 @@ function ExerciseEditCard({
               実施頻度
             </Text>
             <View className="flex-row flex-wrap gap-1.5">
-              {FREQUENCY_OPTIONS.map((freq) => (
-                <Pressable
-                  key={freq}
-                  onPress={() => onUpdate({ frequency: freq })}
-                  className={`rounded-full px-3 py-1.5 ${
-                    sel.frequency === freq
-                      ? "bg-navy"
-                      : "border border-line bg-card"
-                  }`}
-                >
-                  <Text
-                    className={`text-[13px] ${
-                      sel.frequency === freq
-                        ? "font-semibold text-white"
-                        : "font-medium text-ink2"
+              {FREQUENCY_OPTIONS.map((freq) => {
+                const isCustom = !FREQUENCY_OPTIONS.slice(0, -1).includes(sel.frequency);
+                const isSelected = freq === "カスタム" ? isCustom : sel.frequency === freq;
+                return (
+                  <Pressable
+                    key={freq}
+                    onPress={() => {
+                      if (freq === "カスタム") {
+                        onUpdate({ frequency: "" });
+                      } else {
+                        onUpdate({ frequency: freq });
+                      }
+                    }}
+                    className={`rounded-full px-3 py-1.5 ${
+                      isSelected
+                        ? "bg-navy"
+                        : "border border-line bg-card"
                     }`}
                   >
-                    {freq}
-                  </Text>
-                </Pressable>
-              ))}
+                    <Text
+                      className={`text-[13px] ${
+                        isSelected
+                          ? "font-semibold text-white"
+                          : "font-medium text-ink2"
+                      }`}
+                    >
+                      {freq}
+                    </Text>
+                  </Pressable>
+                );
+              })}
             </View>
+            {!FREQUENCY_OPTIONS.slice(0, -1).includes(sel.frequency) && (
+              <TextInput
+                className="mt-2 rounded-lg border border-line bg-[#F4F6FA] px-3 py-2 text-[13px] text-ink"
+                placeholder="例: 週5回、毎日朝晩"
+                placeholderTextColor="#94A3B8"
+                value={sel.frequency}
+                onChangeText={(text) => onUpdate({ frequency: text })}
+                autoCorrect={false}
+              />
+            )}
           </View>
 
           {/* ポイント */}
@@ -457,7 +494,18 @@ function ExerciseEditCard({
           {/* アクション */}
           <View className="mt-3.5 flex-row gap-2 border-t border-line pt-3">
             <Pressable
-              onPress={onRemove}
+              onPress={() => {
+                if (Platform.OS === "web") {
+                  if (window.confirm(`「${exerciseName}」を削除しますか？`)) {
+                    onRemove();
+                  }
+                } else {
+                  Alert.alert("確認", `「${exerciseName}」を削除しますか？`, [
+                    { text: "キャンセル", style: "cancel" },
+                    { text: "削除", style: "destructive", onPress: onRemove },
+                  ]);
+                }
+              }}
               className="h-9 w-9 items-center justify-center rounded-[9px] border border-[#F5D2D2] bg-warn-soft"
             >
               <Text className="text-sm text-warn">✕</Text>
