@@ -1,0 +1,27 @@
+{
+  "name": "トレさく - 自主トレ指導書作成アプリ",
+  "short_name": "トレさく",
+  "description": "理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。",
+  "start_url": "/web/",
+  "scope": "/web/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0B2545",
+  "background_color": "#FFFFFF",
+  "lang": "ja",
+  "categories": ["medical", "productivity"],
+  "icons": [
+    {
+      "src": "/web/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/web/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
