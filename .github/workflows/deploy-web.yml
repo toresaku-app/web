@@ -29,18 +29,30 @@ jobs:
 
       - run: npx expo export --platform web
 
-      # SEO + OGP + Google Search Console
-      - name: Inject SEO meta tags
+      # SEO meta tags + OGP + structured data
+      - name: Inject SEO meta tags and structured data
         run: |
-          sed -i 's|</head>|<meta name="description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで、回数・セットを設定して、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要。" />\n<meta name="keywords" content="自主トレ,指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく" />\n<meta property="og:title" content="トレさく - 自主トレ指導書をサクッと作成" />\n<meta property="og:description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。" />\n<meta property="og:type" content="website" />\n<meta property="og:url" content="https://toresaku-app.github.io/web/" />\n<meta property="og:locale" content="ja_JP" />\n<meta name="twitter:card" content="summary" />\n<meta name="twitter:title" content="トレさく - 自主トレ指導書をサクッと作成" />\n<meta name="twitter:description" content="理学療法士のための自主トレ指導書作成アプリ。完全無料・アカウント不要。" />\n<meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" />\n</head>|' dist/index.html
+          sed -i 's|</head>|<meta name="description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要・オフライン対応。" />\n<meta name="keywords" content="自主トレ,指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく,自主トレ指導書作成,リハビリ運動イラスト,患者教育ツール" />\n<link rel="canonical" href="https://toresaku-app.github.io/web/" />\n<meta property="og:title" content="トレさく | 自主トレ指導書をサクッと作成" />\n<meta property="og:description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料。" />\n<meta property="og:type" content="website" />\n<meta property="og:url" content="https://toresaku-app.github.io/web/" />\n<meta property="og:locale" content="ja_JP" />\n<meta property="og:site_name" content="トレさく" />\n<meta name="twitter:card" content="summary_large_image" />\n<meta name="twitter:title" content="トレさく | 自主トレ指導書をサクッと作成" />\n<meta name="twitter:description" content="理学療法士のための自主トレ指導書作成アプリ。完全無料・アカウント不要。" />\n<meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" />\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"理学療法士が自主トレーニング指導書を簡単に作成できる無料アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレを中心に22種類以上の運動を収録しています。各運動にはイラストとやり方のポイントが付いています。"}}]}</script>\n</head>|' dist/index.html
 
-      # robots.txt
+      # robots.txt with AI crawler settings
       - name: Create robots.txt
         run: |
           cat > dist/robots.txt << 'ROBOTS'
           User-agent: *
           Allow: /
           Sitemap: https://toresaku-app.github.io/web/sitemap.xml
+
+          User-agent: GPTBot
+          Allow: /
+
+          User-agent: ClaudeBot
+          Allow: /
+
+          User-agent: PerplexityBot
+          Allow: /
+
+          User-agent: Google-Extended
+          Allow: /
           ROBOTS
 
       # sitemap.xml
@@ -51,11 +63,31 @@ jobs:
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
               <loc>https://toresaku-app.github.io/web/</loc>
+              <lastmod>2026-04-21</lastmod>
               <changefreq>monthly</changefreq>
               <priority>1.0</priority>
             </url>
           </urlset>
           SITEMAP
+
+      # llms.txt for AI crawlers
+      - name: Create llms.txt
+        run: |
+          cat > dist/llms.txt << 'LLMS'
+          # トレさく - 自主トレ指導書作成アプリ
+
+          > 理学療法士が患者向けの自主トレーニング指導書（HEP）を簡単に作成・PDF出力できる無料Webアプリ。
+
+          ## 主な機能
+          - 22種類以上の運動メニュー（下肢・体幹・上肢）
+          - イラスト付きA4指導書をPDF出力
+          - 回数・セット・保持時間・頻度のカスタマイズ
+          - 完全無料・アカウント不要・オフライン対応
+
+          ## URL
+          - Web版: https://toresaku-app.github.io/web/
+          - プライバシーポリシー: https://toresaku-app.github.io/privacy-policy/
+          LLMS
 
       # SPA fallback: copy index.html to 404.html
       - run: cp dist/index.html dist/404.html
