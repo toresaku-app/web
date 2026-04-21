@@ -4,20 +4,25 @@ import { Platform } from "react-native";
 import { SelectedExercise } from "../types/exercise";
 import { EXERCISES } from "../constants/exercises";
 
+type Orientation = "portrait" | "landscape";
+
 interface HepState {
   selectedExercises: SelectedExercise[];
   sheetPurpose: string;
+  orientation: Orientation;
   addExercise: (exerciseId: string) => void;
   removeExercise: (exerciseId: string) => void;
   updateExercise: (exerciseId: string, updates: Partial<SelectedExercise>) => void;
   reorderExercises: (exercises: SelectedExercise[]) => void;
   setSheetPurpose: (purpose: string) => void;
+  setOrientation: (orientation: Orientation) => void;
   clearAll: () => void;
 }
 
 const storeCreator: StateCreator<HepState> = (set) => ({
   selectedExercises: [],
   sheetPurpose: "",
+  orientation: "portrait" as Orientation,
 
   addExercise: (exerciseId: string) =>
     set((state) => {
@@ -59,7 +64,9 @@ const storeCreator: StateCreator<HepState> = (set) => ({
 
   setSheetPurpose: (purpose: string) => set({ sheetPurpose: purpose }),
 
-  clearAll: () => set({ selectedExercises: [], sheetPurpose: "" }),
+  setOrientation: (orientation: Orientation) => set({ orientation }),
+
+  clearAll: () => set({ selectedExercises: [], sheetPurpose: "", orientation: "portrait" as Orientation }),
 });
 
 const isWeb = Platform.OS === "web";

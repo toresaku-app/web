@@ -37,7 +37,8 @@ function renderPage(
   total: number,
   isLast: boolean,
   imageUri?: string,
-  sheetPurpose?: string
+  sheetPurpose?: string,
+  landscape?: boolean
 ): string {
   const rxCells: string[] = [
     rxCell("回数", String(sel.reps), "回"),
@@ -70,8 +71,7 @@ function renderPage(
     </div>`
       : "";
 
-  return `
-  <section class="page${isLast ? "" : " break"}">
+  const header = `
     <header class="page-header">
       <div>
         <div class="title">自主トレーニング指導書</div>
@@ -79,9 +79,9 @@ function renderPage(
       </div>
       <div class="page-badge">第 ${index} 枚 / 全 ${total} 枚</div>
     </header>
+    ${sheetPurpose ? `<div class="sheet-purpose">目的：${esc(sheetPurpose)}</div>` : ""}`;
 
-    ${sheetPurpose ? `<div class="sheet-purpose">目的：${esc(sheetPurpose)}</div>` : ""}
-
+  const titleBlock = `
     <div class="title-block">
       <div class="tags">
         <span class="tag tag-navy">${esc(ex.posture)}</span>
@@ -89,14 +89,48 @@ function renderPage(
       </div>
       <h1 class="ex-name">${esc(ex.name)}</h1>
       ${sel.purpose ? `<div class="ex-purpose">${esc(sel.purpose)}</div>` : ""}
-    </div>
+    </div>`;
 
+  const illustBlock = `
     <div class="illust">
       ${imageUri ? `<img src="${esc(imageUri)}" alt=""/>` : `<div class="illust-placeholder">${esc(ex.name)}</div>`}
-    </div>
+    </div>`;
 
+  const footer = `
+    <footer class="page-footer">
+      <span>痛みや違和感がある場合は無理をせず中止し、担当の先生にご相談ください</span>
+      <span class="page-num">${index} / ${total} ページ</span>
+    </footer>`;
+
+  if (landscape) {
+    return `
+    <section class="page${isLast ? "" : " break"}">
+      ${header}
+      ${titleBlock}
+      <div class="landscape-body">
+        <div class="landscape-left">${illustBlock}</div>
+        <div class="landscape-right">
+          <div class="rx-strip">${rxCells.join("")}</div>
+          <div class="points">
+            <div class="points-heading">
+              <div class="points-bar"></div>
+              <div class="points-title">やり方のポイント</div>
+            </div>
+            <div class="points-list">${pointsHtml}</div>
+          </div>
+          ${noteHtml}
+        </div>
+      </div>
+      ${footer}
+    </section>`;
+  }
+
+  return `
+  <section class="page${isLast ? "" : " break"}">
+    ${header}
+    ${titleBlock}
+    ${illustBlock}
     <div class="rx-strip">${rxCells.join("")}</div>
-
     <div class="points">
       <div class="points-heading">
         <div class="points-bar"></div>
@@ -104,13 +138,8 @@ function renderPage(
       </div>
       <div class="points-list">${pointsHtml}</div>
     </div>
-
     ${noteHtml}
-
-    <footer class="page-footer">
-      <span>痛みや違和感がある場合は無理をせず中止し、担当の先生にご相談ください</span>
-      <span class="page-num">${index} / ${total} ページ</span>
-    </footer>
+    ${footer}
   </section>`;
 }
 
@@ -238,31 +267,51 @@ export const PDF_STYLE = `
     font-size: 10pt; color: #94A3B8;
   }
   .page-num { color: #475569; font-weight: 500; }
+
+  /* ── Landscape レイアウト ── */
+  .landscape-body {
+    display: flex; gap: 16px; margin-top: 8px;
+  }
+  .landscape-left {
+    flex: 0 0 45%;
+  }
+  .landscape-left .illust {
+    height: 180px; margin-top: 0;
+  }
+  .landscape-right {
+    flex: 1;
+  }
 `;
 
 export function generateHtml(
   selectedExercises: SelectedExercise[],
   imageUris: Record<string, string>,
-  sheetPurpose?: string
+  sheetPurpose?: string,
+  orientation?: "portrait" | "landscape"
 ) {
   const sorted = [...selectedExercises].sort((a, b) => a.order - b.order);
   const total = sorted.length;
   const purpose = sheetPurpose?.trim() || undefined;
+  const isLandscape = orientation === "landscape";
 
   const pages = sorted
     .map((sel, i) => {
       const ex = EXERCISES.find((e) => e.id === sel.exerciseId);
       if (!ex) return "";
-      return renderPage(sel, ex, i + 1, total, i === sorted.length - 1, imageUris[sel.exerciseId], purpose);
+      return renderPage(sel, ex, i + 1, total, i === sorted.length - 1, imageUris[sel.exerciseId], purpose, isLandscape);
     })
     .join("\n");
+
+  const pageStyle = isLandscape
+    ? "@page { size: A4 landscape; margin: 10mm; }"
+    : "@page { size: A4; margin: 10mm; }";
 
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8"/>
 <title>自主トレーニング指導書</title>
-<style>${PDF_STYLE}</style>
+<style>${PDF_STYLE.replace("@page { size: A4; margin: 10mm; }", pageStyle)}</style>
 </head>
 <body>
 ${pages}

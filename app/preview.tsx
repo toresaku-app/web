@@ -48,7 +48,7 @@ const FREQUENCY_OPTIONS = [
 
 
 export default function PreviewScreen() {
-  const { selectedExercises, updateExercise, removeExercise, clearAll, sheetPurpose, setSheetPurpose } =
+  const { selectedExercises, updateExercise, removeExercise, clearAll, sheetPurpose, setSheetPurpose, orientation, setOrientation } =
     useHepStore();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
@@ -80,7 +80,7 @@ export default function PreviewScreen() {
           }
         }
       }
-      const html = generateHtml(selectedExercises, imageUris, sheetPurpose);
+      const html = generateHtml(selectedExercises, imageUris, sheetPurpose, orientation);
       const { uri } = await printToFileAsync({ html });
       fileUri = uri;
       setIsExporting(false);
@@ -223,6 +223,25 @@ export default function PreviewScreen() {
 
       {/* 下部CTA */}
       <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-3">
+        {/* 印刷方向トグル */}
+        <View className="mb-2 flex-row items-center justify-center gap-2">
+          <Pressable
+            onPress={() => setOrientation("portrait")}
+            className={`rounded-lg px-4 py-1.5 ${orientation === "portrait" ? "bg-navy" : "border border-line bg-card"}`}
+          >
+            <Text className={`text-[13px] font-semibold ${orientation === "portrait" ? "text-white" : "text-ink2"}`}>
+              縦向き
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setOrientation("landscape")}
+            className={`rounded-lg px-4 py-1.5 ${orientation === "landscape" ? "bg-navy" : "border border-line bg-card"}`}
+          >
+            <Text className={`text-[13px] font-semibold ${orientation === "landscape" ? "text-white" : "text-ink2"}`}>
+              横向き
+            </Text>
+          </Pressable>
+        </View>
         <Pressable
           onPress={handleExport}
           disabled={isExporting}
