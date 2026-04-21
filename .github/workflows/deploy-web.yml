@@ -29,8 +29,33 @@ jobs:
 
       - run: npx expo export --platform web
 
-      # Google Search Console verification
-      - run: sed -i 's|</head>|<meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" /></head>|' dist/index.html
+      # SEO + OGP + Google Search Console
+      - name: Inject SEO meta tags
+        run: |
+          sed -i 's|</head>|<meta name="description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで、回数・セットを設定して、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要。" />\n<meta name="keywords" content="自主トレ,指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく" />\n<meta property="og:title" content="トレさく - 自主トレ指導書をサクッと作成" />\n<meta property="og:description" content="理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。" />\n<meta property="og:type" content="website" />\n<meta property="og:url" content="https://toresaku-app.github.io/web/" />\n<meta property="og:locale" content="ja_JP" />\n<meta name="twitter:card" content="summary" />\n<meta name="twitter:title" content="トレさく - 自主トレ指導書をサクッと作成" />\n<meta name="twitter:description" content="理学療法士のための自主トレ指導書作成アプリ。完全無料・アカウント不要。" />\n<meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" />\n</head>|' dist/index.html
+
+      # robots.txt
+      - name: Create robots.txt
+        run: |
+          cat > dist/robots.txt << 'ROBOTS'
+          User-agent: *
+          Allow: /
+          Sitemap: https://toresaku-app.github.io/web/sitemap.xml
+          ROBOTS
+
+      # sitemap.xml
+      - name: Create sitemap.xml
+        run: |
+          cat > dist/sitemap.xml << 'SITEMAP'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <url>
+              <loc>https://toresaku-app.github.io/web/</loc>
+              <changefreq>monthly</changefreq>
+              <priority>1.0</priority>
+            </url>
+          </urlset>
+          SITEMAP
 
       # SPA fallback: copy index.html to 404.html
       - run: cp dist/index.html dist/404.html
