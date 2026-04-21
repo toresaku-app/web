@@ -45,7 +45,7 @@ export function ExerciseCard({ exercise, isSelected, onToggle }: Props) {
             <Text className="text-[15px] font-bold leading-tight text-ink">
               {exercise.name}
             </Text>
-            <Text className="mt-0.5 text-[11.5px] text-ink3">
+            <Text className="mt-0.5 text-[13px] text-ink3">
               {exercise.nameEn}
             </Text>
           </View>
@@ -88,7 +88,7 @@ function Pill({
 
   return (
     <View className={`rounded-md px-2 py-0.5 ${styles[tone]}`}>
-      <Text className={`text-[11.5px] font-semibold ${tone === "neutral" ? "text-ink2" : tone === "navy" ? "text-navy" : "text-teal"}`}>
+      <Text className={`text-[13px] font-semibold ${tone === "neutral" ? "text-ink2" : tone === "navy" ? "text-navy" : "text-teal"}`}>
         {label}
       </Text>
     </View>

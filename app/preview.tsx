@@ -159,7 +159,7 @@ export default function PreviewScreen() {
         <View className="mb-3 flex-row items-center justify-between">
           <View className="flex-row items-center gap-2">
             <View className="rounded-md bg-[#EEF2F9] px-2 py-0.5">
-              <Text className="text-[11.5px] font-semibold text-navy">
+              <Text className="text-[13px] font-semibold text-navy">
                 {selectedExercises.length}種目
               </Text>
             </View>
@@ -171,7 +171,7 @@ export default function PreviewScreen() {
 
         {/* 指導書の目的 */}
         <View className="mb-3">
-          <Text className="mb-1.5 text-[11px] font-semibold tracking-widest text-ink3">
+          <Text className="mb-1.5 text-[13px] font-semibold tracking-widest text-ink3">
             指導書の目的（任意）
           </Text>
           <TextInput
@@ -244,7 +244,7 @@ export default function PreviewScreen() {
             PDFを出力・共有
           </Text>
         </Pressable>
-        <Text className="mt-2 text-center text-[11px] text-ink3">
+        <Text className="mt-2 text-center text-[13px] text-ink3">
           端末内で完結 · クラウド送信なし
         </Text>
       </View>
@@ -307,7 +307,7 @@ function ExerciseEditCard({
       >
         <View className="w-6 items-center gap-1.5 pt-1">
           <View className="h-[22px] w-[22px] items-center justify-center rounded-md bg-[#EEF2F9]">
-            <Text className="text-[11px] font-bold text-navy">
+            <Text className="text-[12px] font-bold text-navy">
               {String(index).padStart(2, "0")}
             </Text>
           </View>
@@ -327,17 +327,17 @@ function ExerciseEditCard({
           <Text className="text-[14.5px] font-bold leading-tight text-ink">
             {exerciseName}
           </Text>
-          <Text className="mt-0.5 text-[11px] text-ink3">
+          <Text className="mt-0.5 text-[13px] text-ink3">
             {exerciseNameEn}
           </Text>
           <View className="mt-1.5 flex-row gap-1">
             <View className="rounded-md bg-[#EEF2F9] px-2 py-0.5">
-              <Text className="text-[11.5px] font-semibold text-navy">
+              <Text className="text-[13px] font-semibold text-navy">
                 {posture}
               </Text>
             </View>
             <View className="rounded-md bg-teal-soft px-2 py-0.5">
-              <Text className="text-[11.5px] font-semibold text-teal">
+              <Text className="text-[13px] font-semibold text-teal">
                 {target}
               </Text>
             </View>
@@ -390,7 +390,7 @@ function ExerciseEditCard({
         <View className="border-t border-line p-3.5">
           {/* この運動の目的 */}
           <View className="mb-3.5">
-            <Text className="mb-2 text-[11px] font-semibold tracking-widest text-ink3">
+            <Text className="mb-2 text-[13px] font-semibold tracking-widest text-ink3">
               この運動の目的（任意）
             </Text>
             <TextInput
@@ -407,7 +407,7 @@ function ExerciseEditCard({
 
           {/* 頻度 */}
           <View className="mb-3.5">
-            <Text className="mb-2 text-[11px] font-semibold tracking-widest text-ink3">
+            <Text className="mb-2 text-[13px] font-semibold tracking-widest text-ink3">
               実施頻度
             </Text>
             <View className="flex-row flex-wrap gap-1.5">
@@ -457,18 +457,18 @@ function ExerciseEditCard({
 
           {/* ポイント */}
           <View className="mb-3.5">
-            <Text className="mb-2 text-[11px] font-semibold tracking-widest text-ink3">
+            <Text className="mb-2 text-[13px] font-semibold tracking-widest text-ink3">
               実施ポイント
             </Text>
             <View className="rounded-[10px] border border-line bg-[#FAFBFD] p-3">
               {keyPoints.map((kp, i) => (
                 <View key={i} className={`flex-row gap-2 ${i > 0 ? "mt-2" : ""}`}>
                   <View className="mt-0.5 h-[18px] w-[18px] items-center justify-center rounded-[5px] bg-[#EEF2F9]">
-                    <Text className="text-[10px] font-bold text-navy">
+                    <Text className="text-[12px] font-bold text-navy">
                       {i + 1}
                     </Text>
                   </View>
-                  <Text className="flex-1 text-[12.5px] leading-5 text-ink">
+                  <Text className="flex-1 text-[14px] leading-5 text-ink">
                     {kp}
                   </Text>
                 </View>
@@ -478,13 +478,13 @@ function ExerciseEditCard({
 
           {/* 注意メモ */}
           <View ref={noteRef}>
-            <Text className="mb-2 text-[11px] font-semibold tracking-widest text-ink3">
+            <Text className="mb-2 text-[13px] font-semibold tracking-widest text-ink3">
               患者への注意
             </Text>
             <View className="flex-row overflow-hidden rounded-[10px] border border-[#F5D2D2] bg-warn-soft">
               <View className="w-1 bg-warn" />
               <TextInput
-                className="flex-1 px-3 py-2.5 text-[12.5px] text-[#7F1D1D]"
+                className="flex-1 px-3 py-2.5 text-[14px] text-[#7F1D1D]"
                 placeholder="注意点を入力..."
                 placeholderTextColor="#94A3B8"
                 value={sel.notes}
@@ -552,7 +552,7 @@ function ParamCell({
 }) {
   return (
     <View className="flex-1 items-center rounded-[10px] border border-line bg-card px-1 py-2">
-      <Text className="text-[10px] font-semibold tracking-wide text-ink3">
+      <Text className="text-[12px] font-semibold tracking-wide text-ink3">
         {label}
       </Text>
       <Text className="mt-1 text-xl font-bold text-ink">

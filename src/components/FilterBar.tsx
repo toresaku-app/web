@@ -10,7 +10,7 @@ interface Props<T extends string = string> {
 export function FilterBar<T extends string>({ label, filters, selected, onSelect }: Props<T>) {
   return (
     <View className="px-5 py-1">
-      <Text className="mb-1.5 text-[10px] font-semibold tracking-widest text-ink3">
+      <Text className="mb-1.5 text-[12px] font-semibold tracking-widest text-ink3">
         {label}
       </Text>
       <ScrollView
