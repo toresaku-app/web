@@ -7,8 +7,8 @@
 - [x] keywords メタタグ（拡充済み）
 - [x] OGPタグ（og:title, og:description, og:type, og:url, og:locale, og:site_name）
 - [x] `<html lang="ja">` の設定（+html.tsx）
-- [ ] og:image 用画像作成（1200×630px）→ SNSシェア時の見栄え
-- [ ] twitter:image 用画像作成（1200×600px）
+- [x] og:image 用画像作成（1200×630px）→ SNSシェア時の見栄え
+- [x] twitter:image 用画像作成（1200×600px）
 - [x] twitter:card を `summary_large_image` に変更
 - [x] canonical URL の設定
 
@@ -19,9 +19,9 @@
 ## 7-2. 構造化データ（JSON-LD）
 
 - [x] SoftwareApplication スキーマ追加（アプリ情報、無料、カテゴリ）
-- [ ] Organization スキーマ追加（開発者情報）
+- [x] Organization スキーマ追加（開発者情報）
 - [x] FAQPage スキーマ追加（4つのQ&A）
-- [ ] BreadcrumbList スキーマ追加
+- [x] BreadcrumbList スキーマ追加
 
 ## 7-3. robots.txt / sitemap.xml / llms.txt
 
