@@ -54,7 +54,7 @@
 - [x] イラスト画像をWebPに変換（5.4MB→644KB、88%削減）
 - [ ] LCP画像のpreload設定
 - [ ] 非LCP画像のlazy loading
-- [ ] Lighthouse スコア確認（目標: Performance 90+）
+- [x] Lighthouse スコア確認（目標: Performance 90+）
 
 ## 7-7. 日本語SEO・E-E-A-T
 
