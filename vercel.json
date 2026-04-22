@@ -6,6 +6,7 @@
     { "source": "/web/_expo/:path*", "destination": "/_expo/:path*" },
     { "source": "/web/assets/:path*", "destination": "/assets/:path*" },
     { "source": "/web/manifest.json", "destination": "/manifest.json" },
+    { "source": "/web/lp.html", "destination": "/lp.html" },
     { "source": "/web/(.*)", "destination": "/index.html" },
     { "source": "/web", "destination": "/index.html" }
   ],

@@ -37,6 +37,8 @@ jobs:
           cp assets/icon-192.png dist/assets/icon-192.png
           cp assets/icon-512.png dist/assets/icon-512.png
           cp assets/og-image.png dist/assets/og-image.png
+          mkdir -p dist/assets/lp
+          cp assets/lp/*.webp dist/assets/lp/
 
       # SEO meta tags + OGP + structured data
       - name: Inject SEO meta tags and structured data
@@ -103,7 +105,7 @@ jobs:
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
               <loc>https://toresaku-app.github.io/web/</loc>
-              <lastmod>2026-04-22</lastmod>
+              <lastmod>2026-04-23</lastmod>
               <changefreq>monthly</changefreq>
               <priority>1.0</priority>
             </url>
@@ -129,21 +131,19 @@ jobs:
           - プライバシーポリシー: https://toresaku-app.github.io/privacy-policy/
           LLMS
 
-      # Landing page for SEO (static HTML visible to crawlers)
-      - name: Create landing page
+      # Landing page is in public/lp.html (copied by expo export)
+      - name: Verify landing page
+        run: test -f dist/lp.html && echo "LP OK" || cp public/lp.html dist/lp.html
+
+      - name: Skip old LP block
+        if: false
         run: |
-          cat > dist/lp.html << 'LPEOF'
-          <!DOCTYPE html>
-          <html lang="ja">
-          <head>
-          <meta charset="utf-8"/>
-          <meta name="viewport" content="width=device-width, initial-scale=1"/>
-          <title>トレさく | 自主トレ指導書をサクッと作成 - 理学療法士向け無料アプリ</title>
-          <meta name="description" content="理学療法士のための自主トレ指導書作成アプリ。22種類以上の運動メニューから選んで、回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要・オフライン対応。"/>
-          <meta name="keywords" content="自主トレ指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく,自主トレ指導書作成,リハビリ運動イラスト,患者教育ツール,膝OA,腰痛,脳卒中"/>
+          cat /dev/null << 'LPEOF'
+          SKIP
+          <meta name="keywords" content="自主トレ指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく,自主トレ指導書作成,リハビリ運動イラスト,患者教育ツール,介護,看護"/>
           <link rel="canonical" href="https://toresaku-app.github.io/web/lp.html"/>
           <meta property="og:title" content="トレさく | 自主トレ指導書をサクッと作成"/>
-          <meta property="og:description" content="理学療法士のための自主トレ指導書作成アプリ。完全無料・アカウント不要。"/>
+          <meta property="og:description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。完全無料・アカウント不要。"/>
           <meta property="og:type" content="website"/>
           <meta property="og:url" content="https://toresaku-app.github.io/web/lp.html"/>
           <meta property="og:locale" content="ja_JP"/>
@@ -154,180 +154,348 @@ jobs:
           <meta property="og:image:alt" content="トレさく - 自主トレ指導書をサクッと作成"/>
           <meta name="twitter:card" content="summary_large_image"/>
           <meta name="twitter:title" content="トレさく | 自主トレ指導書をサクッと作成"/>
-          <meta name="twitter:description" content="理学療法士のための自主トレ指導書作成アプリ。完全無料・アカウント不要。"/>
+          <meta name="twitter:description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。完全無料・アカウント不要。"/>
           <meta name="twitter:image" content="https://toresaku-app.github.io/web/assets/og-image.png"/>
-          <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"理学療法士のための自主トレ指導書作成アプリ","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
-          <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"理学療法士が自主トレーニング指導書を簡単に作成できる無料アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレを中心に22種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"iPhone（iOS）アプリとしてApp Storeで配信中。Web版はPC・スマホのブラウザからもご利用いただけます。"}}]}</script>
-          <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"トレさく","url":"https://toresaku-app.github.io/web/","logo":"https://toresaku-app.github.io/web/assets/icon-512.png","description":"理学療法士のための自主トレ指導書作成アプリ","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"toresaku.app@gmail.com"}}</script>
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"医療・介護の現場で使える自主トレ指導書作成アプリ","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレ・ストレッチを中心に22種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワットなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"Web版はPC・スマホのブラウザからご利用いただけます。iOSアプリも準備中です。"}}]}</script>
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"トレさく","url":"https://toresaku-app.github.io/web/","logo":"https://toresaku-app.github.io/web/assets/icon-512.png","description":"医療・介護の現場で使える自主トレ指導書作成アプリ","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"toresaku.app@gmail.com"}}</script>
           <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://toresaku-app.github.io/web/"},{"@type":"ListItem","position":2,"name":"ランディングページ","item":"https://toresaku-app.github.io/web/lp.html"}]}</script>
+          <link rel="preconnect" href="https://fonts.googleapis.com"/>
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+          <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet"/>
           <style>
           *{box-sizing:border-box;margin:0;padding:0}
-          body{font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;color:#0F172A;line-height:1.7}
-          .hero{background:#0B2545;color:#fff;padding:60px 20px;text-align:center}
-          .hero h1{font-size:28px;margin-bottom:8px}
-          .hero p{font-size:16px;color:#94A3B8;margin-bottom:24px}
-          .hero .cta{display:inline-block;background:#0EA5E9;color:#fff;padding:14px 32px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px}
-          .section{max-width:800px;margin:0 auto;padding:48px 20px}
-          .section h2{font-size:22px;font-weight:700;color:#0B2545;margin-bottom:20px;border-left:4px solid #0B2545;padding-left:12px}
-          .steps{display:flex;flex-direction:column;gap:20px}
-          .step{display:flex;gap:16px;align-items:flex-start}
-          .step-num{width:36px;height:36px;border-radius:50%;background:#0B2545;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
-          .step-body h3{font-size:16px;font-weight:700;margin-bottom:4px}
-          .step-body p{font-size:14px;color:#475569}
-          .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
-          .feature{background:#F7F9FC;border:1px solid #E6EAF0;border-radius:12px;padding:20px;text-align:center}
-          .feature .icon{font-size:32px;margin-bottom:8px}
-          .feature h3{font-size:15px;font-weight:700;margin-bottom:4px}
-          .feature p{font-size:13px;color:#475569}
-          .faq{display:flex;flex-direction:column;gap:16px}
-          .faq-item{border:1px solid #E6EAF0;border-radius:10px;padding:16px 20px}
-          .faq-item h3{font-size:15px;font-weight:700;color:#0B2545;margin-bottom:6px}
-          .faq-item p{font-size:14px;color:#475569}
-          .footer{background:#F1F5F9;padding:32px 20px;text-align:center;font-size:12px;color:#94A3B8}
-          .footer a{color:#0B2545;text-decoration:none}
-          .disclaimer{max-width:800px;margin:0 auto;padding:24px 20px;font-size:12px;color:#94A3B8;border-top:1px solid #E6EAF0}
+          body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;color:#1E293B;line-height:1.8;-webkit-font-smoothing:antialiased}
+          img{max-width:100%;height:auto;display:block}
+
+          /* ── Header ── */
+          .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,37,69,.95);backdrop-filter:blur(8px);padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
+          .header-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+          .header-logo-icon{width:28px;height:28px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#0B2545}
+          .header-logo-text{color:#fff;font-size:15px;font-weight:700;letter-spacing:1px}
+          .header-cta{background:#0EA5E9;color:#fff;padding:8px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;transition:background .2s}
+          .header-cta:hover{background:#0284C7}
+
+          /* ── Hero ── */
+          .hero{background:#0B2545;color:#fff;padding:100px 20px 0;text-align:center;overflow:hidden;position:relative}
+          .hero-inner{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+          .hero-catch{font-size:36px;font-weight:900;line-height:1.4;letter-spacing:1px}
+          .hero-catch span{color:#38BDF8}
+          .hero-sub{font-size:16px;color:#94A3B8;margin-top:12px;font-weight:400}
+          .hero-cta{display:inline-block;background:#0EA5E9;color:#fff;padding:16px 40px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;margin-top:28px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(14,165,233,.4)}
+          .hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(14,165,233,.5)}
+          .hero-badges{margin-top:16px;font-size:13px;color:#64748B;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+          .hero-badges span::before{content:"";display:inline-block;width:6px;height:6px;background:#22C55E;border-radius:50%;margin-right:6px;vertical-align:middle}
+          .hero-visual{margin-top:40px;display:flex;align-items:flex-end;justify-content:center;gap:24px;max-width:900px}
+          .hero-people{width:100%;max-width:600px;border-radius:0}
+          .hero-screens{display:flex;gap:12px;position:relative}
+          .hero-screen{width:180px;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.3);border:2px solid rgba(255,255,255,.1)}
+
+          /* ── Section common ── */
+          .section{max-width:900px;margin:0 auto;padding:80px 20px}
+          .section-label{font-size:13px;font-weight:700;color:#0EA5E9;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;text-align:center}
+          .section-title{font-size:28px;font-weight:900;color:#0B2545;text-align:center;margin-bottom:12px;line-height:1.4}
+          .section-desc{font-size:15px;color:#64748B;text-align:center;margin-bottom:48px;max-width:600px;margin-left:auto;margin-right:auto}
+
+          /* ── Steps ── */
+          .steps-bg{background:#F8FAFC}
+          .steps-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+          .steps-list{display:flex;flex-direction:column;gap:24px}
+          .step{display:flex;gap:16px;align-items:flex-start;padding:16px;border-radius:12px;transition:background .2s;cursor:default}
+          .step:hover,.step.active{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+          .step-num{width:36px;height:36px;border-radius:10px;background:#0B2545;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0}
+          .step-body h3{font-size:16px;font-weight:700;color:#0B2545;margin-bottom:2px}
+          .step-body p{font-size:13px;color:#64748B;line-height:1.6}
+          .steps-phone{display:flex;justify-content:center}
+          .steps-phone img{max-width:280px;border-radius:20px;box-shadow:0 12px 48px rgba(0,0,0,.12);border:1px solid #E2E8F0}
+
+          /* ── Features ── */
+          .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+          .feature{background:#fff;border:1px solid #E2E8F0;border-radius:16px;padding:28px 20px;text-align:center;transition:box-shadow .2s,transform .2s}
+          .feature:hover{box-shadow:0 8px 24px rgba(0,0,0,.06);transform:translateY(-2px)}
+          .feature-icon{width:48px;height:48px;border-radius:12px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:22px}
+          .feature-icon.blue{background:#EFF6FF;color:#2563EB}
+          .feature-icon.green{background:#ECFDF5;color:#059669}
+          .feature-icon.purple{background:#F5F3FF;color:#7C3AED}
+          .feature-icon.red{background:#FEF2F2;color:#DC2626}
+          .feature-icon.teal{background:#F0FDFA;color:#0D9488}
+          .feature-icon.amber{background:#FFFBEB;color:#D97706}
+          .feature h3{font-size:15px;font-weight:700;color:#0B2545;margin-bottom:4px}
+          .feature p{font-size:13px;color:#64748B;line-height:1.5}
+
+          /* ── Scenes ── */
+          .scenes-bg{background:#F8FAFC}
+          .scenes{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+          .scene{border-radius:16px;overflow:hidden;background:#fff;border:1px solid #E2E8F0;transition:box-shadow .2s,transform .2s}
+          .scene:hover{box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(-2px)}
+          .scene img{width:100%;height:180px;object-fit:cover}
+          .scene-body{padding:16px 20px}
+          .scene-body h3{font-size:15px;font-weight:700;color:#0B2545;margin-bottom:4px}
+          .scene-body p{font-size:13px;color:#64748B;line-height:1.6}
+
+          /* ── Supervision ── */
+          .supervision{max-width:900px;margin:0 auto;padding:0 20px 80px}
+          .supervision-card{background:linear-gradient(135deg,#EFF6FF,#F0FDFA);border:1px solid #BFDBFE;border-radius:16px;padding:32px;display:flex;gap:24px;align-items:center}
+          .supervision-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.1);flex-shrink:0}
+          .supervision-body h3{font-size:17px;font-weight:700;color:#0B2545;margin-bottom:4px}
+          .supervision-body p{font-size:13px;color:#475569;line-height:1.7}
+
+          /* ── FAQ ── */
+          .faq{display:flex;flex-direction:column;gap:12px;max-width:700px;margin:0 auto}
+          .faq-item{border:1px solid #E2E8F0;border-radius:12px;overflow:hidden}
+          .faq-q{padding:16px 20px;font-size:15px;font-weight:700;color:#0B2545;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#fff;transition:background .2s}
+          .faq-q:hover{background:#F8FAFC}
+          .faq-q::after{content:"+";font-size:20px;color:#94A3B8;font-weight:400;transition:transform .2s}
+          .faq-item.open .faq-q::after{transform:rotate(45deg)}
+          .faq-a{padding:0 20px 16px;font-size:14px;color:#64748B;line-height:1.7;display:none}
+          .faq-item.open .faq-a{display:block}
+
+          /* ── Final CTA ── */
+          .final-cta{background:#0B2545;color:#fff;padding:64px 20px;text-align:center}
+          .final-cta h2{font-size:24px;font-weight:900;margin-bottom:8px}
+          .final-cta p{font-size:14px;color:#94A3B8;margin-bottom:24px}
+          .final-cta a{display:inline-block;background:#0EA5E9;color:#fff;padding:16px 48px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;box-shadow:0 4px 20px rgba(14,165,233,.4);transition:transform .2s}
+          .final-cta a:hover{transform:translateY(-2px)}
+
+          /* ── Footer ── */
+          .footer{background:#0F172A;color:#94A3B8;padding:32px 20px;text-align:center;font-size:12px}
+          .footer-logo{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}
+          .footer-logo-icon{width:24px;height:24px;background:#1E293B;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff}
+          .footer-logo-text{color:#CBD5E1;font-size:14px;font-weight:700}
+          .footer a{color:#94A3B8;text-decoration:none;transition:color .2s}
+          .footer a:hover{color:#fff}
+          .footer-links{display:flex;gap:20px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+          .disclaimer{font-size:11px;color:#64748B;max-width:700px;margin:8px auto 0;line-height:1.6}
+
+          /* ── Responsive ── */
+          @media(max-width:768px){
+            .hero-catch{font-size:26px}
+            .hero-visual{flex-direction:column;align-items:center;gap:16px}
+            .hero-screens{justify-content:center}
+            .hero-screen{width:140px}
+            .steps-grid{grid-template-columns:1fr}
+            .features{grid-template-columns:1fr 1fr}
+            .scenes{grid-template-columns:1fr}
+            .scene img{height:200px}
+            .supervision-card{flex-direction:column;text-align:center}
+            .section{padding:60px 16px}
+          }
+          @media(max-width:480px){
+            .hero-catch{font-size:22px}
+            .features{grid-template-columns:1fr}
+            .hero-screen{width:120px}
+          }
           </style>
           </head>
           <body>
-          <div class="hero">
-            <h1>トレさく</h1>
-            <p>自主トレ指導書を、サクッと作成</p>
-            <p style="font-size:14px;color:#CBD5E1;margin-bottom:24px">理学療法士のための指導書作成アプリ — 完全無料</p>
-            <a href="/web/" class="cta">今すぐ使ってみる</a>
+          <!-- Header -->
+          <div class="header">
+            <a href="/web/lp.html" class="header-logo">
+              <div class="header-logo-icon">ト</div>
+              <span class="header-logo-text">トレさく</span>
+            </a>
+            <a href="/web/" class="header-cta">今すぐ使う</a>
           </div>
 
-          <div class="section">
-            <h2>たった3ステップで完成</h2>
-            <div class="steps">
-              <div class="step">
-                <div class="step-num">1</div>
-                <div class="step-body">
-                  <h3>運動を選ぶ</h3>
-                  <p>22種類以上の運動メニューから、部位・姿勢でフィルタして必要な運動を選択。パテラセッティング、SLR、ブリッジ、スクワットなど臨床で頻用される運動を収録。</p>
+          <!-- Hero -->
+          <div class="hero">
+            <div class="hero-inner">
+              <h1 class="hero-catch">自主トレ指導書を、<br/><span>サクッと</span>作成</h1>
+              <p class="hero-sub">医療・介護の現場で使える指導書作成アプリ</p>
+              <a href="/web/" class="hero-cta">無料で今すぐ使ってみる</a>
+              <div class="hero-badges">
+                <span>完全無料</span>
+                <span>アカウント不要</span>
+                <span>オフライン対応</span>
+              </div>
+              <div class="hero-visual">
+                <div class="hero-screens">
+                  <img class="hero-screen" src="/web/assets/lp/app-library.webp" alt="運動選択画面" loading="eager"/>
+                  <img class="hero-screen" src="/web/assets/lp/app-preview.webp" alt="パラメータ調整画面" loading="eager"/>
                 </div>
               </div>
-              <div class="step">
-                <div class="step-num">2</div>
-                <div class="step-body">
-                  <h3>回数・セットを調整</h3>
-                  <p>回数、セット数、保持時間、実施頻度を患者さんに合わせてカスタマイズ。注意事項も自由に入力できます。</p>
+            </div>
+            <img class="hero-people" src="/web/assets/lp/hero-people.webp" alt="医療・介護の専門職" loading="eager" style="margin:40px auto 0;max-width:700px"/>
+          </div>
+
+          <!-- 3 Steps -->
+          <div class="steps-bg">
+            <div class="section">
+              <div class="section-label">How it works</div>
+              <h2 class="section-title">たった3ステップで完成</h2>
+              <p class="section-desc">運動を選んで、パラメータを設定、PDFを出力。最短3分で指導書が完成します。</p>
+              <div class="steps-grid">
+                <div class="steps-list">
+                  <div class="step active">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                      <h3>運動を選ぶ</h3>
+                      <p>部位・姿勢・種類でフィルタして、必要な運動をタップで選択。イラスト付きで直感的に選べます。</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                      <h3>回数・セットを調整</h3>
+                      <p>回数、セット数、保持時間、休息時間、頻度を患者さんに合わせてカスタマイズ。</p>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                      <h3>PDFを出力・共有</h3>
+                      <p>イラスト付きA4指導書をPDF出力。印刷してそのまま患者さんに渡せます。</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="step">
-                <div class="step-num">3</div>
-                <div class="step-body">
-                  <h3>PDFを出力・共有</h3>
-                  <p>イラスト付きA4指導書をPDF出力。印刷してそのまま患者さんに渡せます。LINE・メールでの共有も可能。</p>
+                <div class="steps-phone">
+                  <img src="/web/assets/lp/app-library.webp" alt="運動選択画面" loading="lazy"/>
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- Features -->
           <div class="section">
-            <h2>特徴</h2>
+            <div class="section-label">Features</div>
+            <h2 class="section-title">トレさくの特徴</h2>
+            <p class="section-desc">現場の「あったらいいな」を形にしました</p>
             <div class="features">
               <div class="feature">
-                <div class="icon">💰</div>
+                <div class="feature-icon blue"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
                 <h3>完全無料</h3>
-                <p>全機能が無料。広告も表示されません。</p>
+                <p>全機能が無料で使えます。広告も一切表示されません。</p>
               </div>
               <div class="feature">
-                <div class="icon">👤</div>
+                <div class="feature-icon green"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
                 <h3>アカウント不要</h3>
-                <p>登録なしですぐに使い始められます。</p>
+                <p>登録なし、すぐに使い始められます。</p>
               </div>
               <div class="feature">
-                <div class="icon">📴</div>
+                <div class="feature-icon purple"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg></div>
                 <h3>オフライン対応</h3>
                 <p>インターネット接続なしで全機能が使えます。</p>
               </div>
               <div class="feature">
-                <div class="icon">🔒</div>
+                <div class="feature-icon red"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
                 <h3>プライバシー保護</h3>
                 <p>データは端末内のみ。クラウド送信は一切なし。</p>
               </div>
               <div class="feature">
-                <div class="icon">🏥</div>
+                <div class="feature-icon teal"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
                 <h3>22種類以上の運動</h3>
-                <p>下肢・体幹・上肢の筋トレを中心に、臨床で使える運動を収録。</p>
+                <p>下肢・体幹・上肢の筋トレ・ストレッチを収録。</p>
               </div>
               <div class="feature">
-                <div class="icon">🖼️</div>
+                <div class="feature-icon amber"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>
                 <h3>イラスト付き</h3>
-                <p>全運動にわかりやすいイラスト付き。患者さんに渡しやすい指導書に。</p>
+                <p>全運動にわかりやすいイラスト付き。</p>
               </div>
             </div>
           </div>
 
-          <div class="section">
-            <h2>こんな場面で使えます</h2>
-            <div class="faq" style="gap:12px">
-              <div class="faq-item">
-                <h3>🦵 整形外科リハビリ</h3>
-                <p>膝OA術後、大腿骨骨折後の自主トレ指導書作成に。パテラセッティング、SLR、スクワットなど定番メニューを収録。</p>
-              </div>
-              <div class="faq-item">
-                <h3>🧠 脳卒中リハビリ</h3>
-                <p>回復期・維持期の自主トレプログラム作成に。上肢・下肢・バランス訓練を組み合わせた指導書を簡単作成。</p>
-              </div>
-              <div class="faq-item">
-                <h3>🏠 訪問リハビリ</h3>
-                <p>訪問先で患者さんに渡す自主トレメニューを事前に準備。オフラインでも使えるので通信環境を気にせず利用可能。</p>
-              </div>
-              <div class="faq-item">
-                <h3>👴 介護予防</h3>
-                <p>高齢者向けの転倒予防・筋力維持プログラムの指導書作成に。イラスト付きで分かりやすい。</p>
+          <!-- Scenes -->
+          <div class="scenes-bg">
+            <div class="section">
+              <div class="section-label">Use cases</div>
+              <h2 class="section-title">こんな場面で使えます</h2>
+              <p class="section-desc">様々な臨床・現場シーンに対応</p>
+              <div class="scenes">
+                <div class="scene">
+                  <img src="/web/assets/lp/scene-ortho.webp" alt="整形外科リハビリ" loading="lazy"/>
+                  <div class="scene-body">
+                    <h3>整形外科リハビリ</h3>
+                    <p>術後の自主トレ指導書作成に。パテラセッティング、SLR、スクワットなど定番メニューを収録。</p>
+                  </div>
+                </div>
+                <div class="scene">
+                  <img src="/web/assets/lp/scene-stroke.webp" alt="脳卒中リハビリ" loading="lazy"/>
+                  <div class="scene-body">
+                    <h3>脳卒中リハビリ</h3>
+                    <p>回復期・維持期の自主トレプログラム作成に。上肢・下肢・バランス訓練を組み合わせた指導書を簡単作成。</p>
+                  </div>
+                </div>
+                <div class="scene">
+                  <img src="/web/assets/lp/scene-visit.webp" alt="訪問リハビリ" loading="lazy"/>
+                  <div class="scene-body">
+                    <h3>訪問リハビリ・看護</h3>
+                    <p>訪問先で渡す自主トレメニューを事前に準備。オフラインでも使えるので通信環境を気にせず利用可能。</p>
+                  </div>
+                </div>
+                <div class="scene">
+                  <img src="/web/assets/lp/scene-group.webp" alt="介護予防" loading="lazy"/>
+                  <div class="scene-body">
+                    <h3>介護予防・通所</h3>
+                    <p>高齢者向けの転倒予防・筋力維持プログラム作成に。イラスト付きでわかりやすい指導書に。</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
+          <!-- Supervision -->
+          <div class="supervision">
+            <div class="supervision-card">
+              <img class="supervision-img" src="/web/assets/lp/pt-portrait.webp" alt="監修理学療法士"/>
+              <div class="supervision-body">
+                <h3>現役理学療法士が開発・監修</h3>
+                <p>収録されている運動メニュー・指導内容は、臨床経験を持つ現役の理学療法士が開発・監修しています。エビデンスに基づいた運動を厳選し、安全にご利用いただけるよう配慮しています。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ -->
           <div class="section">
-            <h2>よくある質問</h2>
+            <div class="section-label">FAQ</div>
+            <h2 class="section-title">よくある質問</h2>
             <div class="faq">
-              <div class="faq-item">
-                <h3>Q. トレさくとは？</h3>
-                <p>理学療法士が自主トレーニング指導書を簡単に作成できる無料アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。</p>
+              <div class="faq-item open">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">トレさくとは？</div>
+                <div class="faq-a">医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。</div>
               </div>
               <div class="faq-item">
-                <h3>Q. 利用料金はかかりますか？</h3>
-                <p>完全無料です。アカウント登録も不要で、すぐにお使いいただけます。</p>
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">利用料金はかかりますか？</div>
+                <div class="faq-a">完全無料です。アカウント登録も不要で、すぐにお使いいただけます。広告も一切ありません。</div>
               </div>
               <div class="faq-item">
-                <h3>Q. 患者データはどうなりますか？</h3>
-                <p>データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。</p>
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">患者データはどうなりますか？</div>
+                <div class="faq-a">データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。</div>
               </div>
               <div class="faq-item">
-                <h3>Q. どのような運動が収録されていますか？</h3>
-                <p>下肢・体幹・上肢の筋トレを中心に22種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。</p>
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">どのような運動が収録されていますか？</div>
+                <div class="faq-a">下肢・体幹・上肢の筋トレ・ストレッチを中心に22種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。</div>
               </div>
               <div class="faq-item">
-                <h3>Q. オフラインで使えますか？</h3>
-                <p>はい。インターネット接続がなくても全機能をお使いいただけます。</p>
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">オフラインで使えますか？</div>
+                <div class="faq-a">はい。インターネット接続がなくても全機能をお使いいただけます。</div>
               </div>
               <div class="faq-item">
-                <h3>Q. どの端末で使えますか？</h3>
-                <p>iPhone（iOS）アプリとしてApp Storeで配信予定。Web版はPC・スマホのブラウザからもご利用いただけます。</p>
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">どの端末で使えますか？</div>
+                <div class="faq-a">Web版はPC・スマホのブラウザからご利用いただけます。iOSアプリも準備中です。</div>
               </div>
             </div>
           </div>
 
-          <div class="section" style="padding-top:24px;padding-bottom:24px">
-            <div style="background:#EEF2F9;border-radius:12px;padding:20px;display:flex;gap:16px;align-items:center">
-              <div style="font-size:40px;flex-shrink:0">👨‍⚕️</div>
-              <div>
-                <p style="font-size:14px;font-weight:700;color:#0B2545;margin-bottom:4px">現役理学療法士が監修</p>
-                <p style="font-size:13px;color:#475569">収録されている運動メニュー・指導内容は、臨床経験を持つ現役の理学療法士が監修しています。エビデンスに基づいた運動を厳選し、安全にご利用いただけるよう配慮しています。</p>
-              </div>
-            </div>
+          <!-- Final CTA -->
+          <div class="final-cta">
+            <h2>今すぐトレさくを使ってみよう</h2>
+            <p>登録不要・完全無料で、すぐに指導書を作成できます</p>
+            <a href="/web/">無料で始める</a>
           </div>
 
-          <div class="disclaimer">
-            <p>※本アプリは運動指導書の作成・出力ツールであり、疾病の診断・治療・予防を目的とするものではありません。運動内容の判断は医療専門職が行ってください。</p>
-          </div>
-
+          <!-- Footer -->
           <div class="footer">
-            <p><a href="/web/">アプリを使う</a> ・ <a href="https://toresaku-app.github.io/privacy-policy/">プライバシーポリシー</a> ・ <a href="https://toresaku-app.github.io/privacy-policy/terms.html">利用規約</a></p>
-            <p style="margin-top:8px">© 2026 トレさく</p>
+            <div class="footer-logo">
+              <div class="footer-logo-icon">ト</div>
+              <span class="footer-logo-text">トレさく</span>
+            </div>
+            <div class="footer-links">
+              <a href="/web/">アプリを使う</a>
+              <a href="https://toresaku-app.github.io/privacy-policy/">プライバシーポリシー</a>
+              <a href="https://toresaku-app.github.io/privacy-policy/terms.html">利用規約</a>
+            </div>
+            <p class="disclaimer">※本アプリは運動指導書の作成・出力ツールであり、疾病の診断・治療・予防を目的とするものではありません。運動内容の判断は医療専門職が行ってください。</p>
+            <p style="margin-top:12px">&copy; 2026 トレさく</p>
           </div>
           </body>
           </html>
@@ -341,13 +509,13 @@ jobs:
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
               <loc>https://toresaku-app.github.io/web/</loc>
-              <lastmod>2026-04-22</lastmod>
+              <lastmod>2026-04-23</lastmod>
               <changefreq>monthly</changefreq>
               <priority>1.0</priority>
             </url>
             <url>
               <loc>https://toresaku-app.github.io/web/lp.html</loc>
-              <lastmod>2026-04-22</lastmod>
+              <lastmod>2026-04-23</lastmod>
               <changefreq>monthly</changefreq>
               <priority>0.9</priority>
             </url>
