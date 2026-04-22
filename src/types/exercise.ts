@@ -23,6 +23,7 @@ export interface SelectedExercise {
   reps: number;
   sets: number;
   holdSeconds?: number;
+  restSeconds: number;
   frequency: string;
   notes: string;
   purpose: string;

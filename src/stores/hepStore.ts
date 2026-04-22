@@ -37,6 +37,7 @@ const storeCreator: StateCreator<HepState> = (set) => ({
         reps: exercise.defaultReps,
         sets: exercise.defaultSets,
         holdSeconds: exercise.defaultHoldSeconds,
+        restSeconds: 10,
         frequency: "1日2〜3回",
         notes: "",
         purpose: "",

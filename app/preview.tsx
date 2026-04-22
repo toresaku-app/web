@@ -402,6 +402,17 @@ function ExerciseEditCard({
             }
           />
         )}
+        <ParamCell
+          label="休息"
+          value={sel.restSeconds}
+          unit="秒"
+          onIncrement={() =>
+            onUpdate({ restSeconds: sel.restSeconds + 5 })
+          }
+          onDecrement={() =>
+            onUpdate({ restSeconds: Math.max(0, sel.restSeconds - 5) })
+          }
+        />
       </View>
 
       {/* 展開エリア */}

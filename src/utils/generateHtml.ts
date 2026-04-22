@@ -47,6 +47,9 @@ function renderPage(
   if (sel.holdSeconds !== undefined) {
     rxCells.push(rxCell("保持", String(sel.holdSeconds), "秒"));
   }
+  if (sel.restSeconds > 0) {
+    rxCells.push(rxCell("休息", String(sel.restSeconds), "秒"));
+  }
   rxCells.push(rxCellText("頻度", sel.frequency));
 
   const pointsHtml = ex.keyPoints
