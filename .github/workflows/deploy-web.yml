@@ -36,6 +36,7 @@ jobs:
           mkdir -p dist/assets
           cp assets/icon-192.png dist/assets/icon-192.png
           cp assets/icon-512.png dist/assets/icon-512.png
+          cp assets/og-image.png dist/assets/og-image.png
 
       # SEO meta tags + OGP + structured data
       - name: Inject SEO meta tags and structured data
@@ -54,9 +55,14 @@ jobs:
           <meta property="og:url" content="https://toresaku-app.github.io/web/" />
           <meta property="og:locale" content="ja_JP" />
           <meta property="og:site_name" content="トレさく" />
+          <meta property="og:image" content="https://toresaku-app.github.io/web/assets/og-image.png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content="トレさく - 自主トレ指導書をサクッと作成" />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content="トレさく | 自主トレ指導書をサクッと作成" />
           <meta name="twitter:description" content="理学療法士のための自主トレ指導書作成アプリ。完全無料・アカウント不要。" />
+          <meta name="twitter:image" content="https://toresaku-app.github.io/web/assets/og-image.png" />
           <meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" />
           <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
           <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"理学療法士が自主トレーニング指導書を簡単に作成できる無料アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレを中心に22種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"iPhone（iOS）アプリとしてApp Storeで配信予定。Web版はPC・スマホのブラウザからもご利用いただけます。"}}]}</script>
