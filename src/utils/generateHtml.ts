@@ -267,6 +267,67 @@ export const PDF_STYLE = `
   }
   .page-num { color: #475569; font-weight: 500; }
 
+  /* ── 表紙 ── */
+  .cover { padding: 8px 0; }
+  .cover-title-block {
+    text-align: center; padding: 32px 0 16px;
+    border-bottom: 3px solid #0B2545;
+  }
+  .cover-main-title {
+    font-size: 28pt; font-weight: 700; color: #0B2545; line-height: 1.3;
+  }
+  .cover-subtitle {
+    font-size: 13pt; color: #94A3B8; margin-top: 4px; letter-spacing: 2px;
+  }
+  .cover-purpose {
+    margin-top: 16px; padding: 10px 14px;
+    background: #EEF2F9; border-radius: 8px;
+    font-size: 14pt; color: #0B2545; font-weight: 500;
+  }
+  .cover-purpose-label {
+    display: inline-block; background: #0B2545; color: #fff;
+    padding: 2px 8px; border-radius: 4px; font-size: 11pt;
+    font-weight: 700; margin-right: 8px; letter-spacing: 1px;
+  }
+  .cover-date {
+    margin-top: 12px; font-size: 12pt; color: #475569; text-align: right;
+  }
+  .cover-summary { margin-top: 16px; }
+  .cover-summary-title {
+    font-size: 15pt; font-weight: 700; color: #0B2545;
+    padding-left: 10px; border-left: 4px solid #0B2545; margin-bottom: 8px;
+  }
+  .cover-table {
+    width: 100%; border-collapse: collapse; font-size: 11pt;
+  }
+  .cover-th {
+    background: #0B2545; color: #fff; font-weight: 700;
+    padding: 5px 8px; text-align: left; font-size: 10pt;
+    letter-spacing: 0.5px;
+  }
+  .cover-table td {
+    padding: 5px 8px; border-bottom: 1px solid #E6EAF0;
+    font-size: 11pt; color: #0F172A;
+  }
+  .cover-num { text-align: center; font-weight: 700; color: #0B2545; width: 30px; }
+  .cover-name { font-weight: 600; }
+  .cover-target { color: #0F766E; font-size: 10pt; }
+  .cover-rx { font-size: 10pt; white-space: nowrap; }
+  .cover-freq { font-size: 10pt; color: #475569; }
+  .cover-notice {
+    margin-top: 20px; padding: 12px 16px;
+    background: #FBEAEA; border: 1px solid #F5D2D2;
+    border-left: 5px solid #B91C1C; border-radius: 8px;
+  }
+  .cover-notice-title {
+    font-size: 12pt; font-weight: 700; color: #B91C1C;
+    letter-spacing: 1.5px; margin-bottom: 6px;
+  }
+  .cover-notice-list {
+    margin: 0; padding-left: 18px;
+    font-size: 11pt; color: #7F1D1D; line-height: 1.8;
+  }
+
   /* ── 横向き時のコンパクト化 ── */
   .landscape .page-header { padding-bottom: 4px; }
   .landscape .sheet-purpose { margin-top: 3px; padding: 2px 8px; }
@@ -282,6 +343,66 @@ export const PDF_STYLE = `
   .landscape .page-footer { margin-top: 5px; padding-top: 3px; }
 `;
 
+function renderCoverPage(
+  sorted: SelectedExercise[],
+  sheetPurpose?: string,
+): string {
+  const rows = sorted
+    .map((sel, i) => {
+      const ex = EXERCISES.find((e) => e.id === sel.exerciseId);
+      if (!ex) return "";
+      const holdText = sel.holdSeconds !== undefined ? ` × ${sel.holdSeconds}秒保持` : "";
+      const restText = sel.restSeconds > 0 ? `　休息${sel.restSeconds}秒` : "";
+      return `
+      <tr>
+        <td class="cover-num">${i + 1}</td>
+        <td class="cover-name">${esc(ex.name)}</td>
+        <td class="cover-target">${esc(ex.target)}</td>
+        <td class="cover-rx">${sel.reps}回 × ${sel.sets}セット${holdText}${restText}</td>
+        <td class="cover-freq">${esc(sel.frequency)}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `
+  <section class="page break">
+    <div class="cover">
+      <div class="cover-title-block">
+        <div class="cover-main-title">自主トレーニング指導書</div>
+        <div class="cover-subtitle">Home Exercise Program</div>
+      </div>
+      ${sheetPurpose ? `<div class="cover-purpose"><span class="cover-purpose-label">目的</span>${esc(sheetPurpose)}</div>` : ""}
+      <div class="cover-date">発行日：${issueDate()}</div>
+      <div class="cover-summary">
+        <div class="cover-summary-title">プログラム内容（全${sorted.length}種目）</div>
+        <table class="cover-table">
+          <thead>
+            <tr>
+              <th class="cover-th">#</th>
+              <th class="cover-th">運動名</th>
+              <th class="cover-th">ターゲット</th>
+              <th class="cover-th">処方</th>
+              <th class="cover-th">頻度</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="cover-notice">
+        <div class="cover-notice-title">ご注意</div>
+        <ul class="cover-notice-list">
+          <li>痛みや違和感がある場合は無理をせず中止し、担当の先生にご相談ください</li>
+          <li>体調がすぐれない時は運動を控えてください</li>
+          <li>運動の内容や量は担当の先生の指示に従ってください</li>
+        </ul>
+      </div>
+    </div>
+    <footer class="page-footer">
+      <span>トレさく — 自主トレ指導書作成アプリ</span>
+    </footer>
+  </section>`;
+}
+
 export function generateHtml(
   selectedExercises: SelectedExercise[],
   imageUris: Record<string, string>,
@@ -292,6 +413,8 @@ export function generateHtml(
   const total = sorted.length;
   const purpose = sheetPurpose?.trim() || undefined;
   const isLandscape = orientation === "landscape";
+
+  const coverPage = renderCoverPage(sorted, purpose);
 
   const pages = sorted
     .map((sel, i) => {
@@ -313,6 +436,7 @@ export function generateHtml(
 <style>${PDF_STYLE.replace("@page { size: A4; margin: 10mm; }", pageStyle)}</style>
 </head>
 <body>
+${coverPage}
 ${pages}
 </body>
 </html>`;
