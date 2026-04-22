@@ -131,17 +131,15 @@ jobs:
           - プライバシーポリシー: https://toresaku-app.github.io/privacy-policy/
           LLMS
 
-      # Landing page for SEO (static HTML visible to crawlers)
-      - name: Create landing page
+      # Landing page is in public/lp.html (copied by expo export)
+      - name: Verify landing page
+        run: test -f dist/lp.html && echo "LP OK" || cp public/lp.html dist/lp.html
+
+      - name: Skip old LP block
+        if: false
         run: |
-          cat > dist/lp.html << 'LPEOF'
-          <!DOCTYPE html>
-          <html lang="ja">
-          <head>
-          <meta charset="utf-8"/>
-          <meta name="viewport" content="width=device-width, initial-scale=1"/>
-          <title>トレさく | 自主トレ指導書をサクッと作成 — 医療・介護の現場で使える無料アプリ</title>
-          <meta name="description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要・オフライン対応。"/>
+          cat /dev/null << 'LPEOF'
+          SKIP
           <meta name="keywords" content="自主トレ指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく,自主トレ指導書作成,リハビリ運動イラスト,患者教育ツール,介護,看護"/>
           <link rel="canonical" href="https://toresaku-app.github.io/web/lp.html"/>
           <meta property="og:title" content="トレさく | 自主トレ指導書をサクッと作成"/>
