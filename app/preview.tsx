@@ -48,7 +48,7 @@ const FREQUENCY_OPTIONS = [
 
 
 export default function PreviewScreen() {
-  const { selectedExercises, updateExercise, removeExercise, clearAll, sheetPurpose, setSheetPurpose, orientation, setOrientation } =
+  const { selectedExercises, updateExercise, removeExercise, reorderExercises, clearAll, sheetPurpose, setSheetPurpose, orientation, setOrientation } =
     useHepStore();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
@@ -195,7 +195,7 @@ export default function PreviewScreen() {
 
         {[...selectedExercises]
           .sort((a, b) => a.order - b.order)
-          .map((sel, idx) => {
+          .map((sel, idx, sorted) => {
             const ex = EXERCISES.find((e) => e.id === sel.exerciseId);
             if (!ex) return null;
 
@@ -210,11 +210,24 @@ export default function PreviewScreen() {
                 keyPoints={ex.keyPoints}
                 sel={sel}
                 index={idx + 1}
+                total={sorted.length}
                 hasHold={ex.defaultHoldSeconds !== undefined}
                 onUpdate={(updates) =>
                   updateExercise(sel.exerciseId, updates)
                 }
                 onRemove={() => removeExercise(sel.exerciseId)}
+                onMoveUp={() => {
+                  if (idx === 0) return;
+                  const newList = [...sorted];
+                  [newList[idx - 1], newList[idx]] = [newList[idx], newList[idx - 1]];
+                  reorderExercises(newList);
+                }}
+                onMoveDown={() => {
+                  if (idx === sorted.length - 1) return;
+                  const newList = [...sorted];
+                  [newList[idx], newList[idx + 1]] = [newList[idx + 1], newList[idx]];
+                  reorderExercises(newList);
+                }}
                 scrollRef={scrollRef}
               />
             );
@@ -295,9 +308,12 @@ function ExerciseEditCard({
   keyPoints,
   sel,
   index,
+  total,
   hasHold,
   onUpdate,
   onRemove,
+  onMoveUp,
+  onMoveDown,
   scrollRef,
 }: {
   exerciseName: string;
@@ -308,9 +324,12 @@ function ExerciseEditCard({
   keyPoints: string[];
   sel: SelectedExercise;
   index: number;
+  total: number;
   hasHold: boolean;
   onUpdate: (updates: Partial<SelectedExercise>) => void;
   onRemove: () => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
   scrollRef: React.RefObject<ScrollView | null>;
 }) {
   const [expanded, setExpanded] = useState(index === 1);
@@ -324,12 +343,26 @@ function ExerciseEditCard({
         onPress={() => setExpanded(!expanded)}
         className="flex-row gap-3 p-3"
       >
-        <View className="w-6 items-center gap-1.5 pt-1">
+        <View className="w-6 items-center gap-1 pt-0.5">
+          <Pressable
+            onPress={(e) => { e.stopPropagation(); onMoveUp(); }}
+            disabled={index === 1}
+            className={`h-5 w-5 items-center justify-center rounded ${index === 1 ? "opacity-20" : ""}`}
+          >
+            <Text className="text-[10px] font-bold text-ink2">▲</Text>
+          </Pressable>
           <View className="h-[22px] w-[22px] items-center justify-center rounded-md bg-[#EEF2F9]">
             <Text className="text-[12px] font-bold text-navy">
               {String(index).padStart(2, "0")}
             </Text>
           </View>
+          <Pressable
+            onPress={(e) => { e.stopPropagation(); onMoveDown(); }}
+            disabled={index === total}
+            className={`h-5 w-5 items-center justify-center rounded ${index === total ? "opacity-20" : ""}`}
+          >
+            <Text className="text-[10px] font-bold text-ink2">▼</Text>
+          </Pressable>
         </View>
 
         {illustration && (
