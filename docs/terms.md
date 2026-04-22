@@ -47,4 +47,4 @@
 
 ## お問い合わせ
 
-メール: satoryusei0627@icloud.com
+メール: toresaku.app@gmail.com

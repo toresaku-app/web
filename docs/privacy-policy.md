@@ -44,7 +44,7 @@
 
 本プライバシーポリシーに関するお問い合わせは、以下までご連絡ください。
 
-メール: satoryusei0627@icloud.com
+メール: toresaku.app@gmail.com
 
 ## 変更について
 
