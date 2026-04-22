@@ -1,5 +1,5 @@
 export type Posture = "臥位" | "側臥位" | "座位" | "立位" | "四つ這い";
-export type Category = "筋トレ" | "ストレッチ" | "体幹" | "バランス" | "ADL" | "呼吸";
+export type Category = "筋トレ" | "ストレッチ" | "バランス" | "ADL" | "呼吸";
 export type BodyPart = "下肢" | "体幹" | "上肢";
 
 export interface Exercise {

@@ -27,7 +27,6 @@ const POSTURE_FILTERS: ("すべて" | Posture)[] = [
 const CATEGORY_FILTERS: ("すべて" | Category)[] = [
   "すべて",
   "筋トレ",
-  "体幹",
   "ストレッチ",
   "バランス",
 ];
