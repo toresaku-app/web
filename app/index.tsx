@@ -6,7 +6,7 @@ import { EXERCISES } from "../src/constants/exercises";
 import { useHepStore } from "../src/stores/hepStore";
 import { ExerciseCard } from "../src/components/ExerciseCard";
 import { FilterBar } from "../src/components/FilterBar";
-import { BodyPart, Posture } from "../src/types/exercise";
+import { BodyPart, Category, Posture } from "../src/types/exercise";
 
 const BODY_PART_FILTERS: ("すべて" | BodyPart)[] = [
   "すべて",
@@ -24,11 +24,22 @@ const POSTURE_FILTERS: ("すべて" | Posture)[] = [
   "四つ這い",
 ];
 
+const CATEGORY_FILTERS: ("すべて" | Category)[] = [
+  "すべて",
+  "筋トレ",
+  "体幹",
+  "ストレッチ",
+  "バランス",
+];
+
 export default function ExerciseLibrary() {
   const [bodyPartFilter, setBodyPartFilter] = useState<"すべて" | BodyPart>(
     "すべて"
   );
   const [postureFilter, setPostureFilter] = useState<"すべて" | Posture>(
+    "すべて"
+  );
+  const [categoryFilter, setCategoryFilter] = useState<"すべて" | Category>(
     "すべて"
   );
   const [searchText, setSearchText] = useState("");
@@ -41,6 +52,8 @@ export default function ExerciseLibrary() {
         return false;
       if (postureFilter !== "すべて" && e.posture !== postureFilter)
         return false;
+      if (categoryFilter !== "すべて" && e.category !== categoryFilter)
+        return false;
       if (searchText) {
         const q = searchText.toLowerCase();
         return (
@@ -51,7 +64,7 @@ export default function ExerciseLibrary() {
       }
       return true;
     });
-  }, [bodyPartFilter, postureFilter, searchText]);
+  }, [bodyPartFilter, postureFilter, categoryFilter, searchText]);
 
   const selectedIds = new Set(selectedExercises.map((e) => e.exerciseId));
   const selectedCount = selectedExercises.length;
@@ -111,6 +124,12 @@ export default function ExerciseLibrary() {
           filters={POSTURE_FILTERS}
           selected={postureFilter}
           onSelect={setPostureFilter}
+        />
+        <FilterBar
+          label="種類"
+          filters={CATEGORY_FILTERS}
+          selected={categoryFilter}
+          onSelect={setCategoryFilter}
         />
       </View>
 

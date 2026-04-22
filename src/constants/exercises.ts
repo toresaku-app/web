@@ -378,7 +378,7 @@ export const EXERCISES: Exercise[] = [
     nameEn: "Tandem Stance",
     target: "バランス",
     posture: "立位",
-    category: "筋トレ",
+    category: "バランス",
     bodyPart: "下肢",
     defaultReps: 3,
     defaultSets: 2,
