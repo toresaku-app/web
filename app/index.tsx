@@ -81,6 +81,18 @@ export default function ExerciseLibrary() {
               トレさく
             </Text>
           </View>
+          <Pressable
+            onPress={() =>
+              Linking.openURL(
+                "https://docs.google.com/forms/d/e/1FAIpQLSdnlPwtqKpPcYBHKTdR4XfThPmxwbd3qjPAj3PTih2LD9LhxQ/viewform"
+              )
+            }
+            accessibilityRole="button"
+            accessibilityLabel="ご意見・ご要望を送る"
+            className="rounded-lg border border-line px-2.5 py-1"
+          >
+            <Text className="text-[12px] text-ink3">ご意見</Text>
+          </Pressable>
         </View>
         <View className="px-5 pb-3.5 pt-1.5">
           <Text className="text-[26px] font-bold tracking-tight text-ink">
@@ -162,27 +174,43 @@ export default function ExerciseLibrary() {
           />
         )}
         ListFooterComponent={
-          <View className="mt-4 flex-row justify-center gap-4 pb-4">
+          <View className="mt-4 items-center pb-4">
             <Pressable
               onPress={() =>
                 Linking.openURL(
-                  "https://toresaku-app.github.io/privacy-policy/"
+                  "https://docs.google.com/forms/d/e/1FAIpQLSdnlPwtqKpPcYBHKTdR4XfThPmxwbd3qjPAj3PTih2LD9LhxQ/viewform"
                 )
               }
+              accessibilityRole="button"
+              accessibilityLabel="ご意見・ご要望を送る"
+              className="mb-3 rounded-lg border border-line bg-card px-4 py-2.5"
             >
-              <Text className="text-xs text-ink3 underline">
-                プライバシーポリシー
+              <Text className="text-[13px] font-medium text-ink2">
+                ご意見・ご要望
               </Text>
             </Pressable>
-            <Pressable
-              onPress={() =>
-                Linking.openURL(
-                  "https://toresaku-app.github.io/privacy-policy/terms.html"
-                )
-              }
-            >
-              <Text className="text-xs text-ink3 underline">利用規約</Text>
-            </Pressable>
+            <View className="flex-row justify-center gap-4">
+              <Pressable
+                onPress={() =>
+                  Linking.openURL(
+                    "https://toresaku-app.github.io/privacy-policy/"
+                  )
+                }
+              >
+                <Text className="text-xs text-ink3 underline">
+                  プライバシーポリシー
+                </Text>
+              </Pressable>
+              <Pressable
+                onPress={() =>
+                  Linking.openURL(
+                    "https://toresaku-app.github.io/privacy-policy/terms.html"
+                  )
+                }
+              >
+                <Text className="text-xs text-ink3 underline">利用規約</Text>
+              </Pressable>
+            </View>
           </View>
         }
       />
