@@ -30,4 +30,4 @@
 
 - [ ] タッチターゲットサイズ拡大（44×44px以上）
 - [ ] カラーコントラスト改善（WCAG AA基準）
-- [ ] スクリーンリーダー対応（accessibilityLabel追加）
+- [x] スクリーンリーダー対応（accessibilityLabel追加）

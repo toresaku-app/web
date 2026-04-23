@@ -22,6 +22,9 @@ export function FilterBar<T extends string>({ label, filters, selected, onSelect
             <Pressable
               key={filter}
               onPress={() => onSelect(filter)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: selected === filter }}
+              accessibilityLabel={`${label}: ${filter}`}
               className={`rounded-full px-3.5 py-2 ${
                 selected === filter
                   ? "bg-navy"
