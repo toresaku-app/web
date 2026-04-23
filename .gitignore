@@ -31,7 +31,11 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
+
+# illustration originals (regeneratable via scripts/)
+assets/illustrations/originals/
 
 # typescript
 *.tsbuildinfo
