@@ -67,7 +67,7 @@ jobs:
           <meta name="twitter:image" content="https://toresaku-app.github.io/web/assets/og-image.png" />
           <meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" />
           <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"理学療法士のための自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
-          <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"理学療法士が自主トレーニング指導書を簡単に作成できる無料アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレを中心に22種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"iPhone（iOS）アプリとしてApp Storeで配信予定。Web版はPC・スマホのブラウザからもご利用いただけます。"}}]}</script>
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"理学療法士が自主トレーニング指導書を簡単に作成できる無料アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"データは全てお使いの端末内にのみ保存されます。クラウドへの送信は一切行いません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレを中心に100種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"iPhone（iOS）アプリとしてApp Storeで配信予定。Web版はPC・スマホのブラウザからもご利用いただけます。"}}]}</script>
           <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"トレさく","url":"https://toresaku-app.github.io/web/","logo":"https://toresaku-app.github.io/web/assets/icon-512.png","description":"理学療法士のための自主トレ指導書作成アプリ","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"toresaku.app@gmail.com"}}</script>
           <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://toresaku-app.github.io/web/"}]}</script>
           """
@@ -121,7 +121,7 @@ jobs:
           > 理学療法士が患者向けの自主トレーニング指導書（HEP）を簡単に作成・PDF出力できる無料Webアプリ。
 
           ## 主な機能
-          - 22種類以上の運動メニュー（下肢・体幹・上肢）
+          - 100種類以上の運動メニュー（下肢・体幹・上肢）
           - イラスト付きA4指導書をPDF出力
           - 回数・セット・保持時間・頻度のカスタマイズ
           - 完全無料・アカウント不要・オフライン対応
