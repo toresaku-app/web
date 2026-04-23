@@ -81,6 +81,18 @@ export default function ExerciseLibrary() {
               トレさく
             </Text>
           </View>
+          <Pressable
+            onPress={() =>
+              Linking.openURL(
+                "https://docs.google.com/forms/d/e/1FAIpQLSdnlPwtqKpPcYBHKTdR4XfThPmxwbd3qjPAj3PTih2LD9LhxQ/viewform"
+              )
+            }
+            accessibilityRole="button"
+            accessibilityLabel="ご意見・ご要望を送る"
+            className="rounded-lg border border-line px-2.5 py-1"
+          >
+            <Text className="text-[12px] text-ink3">ご意見</Text>
+          </Pressable>
         </View>
         <View className="px-5 pb-3.5 pt-1.5">
           <Text className="text-[26px] font-bold tracking-tight text-ink">
