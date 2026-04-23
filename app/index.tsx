@@ -192,6 +192,8 @@ export default function ExerciseLibrary() {
         <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-3">
           <Pressable
             onPress={() => router.push("/preview")}
+            accessibilityRole="button"
+            accessibilityLabel={`指導書を作成（${selectedCount}種目選択中）`}
             className="h-[56px] flex-row items-center justify-center rounded-[14px] bg-navy"
             style={{
               shadowColor: "#0B2545",

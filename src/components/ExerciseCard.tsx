@@ -14,6 +14,9 @@ export function ExerciseCard({ exercise, isSelected, onToggle }: Props) {
   return (
     <Pressable
       onPress={onToggle}
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked: isSelected }}
+      accessibilityLabel={`${exercise.name}（${exercise.target}）`}
       className={`mb-2.5 flex-row gap-3 rounded-[14px] border bg-card p-3 ${
         isSelected ? "border-[#C7D7F5]" : "border-line"
       }`}

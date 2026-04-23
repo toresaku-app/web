@@ -347,6 +347,7 @@ function ExerciseEditCard({
           <Pressable
             onPress={(e) => { e.stopPropagation(); onMoveUp(); }}
             disabled={index === 1}
+            accessibilityLabel="上に移動"
             className={`h-5 w-5 items-center justify-center rounded ${index === 1 ? "opacity-20" : ""}`}
           >
             <Text className="text-[10px] font-bold text-ink2">▲</Text>
@@ -359,6 +360,7 @@ function ExerciseEditCard({
           <Pressable
             onPress={(e) => { e.stopPropagation(); onMoveDown(); }}
             disabled={index === total}
+            accessibilityLabel="下に移動"
             className={`h-5 w-5 items-center justify-center rounded ${index === total ? "opacity-20" : ""}`}
           >
             <Text className="text-[10px] font-bold text-ink2">▼</Text>
