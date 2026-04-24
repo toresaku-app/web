@@ -29,6 +29,8 @@ const CATEGORY_FILTERS: ("すべて" | Category)[] = [
   "筋トレ",
   "ストレッチ",
   "バランス",
+  "ADL",
+  "呼吸",
 ];
 
 export default function ExerciseLibrary() {
