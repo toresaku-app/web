@@ -49,16 +49,18 @@
 - [Phase 1.5: iOSリリース準備](./tasks/phase1.5-ios-release.md) ✅ 審査提出済み
 - [Phase 2: 運動メニュー拡充 +12種](./tasks/phase2-exercise-expansion.md) ✅ 実装完了（v1.1.0リリース待ち）
 - [Phase 4: Webアプリ化](./tasks/phase4-web.md) ✅ 公開済み
+- [Phase 7: SEO対策（徹底版）](./tasks/phase7-seo.md) ✅ 大半完了（残: Search Console サイトマップ送信、画像最適化、外部施策）
+- [Phase 8: 運動メニュー拡充（100種）](./tasks/phase8-exercise-100.md) ✅ 100種到達（残: CATEGORY_FILTERSにADL・呼吸追加、100種版デプロイ）
 
-### 未着手（優先度順）
+### 進行中・未着手（優先度順）
 
-#### 優先度 高 — ユーザー獲得・認知拡大
-1. [SEO対策（徹底版）](./tasks/phase7-seo.md) — Web版の検索流入を増やす。ランディングページ・構造化データ・OG画像等。今やらないと検索に出ない。
+#### 優先度 高 — リリースブロッカー
+1. CATEGORY_FILTERS に ADL・呼吸を追加（app-developer）— 型には存在するが UIフィルタが未対応
+2. 100種対応版の Web デプロイ + iOS 審査再提出（app-developer）
 
 #### 優先度 中 — アプリの実用性向上
-2. [運動メニュー拡充（100種類以上）](./tasks/phase8-exercise-100.md) — 22種→100種超へ段階的に追加。疾患別タグ・カテゴリ拡充。永続的タスク。
-3. [UI改善（目的入力 + 横向き印刷）](./tasks/phase6-ui-improvements.md) — 指導書の目的入力（全体+各運動）、横向き印刷対応。臨床での使い勝手に直結。
-4. [テンプレート保存・呼び出し](./tasks/phase3-templates.md) — よく使う指導書パターンを保存して再利用。リピートユーザーの効率化。iOS版のみ（expo-sqlite）。
+3. [UI改善](./tasks/phase6-ui-improvements.md) — Quick Wins・目的入力・横向き印刷・表紙・休息時間は完了済み。残: イラスト2枚化、バイリンガルPDF、運動カード詳細展開
+4. [テンプレート保存・呼び出し](./tasks/phase3-templates.md) — よく使う指導書パターンを保存して再利用。リピートユーザーの効率化。iOS版のみ（expo-sqlite）
 
 #### 優先度 低 — あると嬉しい
-5. [共有方法の拡充（ローカル完結）](./tasks/phase5-sharing.md) — 1ページ2種目レイアウト、画像出力等。現行のPDF共有で最低限は満たしている。
+5. [共有方法の拡充（ローカル完結）](./tasks/phase5-sharing.md) — 1ページ2種目レイアウト、画像出力等。現行のPDF共有で最低限は満たしている
