@@ -3,7 +3,7 @@
 ## 8-1. 型・フィルタの拡張
 
 - [x] `src/types/exercise.ts` の `Category` 拡充: `"バランス" | "ADL" | "呼吸"` 追加
-- [ ] `app/index.tsx` の `CATEGORY_FILTERS` に「ADL」「呼吸」を追加（型には存在するが UI 未反映）
+- [x] `app/index.tsx` の `CATEGORY_FILTERS` に「ADL」「呼吸」を追加
 - [x] 既存の「タンデム立位」カテゴリを「バランス」に修正
 
 ※ 疾患タグ（conditions）は SaMD リスク回避のため不採用。部位・姿勢・カテゴリで絞り込む方針。
