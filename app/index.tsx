@@ -107,43 +107,6 @@ export default function ExerciseLibrary() {
             </Text>
           </Text>
         </View>
-
-        {/* 検索バー */}
-        <View className="px-5 pb-3">
-          <View className="h-[42px] flex-row items-center rounded-[11px] border border-line bg-[#F4F6FA] px-3.5">
-            <Text className="mr-2 text-ink3">🔍</Text>
-            <TextInput
-              className="flex-1 text-[14px] text-ink"
-              placeholder="運動名・英名・部位で検索"
-              placeholderTextColor="#94A3B8"
-              value={searchText}
-              onChangeText={setSearchText}
-              clearButtonMode="while-editing"
-            />
-          </View>
-        </View>
-      </View>
-
-      {/* フィルタ */}
-      <View className="border-b border-line bg-card py-2">
-        <FilterBar
-          label="部位"
-          filters={BODY_PART_FILTERS}
-          selected={bodyPartFilter}
-          onSelect={setBodyPartFilter}
-        />
-        <FilterBar
-          label="姿勢"
-          filters={POSTURE_FILTERS}
-          selected={postureFilter}
-          onSelect={setPostureFilter}
-        />
-        <FilterBar
-          label="種類"
-          filters={CATEGORY_FILTERS}
-          selected={categoryFilter}
-          onSelect={setCategoryFilter}
-        />
       </View>
 
       {/* 運動リスト */}
@@ -151,9 +114,51 @@ export default function ExerciseLibrary() {
         data={filteredExercises}
         keyExtractor={(item) => item.id}
         className="bg-surface"
-        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        ListHeaderComponent={
+          <View>
+            {/* 検索バー */}
+            <View className="bg-card px-5 pb-3">
+              <View className="h-[42px] flex-row items-center rounded-[11px] border border-line bg-[#F4F6FA] px-3.5">
+                <Text className="mr-2 text-ink3">🔍</Text>
+                <TextInput
+                  className="flex-1 text-[14px] text-ink"
+                  placeholder="運動名・英名・部位で検索"
+                  placeholderTextColor="#94A3B8"
+                  value={searchText}
+                  onChangeText={setSearchText}
+                  clearButtonMode="while-editing"
+                />
+              </View>
+            </View>
+
+            {/* フィルタ */}
+            <View className="border-b border-line bg-card py-2">
+              <FilterBar
+                label="部位"
+                filters={BODY_PART_FILTERS}
+                selected={bodyPartFilter}
+                onSelect={setBodyPartFilter}
+              />
+              <FilterBar
+                label="姿勢"
+                filters={POSTURE_FILTERS}
+                selected={postureFilter}
+                onSelect={setPostureFilter}
+              />
+              <FilterBar
+                label="種類"
+                filters={CATEGORY_FILTERS}
+                selected={categoryFilter}
+                onSelect={setCategoryFilter}
+              />
+            </View>
+
+            <View className="h-4" />
+          </View>
+        }
         ListEmptyComponent={
-          <View className="items-center py-20">
+          <View className="items-center px-4 py-20">
             <Text className="text-lg text-ink2">
               該当する運動がありません
             </Text>
@@ -163,20 +168,22 @@ export default function ExerciseLibrary() {
           </View>
         }
         renderItem={({ item }) => (
-          <ExerciseCard
-            exercise={item}
-            isSelected={selectedIds.has(item.id)}
-            onToggle={() => {
-              if (selectedIds.has(item.id)) {
-                removeExercise(item.id);
-              } else {
-                addExercise(item.id);
-              }
-            }}
-          />
+          <View className="px-4">
+            <ExerciseCard
+              exercise={item}
+              isSelected={selectedIds.has(item.id)}
+              onToggle={() => {
+                if (selectedIds.has(item.id)) {
+                  removeExercise(item.id);
+                } else {
+                  addExercise(item.id);
+                }
+              }}
+            />
+          </View>
         )}
         ListFooterComponent={
-          <View className="mt-4 items-center pb-4">
+          <View className="mt-4 items-center px-4 pb-4">
             <Pressable
               onPress={() =>
                 Linking.openURL(

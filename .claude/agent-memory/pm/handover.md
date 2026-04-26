@@ -19,29 +19,33 @@
 
 ## 現在の役割モード
 
-**初回起動待ち**。まだ稼働したことがない。
+**稼働中**。初回起動ルーティン完了（2026-04-24）。
 
-次の起動時に最初にやるのは、メモリ参照ファイルをすべて読んで**プロジェクト現状ダイジェスト**を作成し、利用者に提示すること（職務記述書の「最初の起動時のルーティン」参照）。
+実施済み:
+- 全メモリ参照ファイルの読み込み
+- プロジェクト現状ダイジェスト作成・提示
+- A-20260424-02（未コミット変更の整理・コミット・push）を app-developer inbox に配布 → 完了確認（コミット 8e43cee）
+- `.handover-drafts/` 削除判断を利用者に提示 → 削除で合意
 
 ---
 
 ## 直近で確認すべきこと（初回起動時の宿題）
 
 ### タスクファイルの陳腐化状況
-- [ ] `plan.md` の Phase 7, 8 が「未着手」表記のまま → 「完了」に更新するか利用者に提案
-- [ ] `tasks/phase6-ui-improvements.md` の現状チェック
-- [ ] `tasks/phase8-exercise-100.md` の完了フラグ更新
-- [ ] `docs/startup-tasks.md` の Phase 0 チェック（青色申告）が未確認のまま
+- [x] `plan.md` の Phase 7, 8 完了フラグ更新 → コミット 8e43cee で反映済み
+- [x] `tasks/phase8-exercise-100.md` の完了フラグ更新 → 同上
+- [x] `tasks/phase6-ui-improvements.md` の現状チェック → 残タスク確認済み（イラスト2枚化、バイリンガルPDF、運動カード詳細展開）
+- [ ] `docs/startup-tasks.md` の Phase 0 チェック（青色申告）が未確認のまま → cmo-advisor の管轄
 
 ### 3エージェントの handover.md の整合性
-- [ ] types/exercise.ts の所有権が app-developer 側だけに明記されているか確認（curator handover にも「編集は app-developer 経由」と書かれているか）
-- [ ] CATEGORY_FILTERS の担当が app-developer 側に明記されているか
-- [ ] exercise-curator の「大量の未コミット変更」誤認が訂正済みか
+- [x] types/exercise.ts の所有権 → curator handover に「app-developer へ依頼」と明記済み
+- [x] CATEGORY_FILTERS の担当 → app-developer / curator 双方で app-developer 担当と認識一致
+- [x] exercise-curator の「大量の未コミット変更」誤認 → 訂正済み（handover に注記あり）
 
 ### 未コミット変更の扱い
-- `develop` が `origin/develop` より 1 commit 先行（未 push）
-- 未追跡: `.claude/` と `.handover-drafts/`（引き継ぎ移行時に作成）
-- **判断が必要**: `.claude/` をコミットするか、`.handover-drafts/` を削除するか → 利用者の判断を仰ぐ
+- [x] `.claude/` コミット → 8e43cee で完了
+- [x] `.handover-drafts/` 削除 → 利用者承認の上、8e43cee で削除済み
+- [x] develop を origin/develop に push → 完了、同期済み
 
 ---
 

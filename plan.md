@@ -50,13 +50,14 @@
 - [Phase 2: 運動メニュー拡充 +12種](./tasks/phase2-exercise-expansion.md) ✅ 実装完了（v1.1.0リリース待ち）
 - [Phase 4: Webアプリ化](./tasks/phase4-web.md) ✅ 公開済み
 - [Phase 7: SEO対策（徹底版）](./tasks/phase7-seo.md) ✅ 大半完了（残: Search Console サイトマップ送信、画像最適化、外部施策）
-- [Phase 8: 運動メニュー拡充（100種）](./tasks/phase8-exercise-100.md) ✅ 100種到達（残: CATEGORY_FILTERSにADL・呼吸追加、100種版デプロイ）
+- [Phase 8: 運動メニュー拡充（100種）](./tasks/phase8-exercise-100.md) ✅ 100種到達 + ADL・呼吸フィルタ追加 + Web デプロイ完了（残: iOS 審査再提出）
 
 ### 進行中・未着手（優先度順）
 
 #### 優先度 高 — リリースブロッカー
-1. CATEGORY_FILTERS に ADL・呼吸を追加（app-developer）— 型には存在するが UIフィルタが未対応
-2. 100種対応版の Web デプロイ + iOS 審査再提出（app-developer）
+1. ~~CATEGORY_FILTERS に ADL・呼吸を追加~~ ✅ 完了（コミット: 6c5f01b）
+2. ~~100種対応版の Web デプロイ~~ ✅ 完了（PR #9 → main マージ済み）
+3. 100種対応版の iOS 審査再提出（app-developer）— 後日対応
 
 #### 優先度 中 — アプリの実用性向上
 3. [UI改善](./tasks/phase6-ui-improvements.md) — Quick Wins・目的入力・横向き印刷・表紙・休息時間は完了済み。残: イラスト2枚化、バイリンガルPDF、運動カード詳細展開

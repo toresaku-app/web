@@ -313,7 +313,7 @@ export const PDF_STYLE = `
   .cover-name { font-weight: 600; }
   .cover-target { color: #0F766E; font-size: 10pt; }
   .cover-rx { font-size: 10pt; white-space: nowrap; }
-  .cover-freq { font-size: 10pt; color: #475569; }
+  .cover-freq { font-size: 10pt; color: #475569; white-space: nowrap; }
   .cover-notice {
     margin-top: 20px; padding: 12px 16px;
     background: #FBEAEA; border: 1px solid #F5D2D2;
