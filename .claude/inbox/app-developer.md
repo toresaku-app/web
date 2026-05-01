@@ -10,43 +10,37 @@ pm からのタスクブリーフがここに書き込まれます。
 
 ## 現在のタスク
 
-### タスク A-20260424-07: 本日の作業成果をまとめてコミット・push
+### タスク A-20260501-01: 未コミット変更の整理・コミット・push（アプデ前）
 
-- **発注日**: 2026-04-24
-- **優先度**: 中
+- **発注日**: 2026-05-01
+- **優先度**: 高（Claude アップデート前に片付ける）
 - **推定工数**: 5 分
 - **依存**: なし
 
-#### 目的・背景
-- 本日の pm / cmo-advisor 作業で更新されたファイルが未コミット
-- plan.md の進捗更新、inbox 整理、エージェント memory 更新など
-
 #### やること
 1. 以下をステージング:
-   - `plan.md`（CATEGORY_FILTERS・デプロイ完了フラグ更新）
-   - `tasks/phase8-exercise-100.md`（CATEGORY_FILTERS 完了フラグ）
-   - `.claude/agent-memory/pm/handover.md`（pm 稼働記録）
-   - `.claude/agent-memory/cmo-advisor/decisions.md`（マネタイズ・開業届・PMF 決定事項追記）
-   - `.claude/agent-memory/cmo-advisor/learning-log.md`（学習ログ・宿題ログ追記）
+   - `plan.md`（PMF 検証・学会発表・UI 改善の進捗更新）
+   - `.claude/agent-memory/cmo-advisor/handover.md`（cmo 最新状態）
+   - `.claude/agent-memory/cmo-advisor/learning-log.md`（学習ログ・宿題更新）
    - `.claude/inbox/app-developer.md`（完了履歴整理）
    - `.claude/inbox/cmo-advisor.md`（完了履歴整理）
-   - `eas.json`（EAS Build 設定、新規）
-2. コミット（メッセージ案:「plan.md 進捗更新 + エージェント memory・inbox 整理」）
+   - `docs/presentations/`（院内勉強会スライド資料）
+2. コミット（メッセージ案:「plan.md 進捗更新 + 学会発表・勉強会資料追加」）
 3. `git push origin develop`
 
 #### 完了基準
 - `git status` クリーン、origin/develop と同期済み
 
-#### 注意事項
-- eas.json に秘密情報が含まれていないか念のため確認
-
 #### 完了後の報告先
-- 利用者に「タスク A-20260424-07 完了、コミット XXX」と報告
+- 利用者に「タスク A-20260501-01 完了、コミット XXX」と報告
 
 ---
 
 ## 完了履歴
 
+- A-20260426-02: PDF 表紙の頻度折り返し修正 ✅ 完了（コミット: c290eb1）
+- A-20260426-01: フィルタとカードリストのレイアウト分離 ✅ 完了（コミット: 32cc5b3）
+- A-20260424-07: 本日の作業成果コミット・push ✅ 完了（コミット: 421fb8a）
 - A-20260424-06: Web 版に GA4 導入 ✅ 完了（コミット: 4fd0f51、PR #10 → main マージ、G-J12ZXEXNSN）
 - A-20260424-04: 100種 Web デプロイ ✅ 完了（PR #9 → main マージ、GitHub Pages 反映済み）/ iOS 審査は後日
 - A-20260424-03: CATEGORY_FILTERS に ADL・呼吸追加 ✅ 完了（コミット: 6c5f01b）
