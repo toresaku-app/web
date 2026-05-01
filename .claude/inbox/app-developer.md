@@ -10,32 +10,36 @@ pm からのタスクブリーフがここに書き込まれます。
 
 ## 現在のタスク
 
-### タスク A-20260501-02: cmo-advisor memory の残りコミット
+### タスク A-20260501-03: inbox 整理差分のコミット・push
 
 - **発注日**: 2026-05-01
-- **優先度**: 高（アプデ前に完全クリーンにする）
+- **優先度**: 中（軽微だが working tree をクリーンに保つため）
 - **推定工数**: 2 分
 - **依存**: なし
 
+#### 目的・背景
+- pm が 5/1 に inbox の完了タスクを履歴に移し替えたが、その差分が未コミットのまま残っている
+- working tree をクリーンにしておく
+
 #### やること
-1. ステージング:
-   - `.claude/agent-memory/cmo-advisor/decisions.md`
-   - `.claude/agent-memory/cmo-advisor/learning-log.md`
-2. コミット（メッセージ案:「cmo-advisor memory 更新（学会発表決定事項追記）」）
-3. `git push origin develop`
+1. `git diff .claude/inbox/app-developer.md` で内容を確認（完了タスク 2 件を「完了履歴」に移しただけ）
+2. ステージング: `.claude/inbox/app-developer.md`
+3. コミット（メッセージ案:「inbox 完了タスクを履歴に移動」）
+4. `git push origin develop`
 
 #### 完了基準
 - `git status` 完全クリーン
+- `origin/develop` に push 済み
 
----
-
-### タスク A-20260501-01: 未コミット変更の整理・コミット・push（アプデ前）
-✅ 完了（コミット: 73288ae）
+#### 完了後の報告先
+- 利用者に「A-20260501-03 完了、コミット XXX」と報告
 
 ---
 
 ## 完了履歴
 
+- A-20260501-02: cmo-advisor memory コミット ✅ 完了（コミット: 2c14b1f）
+- A-20260501-01: アプデ前コミット・push ✅ 完了（コミット: 73288ae）
 - A-20260426-02: PDF 表紙の頻度折り返し修正 ✅ 完了（コミット: c290eb1）
 - A-20260426-01: フィルタとカードリストのレイアウト分離 ✅ 完了（コミット: 32cc5b3）
 - A-20260424-07: 本日の作業成果コミット・push ✅ 完了（コミット: 421fb8a）
