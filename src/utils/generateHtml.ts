@@ -330,7 +330,7 @@ export const PDF_STYLE = `
 
   /* ── 実施チェック表 ── */
   .howto {
-    margin-top: 10px; padding: 6px 10px;
+    margin-top: 6px; padding: 5px 10px;
     background: #EEF2F9; border-radius: 8px;
     display: flex; align-items: center; gap: 8px;
   }
@@ -342,10 +342,10 @@ export const PDF_STYLE = `
   .howto-body { font-size: 12pt; color: #0B2545; font-weight: 500; line-height: 1.4; }
   .howto-body b { font-size: 14pt; }
 
-  .week { margin-top: 10px; }
-  .week-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; }
+  .week { margin-top: 5px; }
+  .week-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 1px; }
   .week-num {
-    font-size: 12pt; font-weight: 700; color: #0B2545;
+    font-size: 11pt; font-weight: 700; color: #0B2545;
     padding-left: 8px; border-left: 4px solid #0B2545;
   }
   .week-date { font-size: 11pt; color: #94A3B8; }
@@ -353,24 +353,28 @@ export const PDF_STYLE = `
   .check-table th, .check-table td { border: 1px solid #D5DCE6; }
   .check-table th {
     background: #0B2545; color: #fff;
-    font-size: 10pt; font-weight: 700; padding: 3px 2px; text-align: center;
+    font-size: 10pt; font-weight: 700; padding: 1px 2px; text-align: center;
   }
   .check-ex-col { width: 34%; text-align: left; padding-left: 8px; }
   .check-sat { color: #93C5FD; }
   .check-sun { color: #FCA5A5; }
-  .check-table td { height: 30px; background: #fff; }
-  .check-ex-cell { padding: 2px 8px; background: #FAFBFD; }
-  .check-ex-name { font-size: 11pt; font-weight: 700; color: #0F172A; line-height: 1.2; }
-  .check-ex-rx { font-size: 9pt; color: #475569; margin-top: 1px; }
+  .check-table td { height: 22px; background: #fff; }
+  .check-ex-cell { padding: 1px 8px; background: #FAFBFD; }
+  .check-ex-name { font-size: 10pt; font-weight: 700; color: #0F172A; line-height: 1.15; }
+  .check-ex-rx { font-size: 8pt; color: #475569; line-height: 1.2; }
 
-  .memo { margin-top: 12px; }
+  .memo { margin-top: 8px; }
   .memo-head { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
   .memo-title { font-size: 13pt; font-weight: 700; color: #0F172A; }
   .memo-sub { font-size: 10pt; color: #94A3B8; }
   .memo-lines { border: 1px solid #E6EAF0; border-radius: 8px; padding: 0 12px; }
-  .memo-line { height: 26px; border-bottom: 1px dashed #D5DCE6; }
+  .memo-line { height: 18px; border-bottom: 1px dashed #D5DCE6; }
   .memo-line:last-child { border-bottom: none; }
   .bring { font-size: 10pt; font-weight: 700; color: #B91C1C; }
+  /* チェック表のヘッダーは運動ページより小さくして縦を稼ぐ */
+  .check-page .page-header { padding-bottom: 5px; }
+  .check-page .title { font-size: 16pt; }
+  .check-page .issue { font-size: 10pt; }
 
   /* ── 横向き時のコンパクト化 ── */
   .landscape .page-header { padding-bottom: 4px; }
@@ -386,10 +390,24 @@ export const PDF_STYLE = `
   .landscape .note { margin-top: 5px; padding: 5px 10px; }
   .landscape .page-footer { margin-top: 5px; padding-top: 3px; }
   .landscape .howto { margin-top: 5px; padding: 4px 10px; }
-  .landscape .week { margin-top: 6px; }
-  .landscape .check-table td { height: 24px; }
-  .landscape .memo { margin-top: 8px; }
-  .landscape .memo-line { height: 22px; }
+  .landscape .week { margin-top: 5px; }
+  .landscape .check-table td { height: 21px; }
+  .landscape .memo { margin-top: 6px; }
+  .landscape .memo-line { height: 18px; }
+  /* 表紙も横向きでは縦を詰める（A4横の高さは718pxしかない） */
+  .landscape .cover { padding: 2px 0; }
+  .landscape .cover-title-block { padding: 8px 0 6px; }
+  .landscape .cover-main-title { font-size: 22pt; }
+  .landscape .cover-subtitle { font-size: 11pt; margin-top: 2px; }
+  .landscape .cover-purpose { margin-top: 8px; padding: 6px 12px; font-size: 12pt; }
+  .landscape .cover-date { margin-top: 6px; font-size: 11pt; }
+  .landscape .cover-summary { margin-top: 8px; }
+  .landscape .cover-summary-title { font-size: 13pt; margin-bottom: 5px; }
+  .landscape .cover-table td { padding: 3px 8px; }
+  .landscape .cover-th { padding: 3px 8px; }
+  .landscape .cover-notice { margin-top: 10px; padding: 8px 12px; }
+  .landscape .cover-notice-title { margin-bottom: 4px; }
+  .landscape .cover-notice-list { line-height: 1.5; }
   /* 横向きは横幅が余るので週ブロックを2列に並べて縦を節約する */
   .landscape .weeks { display: flex; flex-wrap: wrap; gap: 10px; }
   .landscape .weeks .week { width: calc(50% - 5px); }
@@ -456,9 +474,12 @@ function renderCheckSheets(
 
   // A4 に収まる週数を実測値から求める（超えると印刷時に半端なページが生まれるため）
   // 係数は実際のレンダリング高さを計測して較正した値
+  // 係数は実測（ヘッダー/使い方帯/週ブロック/メモ/フッターの各高さ）から較正。
+  // budget は A4 の理論値（縦1047 / 横718）ではなく、ブラウザ印刷が付加する
+  // URL・日付などで有効高が減る分を見込んだ保守的な値。
   const m = isLandscape
-    ? { fixed: 355, perWeek: 55, rowH: 24, memo: 85, budget: 705, columns: 2 }
-    : { fixed: 291, perWeek: 64.5, rowH: 30, memo: 97, budget: 1035, columns: 1 };
+    ? { fixed: 123, perWeek: 72, rowH: 31, memo: 75, budget: 600, columns: 2 }
+    : { fixed: 133, perWeek: 52, rowH: 31, memo: 77, budget: 880, columns: 1 };
 
   const estimate = (weeks: number): number => {
     const weekRows = Math.ceil(weeks / m.columns);
@@ -483,7 +504,7 @@ function renderCheckSheets(
           : "チェック表";
 
       return `
-  <section class="page${isLandscape ? " landscape" : ""}${isLastSheet ? "" : " break"}">
+  <section class="page check-page${isLandscape ? " landscape" : ""}${isLastSheet ? "" : " break"}">
     <header class="page-header">
       <div>
         <div class="title">実施チェック表</div>
@@ -527,6 +548,7 @@ function renderCheckSheets(
 function renderCoverPage(
   sorted: SelectedExercise[],
   sheetPurpose?: string,
+  isLandscape?: boolean,
 ): string {
   const rows = sorted
     .map((sel, i) => {
@@ -546,7 +568,7 @@ function renderCoverPage(
     .join("");
 
   return `
-  <section class="page break">
+  <section class="page${isLandscape ? " landscape" : ""} break">
     <div class="cover">
       <div class="cover-title-block">
         <div class="cover-main-title">自主トレーニング指導書</div>
@@ -614,7 +636,7 @@ export function generateHtml(
   const purpose = sheetPurpose?.trim() || undefined;
   const isLandscape = orientation === "landscape";
 
-  const coverPage = renderCoverPage(sorted, purpose);
+  const coverPage = renderCoverPage(sorted, purpose, isLandscape);
 
   const checkSheets = includeCheckSheet
     ? renderCheckSheets(sorted, isLandscape)

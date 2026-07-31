@@ -148,7 +148,7 @@ export default function ExerciseLibrary() {
               <View className="h-[42px] flex-1 flex-row items-center rounded-[11px] border border-line bg-[#F4F6FA] px-3.5">
                 <Text className="mr-2 text-ink3">🔍</Text>
                 <TextInput
-                  className="flex-1 text-[14px] text-ink"
+                  className="flex-1 text-[16px] text-ink"
                   placeholder="運動名・部位で検索"
                   placeholderTextColor="#94A3B8"
                   value={searchText}

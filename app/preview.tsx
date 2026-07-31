@@ -152,7 +152,7 @@ export default function PreviewScreen() {
     >
       <ScrollView
         ref={scrollRef}
-        contentContainerStyle={{ padding: 16, paddingBottom: 230 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
         keyboardShouldPersistTaps="handled"
       >
         {/* ヘッダー */}
@@ -175,7 +175,7 @@ export default function PreviewScreen() {
             指導書の目的（任意）
           </Text>
           <TextInput
-            className="rounded-lg border border-line bg-[#F4F6FA] px-3 py-2.5 text-[13px] text-ink"
+            className="rounded-lg border border-line bg-[#F4F6FA] px-3 py-2.5 text-[16px] text-ink"
             placeholder="例: 退院後の自主トレ、転倒予防プログラム"
             placeholderTextColor="#94A3B8"
             value={sheetPurpose}
@@ -230,10 +230,11 @@ export default function PreviewScreen() {
               />
             );
           })}
-      </ScrollView>
-
-      {/* 下部CTA */}
-      <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-3">
+        {/* 出力ブロック（リスト末尾に配置。固定バーをやめてリストの面積を確保） */}
+        <View className="mt-2 rounded-[14px] border border-line bg-card p-4">
+        <Text className="mb-2.5 text-[12px] font-semibold tracking-widest text-ink3">
+          3. 出力
+        </Text>
         {/* 実施チェック表 */}
         <Pressable
           onPress={() => setIncludeCheckSheet(!includeCheckSheet)}
@@ -318,6 +319,7 @@ export default function PreviewScreen() {
           端末内で完結 · クラウド送信なし
         </Text>
       </View>
+      </ScrollView>
 
       {/* ローディングオーバーレイ */}
       {isExporting && (
@@ -522,7 +524,7 @@ function ExerciseEditCard({
               この運動の目的（任意）
             </Text>
             <TextInput
-              className="rounded-lg border border-line bg-[#F4F6FA] px-3 py-2 text-[13px] text-ink"
+              className="rounded-lg border border-line bg-[#F4F6FA] px-3 py-2 text-[16px] text-ink"
               placeholder="例: 膝の安定性向上、筋力維持"
               placeholderTextColor="#94A3B8"
               value={sel.purpose}
@@ -573,7 +575,7 @@ function ExerciseEditCard({
             </View>
             {!FREQUENCY_OPTIONS.slice(0, -1).includes(sel.frequency) && (
               <TextInput
-                className="mt-2 rounded-lg border border-line bg-[#F4F6FA] px-3 py-2 text-[13px] text-ink"
+                className="mt-2 rounded-lg border border-line bg-[#F4F6FA] px-3 py-2 text-[16px] text-ink"
                 placeholder="例: 週5回、毎日朝晩"
                 placeholderTextColor="#94A3B8"
                 value={sel.frequency}
@@ -612,7 +614,7 @@ function ExerciseEditCard({
             <View className="flex-row overflow-hidden rounded-[10px] border border-[#F5D2D2] bg-warn-soft">
               <View className="w-1 bg-warn" />
               <TextInput
-                className="flex-1 px-3 py-2.5 text-[14px] text-[#7F1D1D]"
+                className="flex-1 px-3 py-2.5 text-[16px] text-[#7F1D1D]"
                 placeholder="注意点を入力..."
                 placeholderTextColor="#94A3B8"
                 value={sel.notes}
