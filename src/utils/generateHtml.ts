@@ -328,6 +328,50 @@ export const PDF_STYLE = `
     font-size: 11pt; color: #7F1D1D; line-height: 1.8;
   }
 
+  /* ── 実施チェック表 ── */
+  .howto {
+    margin-top: 10px; padding: 6px 10px;
+    background: #EEF2F9; border-radius: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .howto-label {
+    background: #0B2545; color: #fff;
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 11pt; font-weight: 700; letter-spacing: 1px; white-space: nowrap;
+  }
+  .howto-body { font-size: 12pt; color: #0B2545; font-weight: 500; line-height: 1.4; }
+  .howto-body b { font-size: 14pt; }
+
+  .week { margin-top: 10px; }
+  .week-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; }
+  .week-num {
+    font-size: 12pt; font-weight: 700; color: #0B2545;
+    padding-left: 8px; border-left: 4px solid #0B2545;
+  }
+  .week-date { font-size: 11pt; color: #94A3B8; }
+  .check-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .check-table th, .check-table td { border: 1px solid #D5DCE6; }
+  .check-table th {
+    background: #0B2545; color: #fff;
+    font-size: 10pt; font-weight: 700; padding: 3px 2px; text-align: center;
+  }
+  .check-ex-col { width: 34%; text-align: left; padding-left: 8px; }
+  .check-sat { color: #93C5FD; }
+  .check-sun { color: #FCA5A5; }
+  .check-table td { height: 30px; background: #fff; }
+  .check-ex-cell { padding: 2px 8px; background: #FAFBFD; }
+  .check-ex-name { font-size: 11pt; font-weight: 700; color: #0F172A; line-height: 1.2; }
+  .check-ex-rx { font-size: 9pt; color: #475569; margin-top: 1px; }
+
+  .memo { margin-top: 12px; }
+  .memo-head { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .memo-title { font-size: 13pt; font-weight: 700; color: #0F172A; }
+  .memo-sub { font-size: 10pt; color: #94A3B8; }
+  .memo-lines { border: 1px solid #E6EAF0; border-radius: 8px; padding: 0 12px; }
+  .memo-line { height: 26px; border-bottom: 1px dashed #D5DCE6; }
+  .memo-line:last-child { border-bottom: none; }
+  .bring { font-size: 10pt; font-weight: 700; color: #B91C1C; }
+
   /* ── 横向き時のコンパクト化 ── */
   .landscape .page-header { padding-bottom: 4px; }
   .landscape .sheet-purpose { margin-top: 3px; padding: 2px 8px; }
@@ -341,7 +385,144 @@ export const PDF_STYLE = `
   .landscape .pt-row { padding: 3px 0; }
   .landscape .note { margin-top: 5px; padding: 5px 10px; }
   .landscape .page-footer { margin-top: 5px; padding-top: 3px; }
+  .landscape .howto { margin-top: 5px; padding: 4px 10px; }
+  .landscape .week { margin-top: 6px; }
+  .landscape .check-table td { height: 24px; }
+  .landscape .memo { margin-top: 8px; }
+  .landscape .memo-line { height: 22px; }
+  /* 横向きは横幅が余るので週ブロックを2列に並べて縦を節約する */
+  .landscape .weeks { display: flex; flex-wrap: wrap; gap: 10px; }
+  .landscape .weeks .week { width: calc(50% - 5px); }
 `;
+
+const WEEKDAYS = ["月", "火", "水", "木", "金", "土", "日"] as const;
+
+/** 1週分のチェック表（行=運動 × 列=曜日） */
+function renderWeekBlock(
+  weekNumber: number,
+  rows: { name: string; rx: string }[]
+): string {
+  const head = WEEKDAYS.map((d) => {
+    const cls = d === "土" ? " check-sat" : d === "日" ? " check-sun" : "";
+    return `<th class="${cls.trim()}">${d}</th>`;
+  }).join("");
+
+  const body = rows
+    .map(
+      (r, i) => `
+      <tr>
+        <td class="check-ex-cell">
+          <div class="check-ex-name">${i + 1}. ${esc(r.name)}</div>
+          <div class="check-ex-rx">${esc(r.rx)}</div>
+        </td>
+        ${WEEKDAYS.map(() => "<td></td>").join("")}
+      </tr>`
+    )
+    .join("");
+
+  return `
+    <div class="week">
+      <div class="week-head">
+        <span class="week-num">第 ${weekNumber} 週</span>
+        <span class="week-date">（　　月　　日 〜）</span>
+      </div>
+      <table class="check-table">
+        <tr><th class="check-ex-col">運動</th>${head}</tr>
+        ${body}
+      </table>
+    </div>`;
+}
+
+/**
+ * 実施チェック表（患者が実施日に○を付ける紙の表）。
+ * 4週間分。運動が5種目以上のときは2週ずつ2枚に分割してA4に収める。
+ */
+function renderCheckSheets(
+  sorted: SelectedExercise[],
+  isLandscape: boolean
+): string {
+  const rows = sorted
+    .map((sel) => {
+      const ex = EXERCISES.find((e) => e.id === sel.exerciseId);
+      if (!ex) return null;
+      return {
+        name: ex.name,
+        rx: `${sel.reps}回 × ${sel.sets}セット`,
+      };
+    })
+    .filter((r): r is { name: string; rx: string } => r !== null);
+
+  if (rows.length === 0) return "";
+
+  // A4 に収まる週数を実測値から求める（超えると印刷時に半端なページが生まれるため）
+  // 係数は実際のレンダリング高さを計測して較正した値
+  const m = isLandscape
+    ? { fixed: 355, perWeek: 55, rowH: 24, memo: 85, budget: 705, columns: 2 }
+    : { fixed: 291, perWeek: 64.5, rowH: 30, memo: 97, budget: 1035, columns: 1 };
+
+  const estimate = (weeks: number): number => {
+    const weekRows = Math.ceil(weeks / m.columns);
+    return m.fixed + weekRows * (m.perWeek + m.rowH * rows.length) + m.memo;
+  };
+
+  const weeksPerSheet = [4, 2, 1].find((w) => estimate(w) <= m.budget) ?? 1;
+
+  const sheets: number[][] = [];
+  for (let w = 1; w <= 4; w += weeksPerSheet) {
+    sheets.push(
+      Array.from({ length: weeksPerSheet }, (_, i) => w + i).filter((n) => n <= 4)
+    );
+  }
+
+  return sheets
+    .map((weeks, sheetIndex) => {
+      const isLastSheet = sheetIndex === sheets.length - 1;
+      const badge =
+        sheets.length > 1
+          ? `チェック表 ${sheetIndex + 1} / ${sheets.length}`
+          : "チェック表";
+
+      return `
+  <section class="page${isLandscape ? " landscape" : ""}${isLastSheet ? "" : " break"}">
+    <header class="page-header">
+      <div>
+        <div class="title">実施チェック表</div>
+        <div class="issue">発行日　${issueDate()}</div>
+      </div>
+      <div class="page-badge">${badge}</div>
+    </header>
+
+    <div class="howto">
+      <span class="howto-label">使い方</span>
+      <span class="howto-body">運動が<b>できた日に ○</b> を書きましょう。全部できなくても大丈夫です。</span>
+    </div>
+
+    <div class="weeks">${weeks.map((w) => renderWeekBlock(w, rows)).join("")}</div>
+
+    ${
+      isLastSheet
+        ? `<div class="memo">
+      <div class="memo-head">
+        <div class="points-bar"></div>
+        <span class="memo-title">メモ</span>
+        <span class="memo-sub">気づいたこと・困ったことがあれば書いてください</span>
+      </div>
+      <div class="memo-lines">
+        <div class="memo-line"></div>
+        <div class="memo-line"></div>
+      </div>
+    </div>`
+        : ""
+    }
+
+    <footer class="page-footer">
+      <span>トレさく — 自主トレ指導書作成アプリ</span>
+      <span class="bring">次回の外来・リハビリの際に、この用紙をお持ちください</span>
+    </footer>
+  </section>`;
+    })
+    .join("\n");
+}
 
 function renderCoverPage(
   sorted: SelectedExercise[],
@@ -425,7 +606,8 @@ export function generateHtml(
   imageUris: Record<string, string>,
   sheetPurpose?: string,
   orientation?: "portrait" | "landscape",
-  forScreen = false
+  forScreen = false,
+  includeCheckSheet = false
 ) {
   const sorted = [...selectedExercises].sort((a, b) => a.order - b.order);
   const total = sorted.length;
@@ -434,11 +616,17 @@ export function generateHtml(
 
   const coverPage = renderCoverPage(sorted, purpose);
 
+  const checkSheets = includeCheckSheet
+    ? renderCheckSheets(sorted, isLandscape)
+    : "";
+
   const pages = sorted
     .map((sel, i) => {
       const ex = EXERCISES.find((e) => e.id === sel.exerciseId);
       if (!ex) return "";
-      return renderPage(sel, ex, i + 1, total, i === sorted.length - 1, imageUris[sel.exerciseId], purpose, isLandscape);
+      // チェック表が続く場合は最終運動ページの後にも改ページが必要
+      const isLast = i === sorted.length - 1 && !checkSheets;
+      return renderPage(sel, ex, i + 1, total, isLast, imageUris[sel.exerciseId], purpose, isLandscape);
     })
     .join("\n");
 
@@ -460,6 +648,7 @@ ${forScreen ? `<meta name="viewport" content="width=${pageWidthPx}"/>` : ""}
 <body>
 ${coverPage}
 ${pages}
+${checkSheets}
 </body>
 </html>`;
 }

@@ -10,12 +10,14 @@ interface HepState {
   selectedExercises: SelectedExercise[];
   sheetPurpose: string;
   orientation: Orientation;
+  includeCheckSheet: boolean;
   addExercise: (exerciseId: string) => void;
   removeExercise: (exerciseId: string) => void;
   updateExercise: (exerciseId: string, updates: Partial<SelectedExercise>) => void;
   reorderExercises: (exercises: SelectedExercise[]) => void;
   setSheetPurpose: (purpose: string) => void;
   setOrientation: (orientation: Orientation) => void;
+  setIncludeCheckSheet: (include: boolean) => void;
   clearAll: () => void;
 }
 
@@ -23,6 +25,7 @@ const storeCreator: StateCreator<HepState> = (set) => ({
   selectedExercises: [],
   sheetPurpose: "",
   orientation: "portrait" as Orientation,
+  includeCheckSheet: false,
 
   addExercise: (exerciseId: string) =>
     set((state) => {
@@ -67,7 +70,15 @@ const storeCreator: StateCreator<HepState> = (set) => ({
 
   setOrientation: (orientation: Orientation) => set({ orientation }),
 
-  clearAll: () => set({ selectedExercises: [], sheetPurpose: "", orientation: "portrait" as Orientation }),
+  setIncludeCheckSheet: (includeCheckSheet: boolean) => set({ includeCheckSheet }),
+
+  clearAll: () =>
+    set({
+      selectedExercises: [],
+      sheetPurpose: "",
+      orientation: "portrait" as Orientation,
+      includeCheckSheet: false,
+    }),
 });
 
 const isWeb = Platform.OS === "web";

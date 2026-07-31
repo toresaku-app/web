@@ -48,7 +48,7 @@ const FREQUENCY_OPTIONS = [
 
 
 export default function PreviewScreen() {
-  const { selectedExercises, updateExercise, removeExercise, reorderExercises, clearAll, sheetPurpose, setSheetPurpose, orientation, setOrientation } =
+  const { selectedExercises, updateExercise, removeExercise, reorderExercises, clearAll, sheetPurpose, setSheetPurpose, orientation, setOrientation, includeCheckSheet, setIncludeCheckSheet } =
     useHepStore();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
@@ -80,7 +80,7 @@ export default function PreviewScreen() {
           }
         }
       }
-      const html = generateHtml(selectedExercises, imageUris, sheetPurpose, orientation);
+      const html = generateHtml(selectedExercises, imageUris, sheetPurpose, orientation, false, includeCheckSheet);
       const { uri } = await printToFileAsync({ html });
       fileUri = uri;
       setIsExporting(false);
@@ -152,7 +152,7 @@ export default function PreviewScreen() {
     >
       <ScrollView
         ref={scrollRef}
-        contentContainerStyle={{ padding: 16, paddingBottom: 120 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 230 }}
         keyboardShouldPersistTaps="handled"
       >
         {/* ヘッダー */}
@@ -234,6 +234,35 @@ export default function PreviewScreen() {
 
       {/* 下部CTA */}
       <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-3">
+        {/* 実施チェック表 */}
+        <Pressable
+          onPress={() => setIncludeCheckSheet(!includeCheckSheet)}
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: includeCheckSheet }}
+          accessibilityLabel="実施チェック表を付ける"
+          className={`mb-2 h-11 flex-row items-center gap-2.5 rounded-[10px] border px-3 ${
+            includeCheckSheet
+              ? "border-[#C7D7F5] bg-primary-soft"
+              : "border-line bg-[#F4F6FA]"
+          }`}
+        >
+          <View
+            className={`h-[22px] w-[22px] items-center justify-center rounded-md ${
+              includeCheckSheet
+                ? "bg-navy"
+                : "border-[1.5px] border-[#CBD5E1] bg-card"
+            }`}
+          >
+            {includeCheckSheet && (
+              <Text className="text-[11px] font-bold text-white">✓</Text>
+            )}
+          </View>
+          <Text className="flex-1 text-[13px] font-semibold text-ink">
+            実施チェック表を付ける
+          </Text>
+          <Text className="text-[11px] text-ink3">患者さんの記録用</Text>
+        </Pressable>
+
         {/* 用紙の向き */}
         <View className="mb-2 flex-row items-center justify-center gap-2">
           <Text className="text-[12px] font-semibold tracking-widest text-ink3">
