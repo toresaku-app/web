@@ -10,66 +10,13 @@ pm からのタスクブリーフがここに書き込まれます。
 
 ## 現在のタスク
 
-### タスク A-20260527-01: 学会演題対応一式のコミット・push
-
-- **発注日**: 2026-05-27
-- **優先度**: 中
-- **推定工数**: 5〜10 分
-- **依存**: なし
-
-#### 目的・背景
-- 学会演題対応（高知 2026）が大きく進捗：抄録ドラフト完成（594 字）、cmo レビュー完了、事務局問い合わせメール送付済み
-- 関連ファイルの未コミット差分が溜まっているのでまとめて push して整理する
-
-#### やること
-- 以下のファイルを個別指定でコミット（`git add -A` は避ける）:
-
-  **Modified**
-  - `plan.md`
-  - `tasks/conference-2026-kochi.md`（演題 2 = ポスター情報追加、cmo レビュー完了反映、事務局メール送付済み反映）
-  - `.claude/inbox/cmo-advisor.md`（M-20260526-01 と M-20260527-01 を完了履歴に整理）
-  - `.claude/inbox/app-developer.md`（A-20260523-01 完了履歴反映 + 本タスク追加）
-  - `.claude/agent-memory/cmo-advisor/decisions.md`
-  - `.claude/agent-memory/cmo-advisor/handover.md`
-  - `.claude/agent-memory/cmo-advisor/learning-log.md`
-  - `.claude/agent-memory/cmo-advisor/tacit-knowledge.md`
-  - `.claude/agent-memory/pm/handover.md`
-
-  **Untracked（新規）**
-  - `docs/marketing-abstract-kochi2026.md`（抄録ドラフト本体）
-  - `docs/marketing-abstract-kochi2026.docx`（Word 版・**バイナリ**）
-
-- コミットメッセージ案（日本語、まとめる方向で）:
-  ```
-  学会演題対応一式（高知2026 抄録ドラフト + cmo レビュー完了 + 事務局問い合わせ送付）
-
-  - docs/marketing-abstract-kochi2026.md/.docx: 抄録ドラフト 594 字
-  - tasks/conference-2026-kochi.md: 演題 2（ポスター）情報追加、cmo レビュー完了・事務局メール送付済み反映
-  - .claude/inbox/cmo-advisor.md: M-20260526-01（N=21 判定）/ M-20260527-01（切り口変更周知）完了履歴
-  - .claude/inbox/app-developer.md: A-20260523-01 完了履歴 + A-20260527-01 追加
-  - cmo-advisor memory 4 ファイル: 直近セッション内容反映
-  - pm handover: 5/27 セッション内容追記
-  ```
-- `git push origin develop` で push
-
-#### 完了基準
-- `git status` が clean
-- `git log --oneline -3` の先頭が今回のコミット
-- `origin/develop` に push 反映済み
-
-#### 注意事項
-- `git add -A` は使わない（個別ファイル指定）
-- `.docx` はバイナリ。サイズが極端に大きい場合（>1MB 目安）は一度報告ください。問題なければそのままコミット OK
-- main へのマージは不要（develop で OK）
-- 中身は pm + cmo が確認済み。差分の機械的なコミットで OK
-
-#### 完了後の報告先
-- 利用者に「A-20260527-01 完了、コミット XXX」と報告
+（空）
 
 ---
 
 ## 完了履歴
 
+- A-20260527-01: 学会演題対応一式のコミット・push ✅ 完了（コミット: 116db2d）
 - A-20260523-01: 未コミット変更のコミット・push ✅ 完了（コミット: 22efcb3）
 - A-20260501-04: cmo-advisor memory のコミット・push ✅ 完了（コミット: 8c75450）
 - A-20260501-03: inbox 整理差分のコミット・push ✅ 完了（コミット: 0e9e9fe）
