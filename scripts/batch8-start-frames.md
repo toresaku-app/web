@@ -6,25 +6,28 @@
 
 ---
 
-## 生成ルート（どちらでも本ファイルを使う）
+## 生成ルート
 
-### ルートA: OpenAI API 一括生成（推奨・$10チャージで足りる）
+### ルートA: Codex に一括生成させる（本線）
 
-1. OpenAI Platform で $10 チャージ（**Auto recharge は OFF のまま**）
-2. Codex に依頼:
-   - `scripts/generate-illustrations.py` を改修し、**images.edit（画像参照）**で生成する
-   - 入力画像: `assets/illustrations/originals/{id}.png`（無ければ `assets/illustrations/{id}.webp` をPNG変換して使用）
-   - プロンプト: 本ファイルの「共通スタイル」+ 各運動の個別プロンプト
-   - 出力: `assets/illustrations/originals/{id}-start.png`（1536×1024）
-   - `--skip-existing` 相当の再開機能を維持
-3. 生成後: `cwebp -q 80` で `assets/illustrations/{id}-start.webp` に変換（登録作業は実装側で対応）
+Codex にこのファイルを読ませて、以下を依頼する:
 
-### ルートB: ChatGPT 手動生成
+1. **各運動の既存イラストを入力（参照画像）にして**、「共通スタイル指示 + 個別プロンプト」で開始姿勢を生成
+   - 参照元: `assets/illustrations/originals/{id}.png`（無ければ `assets/illustrations/{id}.webp`）
+   - **参照画像なしのテキストだけで生成しない**こと（人物・視点がバラつき、動作フレームと並べたとき別人になる）
+2. 出力: `assets/illustrations/originals/{id}-start.png`、横長4:3（1536×1024 目安）
+3. **まず `patella-setting` の1枚だけ生成して止める**（パイロット検収）
+   - 既存の動作フレームと並べて、人物・服装・視点・タオル位置が一致しているか利用者が確認
+   - OK が出てから残り29枚を一括生成
+4. 途中で失敗しても、生成済みファイルはスキップして再開できるようにする
 
-1. ChatGPT に**既存イラスト（`{id}.webp` または originals のPNG）を添付**
-2. 「共通スタイル指示」+ 該当運動の「個別プロンプト」を続けてコピペ
-3. 生成画像を `assets/illustrations/originals/` に保存（ファイル名: `{id}-start.png`）
-4. 30枚たまったら報告（リネーム・WebP変換・登録は実装側で対応）
+### ルートB: ChatGPT 手動生成（フォールバック）
+
+1. ChatGPT に既存イラストを添付し、「共通スタイル指示」+ 個別プロンプトをコピペ
+2. 生成画像を `assets/illustrations/originals/{id}-start.png` で保存
+3. 30枚たまったら報告
+
+いずれのルートも、生成後の WebP 変換（`cwebp -q 80`）と `illustrations.ts` への登録はアプリ実装側で対応する。
 
 ---
 
