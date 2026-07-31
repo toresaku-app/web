@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -186,12 +186,10 @@ export default function PreviewScreen() {
           />
         </View>
 
-        {/* プログレスバー */}
-        <View className="mb-4 flex-row gap-1.5">
-          <View className="h-[3px] flex-1 rounded-full bg-navy" />
-          <View className="h-[3px] flex-1 rounded-full bg-navy" />
-          <View className="h-[3px] flex-1 rounded-full bg-line" />
-        </View>
+        {/* ステップ表示 */}
+        <StepIndicator current={2} />
+
+        <View className="mb-4" />
 
         {[...selectedExercises]
           .sort((a, b) => a.order - b.order)
@@ -236,11 +234,18 @@ export default function PreviewScreen() {
 
       {/* 下部CTA */}
       <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-3">
-        {/* 印刷方向トグル */}
+        {/* 用紙の向き */}
         <View className="mb-2 flex-row items-center justify-center gap-2">
+          <Text className="text-[12px] font-semibold tracking-widest text-ink3">
+            用紙
+          </Text>
           <Pressable
             onPress={() => setOrientation("portrait")}
-            className={`rounded-lg px-4 py-1.5 ${orientation === "portrait" ? "bg-navy" : "border border-line bg-card"}`}
+            accessibilityRole="button"
+            accessibilityState={{ selected: orientation === "portrait" }}
+            accessibilityLabel="用紙を縦向きにする"
+            hitSlop={{ top: 8, bottom: 8 }}
+            className={`rounded-lg px-4 py-2 ${orientation === "portrait" ? "bg-navy" : "border border-line bg-card"}`}
           >
             <Text className={`text-[13px] font-semibold ${orientation === "portrait" ? "text-white" : "text-ink2"}`}>
               縦向き
@@ -248,7 +253,11 @@ export default function PreviewScreen() {
           </Pressable>
           <Pressable
             onPress={() => setOrientation("landscape")}
-            className={`rounded-lg px-4 py-1.5 ${orientation === "landscape" ? "bg-navy" : "border border-line bg-card"}`}
+            accessibilityRole="button"
+            accessibilityState={{ selected: orientation === "landscape" }}
+            accessibilityLabel="用紙を横向きにする"
+            hitSlop={{ top: 8, bottom: 8 }}
+            className={`rounded-lg px-4 py-2 ${orientation === "landscape" ? "bg-navy" : "border border-line bg-card"}`}
           >
             <Text className={`text-[13px] font-semibold ${orientation === "landscape" ? "text-white" : "text-ink2"}`}>
               横向き
@@ -296,6 +305,37 @@ export default function PreviewScreen() {
         </View>
       )}
     </KeyboardAvoidingView>
+  );
+}
+
+const STEPS = ["選ぶ", "調整", "出力"] as const;
+
+function StepIndicator({ current }: { current: number }) {
+  return (
+    <View className="flex-row gap-1.5">
+      {STEPS.map((label, i) => {
+        const step = i + 1;
+        const isDone = step <= current;
+        return (
+          <View key={label} className="flex-1">
+            <View
+              className={`h-[3px] rounded-full ${isDone ? "bg-navy" : "bg-line"}`}
+            />
+            <Text
+              className={`mt-1 text-[11px] ${
+                step === current
+                  ? "font-bold text-navy"
+                  : isDone
+                    ? "font-medium text-ink3"
+                    : "text-ink3"
+              }`}
+            >
+              {step}. {label}
+            </Text>
+          </View>
+        );
+      })}
+    </View>
   );
 }
 
@@ -347,7 +387,9 @@ function ExerciseEditCard({
           <Pressable
             onPress={(e) => { e.stopPropagation(); onMoveUp(); }}
             disabled={index === 1}
+            accessibilityRole="button"
             accessibilityLabel="上に移動"
+            hitSlop={{ top: 12, bottom: 12, left: 14, right: 14 }}
             className={`h-5 w-5 items-center justify-center rounded ${index === 1 ? "opacity-20" : ""}`}
           >
             <Text className="text-[10px] font-bold text-ink2">▲</Text>
@@ -360,7 +402,9 @@ function ExerciseEditCard({
           <Pressable
             onPress={(e) => { e.stopPropagation(); onMoveDown(); }}
             disabled={index === total}
+            accessibilityRole="button"
             accessibilityLabel="下に移動"
+            hitSlop={{ top: 12, bottom: 12, left: 14, right: 14 }}
             className={`h-5 w-5 items-center justify-center rounded ${index === total ? "opacity-20" : ""}`}
           >
             <Text className="text-[10px] font-bold text-ink2">▼</Text>
@@ -414,39 +458,29 @@ function ExerciseEditCard({
           label="回数"
           value={sel.reps}
           unit="回"
-          onIncrement={() => onUpdate({ reps: sel.reps + 1 })}
-          onDecrement={() => onUpdate({ reps: Math.max(1, sel.reps - 1) })}
+          onChange={(reps) => onUpdate({ reps })}
         />
         <ParamCell
           label="セット"
           value={sel.sets}
           unit="セット"
-          onIncrement={() => onUpdate({ sets: sel.sets + 1 })}
-          onDecrement={() => onUpdate({ sets: Math.max(1, sel.sets - 1) })}
+          onChange={(sets) => onUpdate({ sets })}
         />
         {hasHold && sel.holdSeconds !== undefined && (
           <ParamCell
             label="保持"
             value={sel.holdSeconds}
             unit="秒"
-            onIncrement={() =>
-              onUpdate({ holdSeconds: sel.holdSeconds! + 1 })
-            }
-            onDecrement={() =>
-              onUpdate({ holdSeconds: Math.max(1, sel.holdSeconds! - 1) })
-            }
+            onChange={(holdSeconds) => onUpdate({ holdSeconds })}
           />
         )}
         <ParamCell
           label="休息"
           value={sel.restSeconds}
           unit="秒"
-          onIncrement={() =>
-            onUpdate({ restSeconds: sel.restSeconds + 5 })
-          }
-          onDecrement={() =>
-            onUpdate({ restSeconds: Math.max(0, sel.restSeconds - 5) })
-          }
+          step={5}
+          min={0}
+          onChange={(restSeconds) => onUpdate({ restSeconds })}
         />
       </View>
 
@@ -577,23 +611,28 @@ function ExerciseEditCard({
           </View>
 
           {/* アクション */}
-          <View className="mt-3.5 flex-row gap-2 border-t border-line pt-3">
+          <View className="mt-3.5 border-t border-line pt-3">
             <Pressable
               onPress={() => {
                 if (Platform.OS === "web") {
-                  if (window.confirm(`「${exerciseName}」を削除しますか？`)) {
+                  if (window.confirm(`「${exerciseName}」を指導書から外しますか？`)) {
                     onRemove();
                   }
                 } else {
-                  Alert.alert("確認", `「${exerciseName}」を削除しますか？`, [
+                  Alert.alert("確認", `「${exerciseName}」を指導書から外しますか？`, [
                     { text: "キャンセル", style: "cancel" },
-                    { text: "削除", style: "destructive", onPress: onRemove },
+                    { text: "外す", style: "destructive", onPress: onRemove },
                   ]);
                 }
               }}
-              className="h-9 w-9 items-center justify-center rounded-[9px] border border-[#F5D2D2] bg-warn-soft"
+              accessibilityRole="button"
+              accessibilityLabel={`${exerciseName}を指導書から外す`}
+              className="h-11 flex-row items-center justify-center gap-1.5 rounded-[10px] border border-[#F5D2D2] bg-warn-soft"
             >
               <Text className="text-sm text-warn">✕</Text>
+              <Text className="text-[13px] font-semibold text-warn">
+                この運動を外す
+              </Text>
             </Pressable>
           </View>
         </View>
@@ -602,19 +641,85 @@ function ExerciseEditCard({
   );
 }
 
+/** 連続増減の安全上限（onPressOut が来ない場合の暴走防止） */
+const MAX_REPEAT = 100;
+
+/**
+ * ステッパーボタン。単発タップは onPress、長押し中は 100ms 間隔で連続増減する。
+ * onPressIn は RN Web の Pressable で発火しないため使わない。
+ */
+function StepperButton({
+  onStep,
+  symbol,
+  accessibilityLabel,
+  tone,
+}: {
+  onStep: () => void;
+  symbol: string;
+  accessibilityLabel: string;
+  tone: "minus" | "plus";
+}) {
+  const repeatRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // interval のクロージャが古い値を掴まないよう、常に最新の onStep を参照する
+  const onStepRef = useRef(onStep);
+  onStepRef.current = onStep;
+
+  const stopRepeat = () => {
+    if (repeatRef.current) clearInterval(repeatRef.current);
+    repeatRef.current = null;
+  };
+
+  const startRepeat = () => {
+    stopRepeat();
+    let count = 0;
+    onStepRef.current();
+    repeatRef.current = setInterval(() => {
+      onStepRef.current();
+      if (++count >= MAX_REPEAT) stopRepeat();
+    }, 100);
+  };
+
+  useEffect(() => stopRepeat, []);
+
+  return (
+    <Pressable
+      onPress={() => onStepRef.current()}
+      onLongPress={startRepeat}
+      onPressOut={stopRepeat}
+      delayLongPress={500}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      hitSlop={{ top: 6, bottom: 6, left: 7, right: 7 }}
+      className="h-11 flex-1 items-center justify-center rounded-lg bg-[#F4F6FA]"
+    >
+      <Text
+        className={`text-lg font-bold ${tone === "plus" ? "text-navy" : "text-ink2"}`}
+      >
+        {symbol}
+      </Text>
+    </Pressable>
+  );
+}
+
 function ParamCell({
   label,
   value,
   unit,
-  onIncrement,
-  onDecrement,
+  step = 1,
+  min = 1,
+  onChange,
 }: {
   label: string;
   value: number;
   unit: string;
-  onIncrement: () => void;
-  onDecrement: () => void;
+  step?: number;
+  min?: number;
+  onChange: (next: number) => void;
 }) {
+  // 長押し連打中も最新値から計算するための参照
+  const valueRef = useRef(value);
+  valueRef.current = value;
+
   return (
     <View className="flex-1 items-center rounded-[10px] border border-line bg-card px-1 py-2">
       <Text className="text-[12px] font-semibold tracking-wide text-ink3">
@@ -624,21 +729,19 @@ function ParamCell({
         {value}
         <Text className="text-xs font-medium text-ink2"> {unit}</Text>
       </Text>
-      <View className="mt-1.5 flex-row gap-1.5">
-        <Pressable
-          onPress={onDecrement}
-          className="h-8 w-8 items-center justify-center rounded-lg bg-[#F4F6FA]"
+      <View className="mt-1.5 w-full flex-row gap-1">
+        <StepperButton
+          tone="minus"
+          symbol="−"
           accessibilityLabel={`${label}を減らす`}
-        >
-          <Text className="text-base font-bold text-ink2">−</Text>
-        </Pressable>
-        <Pressable
-          onPress={onIncrement}
-          className="h-8 w-8 items-center justify-center rounded-lg bg-[#F4F6FA]"
+          onStep={() => onChange(Math.max(min, valueRef.current - step))}
+        />
+        <StepperButton
+          tone="plus"
+          symbol="+"
           accessibilityLabel={`${label}を増やす`}
-        >
-          <Text className="text-base font-bold text-navy">+</Text>
-        </Pressable>
+          onStep={() => onChange(valueRef.current + step)}
+        />
       </View>
     </View>
   );

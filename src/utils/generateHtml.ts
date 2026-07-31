@@ -403,11 +403,29 @@ function renderCoverPage(
   </section>`;
 }
 
+/**
+ * 画面表示（Web の /print）専用スタイル。
+ * A4 を紙らしく見せ、狭い画面でも横に破綻しないようにする。
+ * expo-print の PDF 生成には適用しない（forScreen フラグで制御）。
+ */
+const screenStyle = (pageWidthPx: number) => `
+  @media screen {
+    body { background: #E5E9F0; padding: 16px 0; }
+    .page {
+      width: ${pageWidthPx}px;
+      margin: 0 auto 16px;
+      padding: 38px 36px;
+      background: #fff;
+      box-shadow: 0 4px 24px rgba(15,23,42,.15);
+    }
+  }`;
+
 export function generateHtml(
   selectedExercises: SelectedExercise[],
   imageUris: Record<string, string>,
   sheetPurpose?: string,
-  orientation?: "portrait" | "landscape"
+  orientation?: "portrait" | "landscape",
+  forScreen = false
 ) {
   const sorted = [...selectedExercises].sort((a, b) => a.order - b.order);
   const total = sorted.length;
@@ -428,12 +446,16 @@ export function generateHtml(
     ? "@page { size: A4 landscape; margin: 10mm; }"
     : "@page { size: A4; margin: 10mm; }";
 
+  // A4 の実寸（96dpi）。狭い画面では viewport をこの幅に固定してブラウザ側で縮小させる
+  const pageWidthPx = isLandscape ? 1123 : 794;
+
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8"/>
+${forScreen ? `<meta name="viewport" content="width=${pageWidthPx}"/>` : ""}
 <title>自主トレーニング指導書</title>
-<style>${PDF_STYLE.replace("@page { size: A4; margin: 10mm; }", pageStyle)}</style>
+<style>${PDF_STYLE.replace("@page { size: A4; margin: 10mm; }", pageStyle)}${forScreen ? screenStyle(pageWidthPx) : ""}</style>
 </head>
 <body>
 ${coverPage}
