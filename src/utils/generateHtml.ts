@@ -270,17 +270,17 @@ export const PDF_STYLE = `
   /* ── 表紙 ── */
   .cover { padding: 8px 0; }
   .cover-title-block {
-    text-align: center; padding: 32px 0 16px;
+    text-align: center; padding: 14px 0 10px;
     border-bottom: 3px solid #0B2545;
   }
   .cover-main-title {
-    font-size: 28pt; font-weight: 700; color: #0B2545; line-height: 1.3;
+    font-size: 24pt; font-weight: 700; color: #0B2545; line-height: 1.25;
   }
   .cover-subtitle {
     font-size: 13pt; color: #94A3B8; margin-top: 4px; letter-spacing: 2px;
   }
   .cover-purpose {
-    margin-top: 16px; padding: 10px 14px;
+    margin-top: 10px; padding: 7px 14px;
     background: #EEF2F9; border-radius: 8px;
     font-size: 14pt; color: #0B2545; font-weight: 500;
   }
@@ -290,12 +290,12 @@ export const PDF_STYLE = `
     font-weight: 700; margin-right: 8px; letter-spacing: 1px;
   }
   .cover-date {
-    margin-top: 12px; font-size: 12pt; color: #475569; text-align: right;
+    margin-top: 8px; font-size: 12pt; color: #475569; text-align: right;
   }
-  .cover-summary { margin-top: 16px; }
+  .cover-summary { margin-top: 10px; }
   .cover-summary-title {
     font-size: 15pt; font-weight: 700; color: #0B2545;
-    padding-left: 10px; border-left: 4px solid #0B2545; margin-bottom: 8px;
+    padding-left: 10px; border-left: 4px solid #0B2545; margin-bottom: 6px;
   }
   .cover-table {
     width: 100%; border-collapse: collapse; font-size: 11pt;
@@ -306,8 +306,8 @@ export const PDF_STYLE = `
     letter-spacing: 0.5px;
   }
   .cover-table td {
-    padding: 5px 8px; border-bottom: 1px solid #E6EAF0;
-    font-size: 11pt; color: #0F172A;
+    padding: 3px 8px; border-bottom: 1px solid #E6EAF0;
+    font-size: 10.5pt; color: #0F172A; line-height: 1.25;
   }
   .cover-num { text-align: center; font-weight: 700; color: #0B2545; width: 30px; }
   .cover-name { font-weight: 600; }
@@ -315,7 +315,7 @@ export const PDF_STYLE = `
   .cover-rx { font-size: 10pt; white-space: nowrap; }
   .cover-freq { font-size: 10pt; color: #475569; white-space: nowrap; }
   .cover-notice {
-    margin-top: 20px; padding: 12px 16px;
+    margin-top: 12px; padding: 9px 16px;
     background: #FBEAEA; border: 1px solid #F5D2D2;
     border-left: 5px solid #B91C1C; border-radius: 8px;
   }
@@ -325,7 +325,7 @@ export const PDF_STYLE = `
   }
   .cover-notice-list {
     margin: 0; padding-left: 18px;
-    font-size: 11pt; color: #7F1D1D; line-height: 1.8;
+    font-size: 11pt; color: #7F1D1D; line-height: 1.5;
   }
 
   /* ── 実施チェック表 ── */
@@ -355,13 +355,17 @@ export const PDF_STYLE = `
     background: #0B2545; color: #fff;
     font-size: 10pt; font-weight: 700; padding: 1px 2px; text-align: center;
   }
-  .check-ex-col { width: 34%; text-align: left; padding-left: 8px; }
+  .check-ex-col { width: 36%; text-align: left; padding-left: 8px; }
   .check-sat { color: #93C5FD; }
   .check-sun { color: #FCA5A5; }
-  .check-table td { height: 22px; background: #fff; }
-  .check-ex-cell { padding: 1px 8px; background: #FAFBFD; }
-  .check-ex-name { font-size: 10pt; font-weight: 700; color: #0F172A; line-height: 1.15; }
-  .check-ex-rx { font-size: 8pt; color: #475569; line-height: 1.2; }
+  .check-table td { height: 18px; background: #fff; }
+  .check-ex-cell {
+    padding: 1px 6px; background: #FAFBFD;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    line-height: 1.15;
+  }
+  .check-ex-name { font-size: 9.5pt; font-weight: 700; color: #0F172A; }
+  .check-ex-rx { font-size: 7.5pt; color: #475569; margin-left: 5px; }
 
   .memo { margin-top: 8px; }
   .memo-head { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
@@ -391,7 +395,8 @@ export const PDF_STYLE = `
   .landscape .page-footer { margin-top: 5px; padding-top: 3px; }
   .landscape .howto { margin-top: 5px; padding: 4px 10px; }
   .landscape .week { margin-top: 5px; }
-  .landscape .check-table td { height: 21px; }
+  .landscape .check-table td { height: 17px; }
+  .landscape .check-ex-col { width: 54%; }
   .landscape .memo { margin-top: 6px; }
   .landscape .memo-line { height: 18px; }
   /* 表紙も横向きでは縦を詰める（A4横の高さは718pxしかない） */
@@ -430,8 +435,7 @@ function renderWeekBlock(
       (r, i) => `
       <tr>
         <td class="check-ex-cell">
-          <div class="check-ex-name">${i + 1}. ${esc(r.name)}</div>
-          <div class="check-ex-rx">${esc(r.rx)}</div>
+          <span class="check-ex-name">${i + 1}. ${esc(r.name)}</span><span class="check-ex-rx">${esc(r.rx)}</span>
         </td>
         ${WEEKDAYS.map(() => "<td></td>").join("")}
       </tr>`
@@ -475,11 +479,13 @@ function renderCheckSheets(
   // A4 に収まる週数を実測値から求める（超えると印刷時に半端なページが生まれるため）
   // 係数は実際のレンダリング高さを計測して較正した値
   // 係数は実測（ヘッダー/使い方帯/週ブロック/メモ/フッターの各高さ）から較正。
-  // budget は A4 の理論値（縦1047 / 横718）ではなく、ブラウザ印刷が付加する
-  // URL・日付などで有効高が減る分を見込んだ保守的な値。
+  // budget は A4 の理論値（縦1047 / 横718）ではなく、実機の iOS Safari で
+  // 印刷したときに収まった実効値から逆算した保守的な値。
+  // 実測: 縦791px の内容がフッターだけ次ページに落ちた → 実効高は 750px 前後。
+  // 同様に横は 529px で溢れた → 実効高 490px 前後。ここから安全側に倒している。
   const m = isLandscape
-    ? { fixed: 123, perWeek: 72, rowH: 31, memo: 75, budget: 600, columns: 2 }
-    : { fixed: 133, perWeek: 52, rowH: 31, memo: 77, budget: 880, columns: 1 };
+    ? { fixed: 123, perWeek: 72, rowH: 20, memo: 75, budget: 480, columns: 2 }
+    : { fixed: 133, perWeek: 52, rowH: 20, memo: 77, budget: 700, columns: 1 };
 
   const estimate = (weeks: number): number => {
     const weekRows = Math.ceil(weeks / m.columns);
