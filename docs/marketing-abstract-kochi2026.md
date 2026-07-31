@@ -267,9 +267,8 @@
 
 ---
 
-## 10. 関連 memory ファイル（参照）
+## 10. 関連ファイル（参照）
 
-- `.claude/agent-memory/cmo-advisor/handover.md` — 進行中タスク
-- `.claude/agent-memory/cmo-advisor/decisions.md` — 過去の決定事項
-- `.claude/agent-memory/cmo-advisor/learning-log.md` — 利用者の学習進捗
-- `.claude/inbox/cmo-advisor.md` — pm からのタスクブリーフ
+- [tasks/conference-2026-kochi.md](../tasks/conference-2026-kochi.md) — 進行状況・スケジュール
+- [docs/decisions.md](decisions.md) — 演題名・N の見せ方・大会規定・引用文献の調査結果
+- [docs/marketing-poster-data-kochi2026.md](marketing-poster-data-kochi2026.md) — アンケート A・B のローデータ

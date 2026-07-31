@@ -246,7 +246,7 @@
 - 最終 PDF 化・提出
 - 当日のポスター掲示・質疑応答
 
-### app-developer / exercise-curator（必要に応じて）
+### アプリ側の準備（必要に応じて）
 - アプリの UI スクリーンショット用ビルド（最新版で見栄えの良い画面）
 - 運動データの最新数（採択前後で「現在 N 種」の数字が更新されていれば反映）
 
@@ -276,11 +276,7 @@
 - **学会タスクトラック**: `tasks/conference-2026-kochi.md`
 - **CLAUDE.md**: プロジェクト全体ルール
 - **DESIGN.md**: ブランドカラー・タイポグラフィ参照
-- **cmo memory**:
-  - `.claude/agent-memory/cmo-advisor/handover.md` — 進行中タスク
-  - `.claude/agent-memory/cmo-advisor/decisions.md` — 過去の決定事項
-  - `.claude/agent-memory/cmo-advisor/learning-log.md`
-  - `.claude/inbox/cmo-advisor.md`
+- **[docs/decisions.md](decisions.md)**: 演題名・N の見せ方・大会規定・事業判断の記録
 
 ---
 

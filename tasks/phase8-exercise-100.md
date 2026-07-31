@@ -103,3 +103,18 @@
 | Batch 5 (上肢・体幹・呼吸) | 19種 | 72 | ✅ 完了 |
 | Batch 6 (運動療法応用) | 15種 | 87 | ✅ 完了 |
 | Batch 7 (100種到達) | 13種 | 100 | ✅ 完了 |
+
+## 8-4. 100種到達後の残タスク
+
+### 資産の整備
+- [ ] `scripts/prompts.csv` に Batch 4〜7 の運動プロンプトを追加（現在 Batch 1〜3 + 一部のみ。手動生成分は `batch*-prompts.xlsx` にしか残っていない）
+- [ ] `assets/illustrations/PROMPT_TEMPLATE.md` を100種分に更新（現在10種分のみ記載）
+
+### 検証（[docs/dev-notes.md](../docs/dev-notes.md) の「未検証・懸念」参照）
+- [ ] 100種での実機テスト（フィルタ・検索・PDF出力）
+- [ ] WebP の iOS 実機表示確認（100枚）
+- [ ] 100種対応版の iOS 審査再提出
+
+### 将来
+- [ ] 画像生成モデル改善時の全イラスト差し替え（`generate-illustrations.py --skip-existing` 無効化で一括再生成可）
+- [ ] 100種を超える追加運動の選定
