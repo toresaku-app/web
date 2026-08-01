@@ -73,9 +73,11 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
   - [x] GA4管理画面: データ保持14ヶ月 / サイト内検索OFF / カスタムディメンション6件登録
 - [x] Web 第2デプロイ（2枚化・GA4計測・ポリシー反映を同便で）— PR #13 / 2026-08-01
 - [ ] **イラストの是正**（2026-08-02 レビュー・[docs/illustration-review-2026-08.md](../docs/illustration-review-2026-08.md)）
-  - [ ] Tier A 9枚の再生成 — 患者が違う運動を実行しかねないもの。学会前に片付けたい
+  - [x] Tier A の生成プロンプト作成 — [scripts/batch10-tier-a-fixes.md](../scripts/batch10-tier-a-fixes.md)
+  - [ ] Tier A 9運動 **10枚**の生成（`tandem-stance` は開始・動作の2枚）→ 検収 → WebP差し替え
         `ankle-dorsiflexion` `ankle-plantarflexion` `hip-flexor-stretch` `gait-backward`
         `knee-extension-rom` `side-plank` `tandem-stance` `chest-stretch` `forearm-stretch`
+        - 人物基準画像（`shoulder-shrug.png`）を毎回添付する運用にした。顔のばらつき再発防止
   - [ ] Tier C 12種を1枚表示に戻す — **生成コストゼロ**（`START_ILLUSTRATIONS` から外すだけ）
   - [ ] Tier B 11種の再生成 — 余裕があれば。開始/動作で対象関節以外が動く問題
   - 再生成ルール: 開始と動作は「対象関節の角度だけが違う同一構図」。支持物・足位置・道具・視点・人物サイズを固定
