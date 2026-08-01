@@ -36,6 +36,7 @@ if (Platform.OS !== "web") {
 }
 import { SelectedExercise } from "../src/types/exercise";
 import { generateHtml } from "../src/utils/generateHtml";
+import { track } from "../src/utils/analytics";
 
 const FREQUENCY_OPTIONS = [
   "1日1回",
@@ -56,6 +57,13 @@ export default function PreviewScreen() {
 
   const handleExport = async () => {
     setIsExporting(true);
+    track({
+      name: "pdf_export",
+      exercise_count: selectedExercises.length,
+      orientation,
+      check_sheet: includeCheckSheet,
+      has_purpose: sheetPurpose.trim() !== "",
+    });
 
     if (Platform.OS === "web") {
       setIsExporting(false);
@@ -253,7 +261,10 @@ export default function PreviewScreen() {
         </Text>
         {/* 実施チェック表 */}
         <Pressable
-          onPress={() => setIncludeCheckSheet(!includeCheckSheet)}
+          onPress={() => {
+            setIncludeCheckSheet(!includeCheckSheet);
+            track({ name: "check_sheet_toggle", enabled: !includeCheckSheet });
+          }}
           accessibilityRole="checkbox"
           accessibilityState={{ checked: includeCheckSheet }}
           accessibilityLabel="実施チェック表を付ける"
@@ -332,7 +343,7 @@ export default function PreviewScreen() {
           </Text>
         </Pressable>
         <Text className="mt-2 text-center text-[13px] text-ink3">
-          端末内で完結 · クラウド送信なし
+          患者データは端末内で完結 · 外部送信なし
         </Text>
       </View>
       </ScrollView>

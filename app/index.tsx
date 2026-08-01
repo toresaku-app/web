@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { View, Text, FlatList, Pressable, TextInput, Linking } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,6 +9,7 @@ import { FilterSheet } from "../src/components/FilterSheet";
 import { ExerciseDetailModal } from "../src/components/ExerciseDetailModal";
 import { SelectionSheet } from "../src/components/SelectionSheet";
 import { BodyPart, Category, Exercise, Posture } from "../src/types/exercise";
+import { track } from "../src/utils/analytics";
 
 const FEEDBACK_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSdnlPwtqKpPcYBHKTdR4XfThPmxwbd3qjPAj3PTih2LD9LhxQ/viewform";
@@ -84,6 +85,23 @@ export default function ExerciseLibrary() {
     });
   }, [bodyPartFilter, postureFilter, categoryFilter, searchText]);
 
+  // 検索は打鍵ごとではなく入力が落ち着いてから1回だけ計測する。
+  // 検索語そのものは送らない（患者名等が入力される可能性を排除するため）
+  const resultCountRef = useRef(0);
+  resultCountRef.current = filteredExercises.length;
+  useEffect(() => {
+    const q = searchText.trim();
+    if (!q) return;
+    const timer = setTimeout(() => {
+      track({
+        name: "search_use",
+        result_count: resultCountRef.current,
+        has_result: resultCountRef.current > 0,
+      });
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
   const selectedIds = new Set(selectedExercises.map((e) => e.exerciseId));
   const selectedCount = selectedExercises.length;
 
@@ -96,6 +114,15 @@ export default function ExerciseLibrary() {
       removeExercise(id);
     } else {
       addExercise(id);
+      const ex = EXERCISES.find((e) => e.id === id);
+      if (ex) {
+        track({
+          name: "exercise_select",
+          exercise_id: ex.id,
+          body_part: ex.bodyPart,
+          category: ex.category,
+        });
+      }
     }
   };
 
@@ -190,7 +217,14 @@ export default function ExerciseLibrary() {
                 return (
                   <Pressable
                     key={filter}
-                    onPress={() => setBodyPartFilter(filter)}
+                    onPress={() => {
+                      setBodyPartFilter(filter);
+                      track({
+                        name: "filter_apply",
+                        filter_type: "body_part",
+                        filter_value: filter,
+                      });
+                    }}
                     accessibilityRole="button"
                     accessibilityState={{ selected: isSelected }}
                     accessibilityLabel={`部位: ${filter}`}
@@ -260,7 +294,10 @@ export default function ExerciseLibrary() {
               exercise={item}
               isSelected={selectedIds.has(item.id)}
               onToggle={() => toggle(item.id)}
-              onOpenDetail={() => setDetailExercise(item)}
+              onOpenDetail={() => {
+                setDetailExercise(item);
+                track({ name: "exercise_detail_open", exercise_id: item.id });
+              }}
             />
           </View>
         )}
@@ -323,7 +360,10 @@ export default function ExerciseLibrary() {
             <Text className="text-[12px] text-ink3">確認 ›</Text>
           </Pressable>
           <Pressable
-            onPress={() => router.push("/preview")}
+            onPress={() => {
+              track({ name: "sheet_edit_open", exercise_count: selectedCount });
+              router.push("/preview");
+            }}
             accessibilityRole="button"
             accessibilityLabel={`指導書を作成（${selectedCount}種目選択中）`}
             className="h-[56px] flex-row items-center justify-center rounded-[14px] bg-navy"
@@ -358,13 +398,19 @@ export default function ExerciseLibrary() {
             label: "姿勢",
             options: POSTURE_FILTERS,
             selected: postureFilter,
-            onSelect: (v) => setPostureFilter(v as "すべて" | Posture),
+            onSelect: (v) => {
+              setPostureFilter(v as "すべて" | Posture);
+              track({ name: "filter_apply", filter_type: "posture", filter_value: v });
+            },
           },
           {
             label: "種類",
             options: CATEGORY_FILTERS,
             selected: categoryFilter,
-            onSelect: (v) => setCategoryFilter(v as "すべて" | Category),
+            onSelect: (v) => {
+              setCategoryFilter(v as "すべて" | Category);
+              track({ name: "filter_apply", filter_type: "category", filter_value: v });
+            },
           },
         ]}
       />
@@ -385,6 +431,7 @@ export default function ExerciseLibrary() {
         onRemove={removeExercise}
         onProceed={() => {
           setSelectionOpen(false);
+          track({ name: "sheet_edit_open", exercise_count: selectedCount });
           router.push("/preview");
         }}
       />
