@@ -1,6 +1,6 @@
 import { Modal, View, Text, Pressable, ScrollView, Image } from "react-native";
 import { Exercise } from "../types/exercise";
-import { ILLUSTRATIONS } from "../constants/illustrations";
+import { ILLUSTRATIONS, START_ILLUSTRATIONS } from "../constants/illustrations";
 
 interface Props {
   exercise: Exercise | null;
@@ -21,6 +21,7 @@ export function ExerciseDetailModal({
 }: Props) {
   if (!exercise) return null;
   const illustration = ILLUSTRATIONS[exercise.id];
+  const startIllustration = START_ILLUSTRATIONS[exercise.id];
 
   return (
     <Modal
@@ -70,8 +71,15 @@ export function ExerciseDetailModal({
             <Tag label={exercise.target} tone="teal" />
           </View>
 
-          {/* イラスト */}
-          {illustration && (
+          {/* イラスト（2枚化済みなら 開始 → 動作 の2枚） */}
+          {illustration && startIllustration && (
+            <View className="mt-3.5 h-[160px] flex-row items-center gap-1.5">
+              <IllustPane source={startIllustration} caption="① 開始" />
+              <Text className="text-[18px] font-bold text-warn">▶</Text>
+              <IllustPane source={illustration} caption="② 動作" />
+            </View>
+          )}
+          {illustration && !startIllustration && (
             <View className="mt-3.5 h-[200px] items-center justify-center overflow-hidden rounded-[12px] border border-line bg-[#F4F6FA] p-3">
               <Image
                 source={illustration}
@@ -154,6 +162,29 @@ export function ExerciseDetailModal({
       </View>
       </View>
     </Modal>
+  );
+}
+
+function IllustPane({
+  source,
+  caption,
+}: {
+  source: number;
+  caption: string;
+}) {
+  return (
+    <View className="h-full flex-1">
+      <View className="flex-1 items-center justify-center overflow-hidden rounded-[10px] border border-line bg-[#F4F6FA] p-2">
+        <Image
+          source={source}
+          style={{ width: "100%", height: "100%" }}
+          resizeMode="contain"
+        />
+      </View>
+      <Text className="mt-1 text-center text-[11px] font-semibold text-navy">
+        {caption}
+      </Text>
+    </View>
   );
 }
 

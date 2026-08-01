@@ -15,7 +15,7 @@ import {
 import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
 import { EXERCISES } from "../src/constants/exercises";
-import { ILLUSTRATIONS } from "../src/constants/illustrations";
+import { ILLUSTRATIONS, START_ILLUSTRATIONS } from "../src/constants/illustrations";
 import { Asset } from "expo-asset";
 
 // Native-only modules - lazy imported to avoid web bundler errors
@@ -66,21 +66,37 @@ export default function PreviewScreen() {
     // Native: expo-print + expo-sharing
     let fileUri: string | null = null;
     try {
+      const toDataUri = async (source: number): Promise<string | null> => {
+        const asset = Asset.fromModule(source);
+        await asset.downloadAsync();
+        if (!asset.localUri || !FileSystem) return null;
+        const base64 = await FileSystem.readAsStringAsync(asset.localUri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        return `data:image/png;base64,${base64}`;
+      };
+
       const imageUris: Record<string, string> = {};
+      const startImageUris: Record<string, string> = {};
       for (const sel of selectedExercises) {
         const source = ILLUSTRATIONS[sel.exerciseId];
         if (source) {
-          const asset = Asset.fromModule(source);
-          await asset.downloadAsync();
-          if (asset.localUri && FileSystem) {
-            const base64 = await FileSystem.readAsStringAsync(asset.localUri, {
-              encoding: FileSystem.EncodingType.Base64,
-            });
-            imageUris[sel.exerciseId] = `data:image/png;base64,${base64}`;
-          }
+          const uri = await toDataUri(source);
+          if (uri) imageUris[sel.exerciseId] = uri;
+        }
+        // 2枚化済みの運動のみ開始姿勢を追加（未生成の運動は1枚のまま）
+        const startSource = START_ILLUSTRATIONS[sel.exerciseId];
+        if (startSource) {
+          const uri = await toDataUri(startSource);
+          if (uri) startImageUris[sel.exerciseId] = uri;
         }
       }
-      const html = generateHtml(selectedExercises, imageUris, sheetPurpose, orientation, false, includeCheckSheet);
+      const html = generateHtml(selectedExercises, imageUris, {
+        sheetPurpose,
+        orientation,
+        includeCheckSheet,
+        startImageUris,
+      });
       const { uri } = await printToFileAsync({ html });
       fileUri = uri;
       setIsExporting(false);

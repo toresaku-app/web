@@ -100,3 +100,27 @@ export const ILLUSTRATIONS: Record<string, number> = {
   "supine-hip-flexion": require("../../assets/illustrations/supine-hip-flexion.webp"),
   "prone-hip-extension": require("../../assets/illustrations/prone-hip-extension.webp"),
 };
+
+/**
+ * 開始姿勢のイラスト（2枚化）。
+ *
+ * 運動を「開始姿勢 → 動作中」の2枚で示すための1枚目。
+ * ILLUSTRATIONS 側が「動作中」にあたる。
+ *
+ * ここに登録がない運動は従来どおり1枚（動作中のみ）で表示される。
+ * 生成が進むたびに追記する運用（require は静的パスが必要なため自動生成できない）。
+ *
+ * 追加手順:
+ *   1. assets/illustrations/{id}-start.webp を配置
+ *   2. 下に `"{id}": require("../../assets/illustrations/{id}-start.webp"),` を追記
+ *
+ * 生成プロンプト: scripts/batch8-start-frames.md
+ */
+export const START_ILLUSTRATIONS: Record<string, number> = {
+  // Batch 8（頻用30種）の生成が完了した運動から順に追記する
+  "patella-setting": require("../../assets/illustrations/patella-setting-start.webp"),
+};
+
+/** 2枚化されているか（開始姿勢の登録があるか） */
+export const hasStartFrame = (exerciseId: string): boolean =>
+  START_ILLUSTRATIONS[exerciseId] !== undefined;
