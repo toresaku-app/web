@@ -117,8 +117,37 @@ export const ILLUSTRATIONS: Record<string, number> = {
  * 生成プロンプト: scripts/batch8-start-frames.md
  */
 export const START_ILLUSTRATIONS: Record<string, number> = {
-  // Batch 8（頻用30種）の生成が完了した運動から順に追記する
+  // Batch 8（頻用30種）。生成が完了した運動から順に追記する
+  "adductor-stretch": require("../../assets/illustrations/adductor-stretch-start.webp"),
+  "ankle-dorsiflexion": require("../../assets/illustrations/ankle-dorsiflexion-start.webp"),
+  "back-extension": require("../../assets/illustrations/back-extension-start.webp"),
+  "bird-dog": require("../../assets/illustrations/bird-dog-start.webp"),
+  "bridge": require("../../assets/illustrations/bridge-start.webp"),
+  "calf-raise": require("../../assets/illustrations/calf-raise-start.webp"),
+  "calf-stretch": require("../../assets/illustrations/calf-stretch-start.webp"),
+  "chin-tuck": require("../../assets/illustrations/chin-tuck-start.webp"),
+  "clamshell": require("../../assets/illustrations/clamshell-start.webp"),
+  "draw-in": require("../../assets/illustrations/draw-in-start.webp"),
+  "hamstring-stretch": require("../../assets/illustrations/hamstring-stretch-start.webp"),
+  "hip-abduction": require("../../assets/illustrations/hip-abduction-start.webp"),
+  "hip-abduction-training": require("../../assets/illustrations/hip-abduction-training-start.webp"),
+  "hip-extension": require("../../assets/illustrations/hip-extension-start.webp"),
   "patella-setting": require("../../assets/illustrations/patella-setting-start.webp"),
+  "pelvic-tilt": require("../../assets/illustrations/pelvic-tilt-start.webp"),
+  "quad-stretch": require("../../assets/illustrations/quad-stretch-start.webp"),
+  "scapular-retraction": require("../../assets/illustrations/scapular-retraction-start.webp"),
+  "seated-knee-ext": require("../../assets/illustrations/seated-knee-ext-start.webp"),
+  "seated-march": require("../../assets/illustrations/seated-march-start.webp"),
+  "shoulder-flexion": require("../../assets/illustrations/shoulder-flexion-start.webp"),
+  "single-leg-stand": require("../../assets/illustrations/single-leg-stand-start.webp"),
+  "sit-to-stand": require("../../assets/illustrations/sit-to-stand-start.webp"),
+  "slr": require("../../assets/illustrations/slr-start.webp"),
+  "squat": require("../../assets/illustrations/squat-start.webp"),
+  "step-up": require("../../assets/illustrations/step-up-start.webp"),
+  "tandem-stance": require("../../assets/illustrations/tandem-stance-start.webp"),
+  "toe-raise": require("../../assets/illustrations/toe-raise-start.webp"),
+  "towel-gather": require("../../assets/illustrations/towel-gather-start.webp"),
+  "weight-shift-lr": require("../../assets/illustrations/weight-shift-lr-start.webp"),
 };
 
 /** 2枚化されているか（開始姿勢の登録があるか） */

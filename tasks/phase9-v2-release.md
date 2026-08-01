@@ -33,8 +33,8 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
 
 ### Track 2: イラスト2枚化（頻用30種）— 外部リードタイムが長いので早く着火
 
-- [ ] 利用者: 30種リストの確認（scripts/batch8-start-frames.md、差し替え自由）
-- [ ] Codex: パイロット1枚（patella-setting）生成 → 利用者検収 → 量産29枚
+- [x] 利用者: 30種リストの確認（scripts/batch8-start-frames.md、差し替え自由）
+- [x] Codex: パイロット1枚（patella-setting）生成 → 利用者検収 → 量産29枚
 - [ ] Opus: 混在対応の実装（illustration2 型・詳細モーダル・PDF 2枚横並び+遷移矢印・1枚フォールバック）
   - **印刷回帰テストを同じPRに同梱**（生成HTMLの高さ見積もりと実測の突き合わせ。実効印刷領域の再発防止）
 - [ ] 生成済み分の WebP 変換・illustrations.ts 登録・PDF縦横検証
