@@ -343,7 +343,7 @@ export default function PreviewScreen() {
           </Text>
         </Pressable>
         <Text className="mt-2 text-center text-[13px] text-ink3">
-          患者データは端末内で完結 · 外部送信なし
+          自由入力内容・作成PDFは外部へ自動送信されません
         </Text>
       </View>
       </ScrollView>
