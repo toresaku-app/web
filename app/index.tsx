@@ -5,8 +5,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { EXERCISES } from "../src/constants/exercises";
 import { useHepStore } from "../src/stores/hepStore";
 import { ExerciseCard } from "../src/components/ExerciseCard";
-import { FilterBar } from "../src/components/FilterBar";
-import { BodyPart, Category, Posture } from "../src/types/exercise";
+import { FilterSheet } from "../src/components/FilterSheet";
+import { ExerciseDetailModal } from "../src/components/ExerciseDetailModal";
+import { SelectionSheet } from "../src/components/SelectionSheet";
+import { BodyPart, Category, Exercise, Posture } from "../src/types/exercise";
+
+const FEEDBACK_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdnlPwtqKpPcYBHKTdR4XfThPmxwbd3qjPAj3PTih2LD9LhxQ/viewform";
 
 const BODY_PART_FILTERS: ("すべて" | BodyPart)[] = [
   "すべて",
@@ -33,6 +38,14 @@ const CATEGORY_FILTERS: ("すべて" | Category)[] = [
   "呼吸",
 ];
 
+/** ひらがな・カタカナを相互にヒットさせるための正規化 */
+const normalize = (s: string): string =>
+  s
+    .toLowerCase()
+    .replace(/[ぁ-ゖ]/g, (c) =>
+      String.fromCharCode(c.charCodeAt(0) + 0x60)
+    );
+
 export default function ExerciseLibrary() {
   const [bodyPartFilter, setBodyPartFilter] = useState<"すべて" | BodyPart>(
     "すべて"
@@ -44,10 +57,15 @@ export default function ExerciseLibrary() {
     "すべて"
   );
   const [searchText, setSearchText] = useState("");
+  const [isFilterOpen, setFilterOpen] = useState(false);
+  const [isSelectionOpen, setSelectionOpen] = useState(false);
+  const [detailExercise, setDetailExercise] = useState<Exercise | null>(null);
+
   const { selectedExercises, addExercise, removeExercise } = useHepStore();
   const router = useRouter();
 
   const filteredExercises = useMemo(() => {
+    const q = normalize(searchText.trim());
     return EXERCISES.filter((e) => {
       if (bodyPartFilter !== "すべて" && e.bodyPart !== bodyPartFilter)
         return false;
@@ -55,12 +73,11 @@ export default function ExerciseLibrary() {
         return false;
       if (categoryFilter !== "すべて" && e.category !== categoryFilter)
         return false;
-      if (searchText) {
-        const q = searchText.toLowerCase();
+      if (q) {
         return (
-          e.name.toLowerCase().includes(q) ||
-          e.nameEn.toLowerCase().includes(q) ||
-          e.target.toLowerCase().includes(q)
+          normalize(e.name).includes(q) ||
+          normalize(e.nameEn).includes(q) ||
+          normalize(e.target).includes(q)
         );
       }
       return true;
@@ -70,129 +87,190 @@ export default function ExerciseLibrary() {
   const selectedIds = new Set(selectedExercises.map((e) => e.exerciseId));
   const selectedCount = selectedExercises.length;
 
+  // シートに入れている絞り込み（姿勢・種類）の適用数
+  const sheetActiveCount =
+    (postureFilter !== "すべて" ? 1 : 0) + (categoryFilter !== "すべて" ? 1 : 0);
+
+  const toggle = (id: string) => {
+    if (selectedIds.has(id)) {
+      removeExercise(id);
+    } else {
+      addExercise(id);
+    }
+  };
+
+  const selectedNames = [...selectedExercises]
+    .sort((a, b) => a.order - b.order)
+    .map((s) => EXERCISES.find((e) => e.id === s.exerciseId)?.name)
+    .filter(Boolean)
+    .join("、");
+
   return (
     <SafeAreaView className="flex-1 bg-card" edges={["top"]}>
-      {/* ヘッダー */}
-      <View className="border-b border-line bg-card">
-        <View className="flex-row items-center justify-between px-5 pb-0.5 pt-1">
+      {/* ヘッダー（1行に圧縮してリストの面積を確保） */}
+      <View className="border-b border-line bg-card px-5 pb-2.5 pt-1.5">
+        <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-2">
-            <View className="h-[22px] w-[22px] items-center justify-center rounded-md bg-navy">
-              <Text className="text-[10px] font-extrabold text-white">ト</Text>
+            <View className="h-[24px] w-[24px] items-center justify-center rounded-md bg-navy">
+              <Text className="text-[11px] font-extrabold text-white">ト</Text>
             </View>
-            <Text className="text-[13px] font-semibold text-ink">
-              トレさく
+            <Text className="text-[21px] font-bold tracking-tight text-ink">
+              運動ライブラリ
             </Text>
           </View>
           <Pressable
-            onPress={() =>
-              Linking.openURL(
-                "https://docs.google.com/forms/d/e/1FAIpQLSdnlPwtqKpPcYBHKTdR4XfThPmxwbd3qjPAj3PTih2LD9LhxQ/viewform"
-              )
-            }
+            onPress={() => Linking.openURL(FEEDBACK_URL)}
             accessibilityRole="button"
             accessibilityLabel="ご意見・ご要望を送る"
-            className="rounded-lg border border-line px-2.5 py-1"
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            className="rounded-lg border border-line px-2.5 py-1.5"
           >
             <Text className="text-[12px] text-ink3">ご意見</Text>
           </Pressable>
         </View>
-        <View className="px-5 pb-3.5 pt-1.5">
-          <Text className="text-[26px] font-bold tracking-tight text-ink">
-            運動ライブラリ
+        <Text className="mt-1 text-[12px] text-ink2">
+          処方する運動を選択してください ·{" "}
+          <Text className="font-semibold text-navy">
+            {filteredExercises.length}件
           </Text>
-          <Text className="mt-1 text-[13px] text-ink2">
-            処方する運動を選択してください ·{" "}
-            <Text className="font-semibold text-navy">
-              {filteredExercises.length}件
-            </Text>
-          </Text>
-        </View>
+        </Text>
       </View>
 
-      {/* 運動リスト */}
       <FlatList
         data={filteredExercises}
         keyExtractor={(item) => item.id}
         className="bg-surface"
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: selectedCount > 0 ? 160 : 24 }}
         ListHeaderComponent={
-          <View>
-            {/* 検索バー */}
-            <View className="bg-card px-5 pb-3">
-              <View className="h-[42px] flex-row items-center rounded-[11px] border border-line bg-[#F4F6FA] px-3.5">
+          <View className="border-b border-line bg-card px-5 pb-2.5 pt-2.5">
+            {/* 検索 + 絞り込み */}
+            <View className="flex-row items-center gap-2">
+              <View className="h-[42px] flex-1 flex-row items-center rounded-[11px] border border-line bg-[#F4F6FA] px-3.5">
                 <Text className="mr-2 text-ink3">🔍</Text>
                 <TextInput
-                  className="flex-1 text-[14px] text-ink"
-                  placeholder="運動名・英名・部位で検索"
+                  className="flex-1 text-[16px] text-ink"
+                  placeholder="運動名・部位で検索"
                   placeholderTextColor="#94A3B8"
                   value={searchText}
                   onChangeText={setSearchText}
                   clearButtonMode="while-editing"
                 />
               </View>
+              <Pressable
+                onPress={() => setFilterOpen(true)}
+                accessibilityRole="button"
+                accessibilityLabel={`絞り込み${sheetActiveCount > 0 ? `（${sheetActiveCount}件適用中）` : ""}`}
+                className={`h-[42px] flex-row items-center gap-1.5 rounded-[11px] px-3.5 ${
+                  sheetActiveCount > 0
+                    ? "bg-navy"
+                    : "border border-line bg-card"
+                }`}
+              >
+                <Text
+                  className={`text-[13px] font-semibold ${
+                    sheetActiveCount > 0 ? "text-white" : "text-ink2"
+                  }`}
+                >
+                  絞り込み
+                </Text>
+                {sheetActiveCount > 0 && (
+                  <View className="h-[18px] w-[18px] items-center justify-center rounded-full bg-white/25">
+                    <Text className="text-[11px] font-bold text-white">
+                      {sheetActiveCount}
+                    </Text>
+                  </View>
+                )}
+              </Pressable>
             </View>
 
-            {/* フィルタ */}
-            <View className="border-b border-line bg-card py-2">
-              <FilterBar
-                label="部位"
-                filters={BODY_PART_FILTERS}
-                selected={bodyPartFilter}
-                onSelect={setBodyPartFilter}
-              />
-              <FilterBar
-                label="姿勢"
-                filters={POSTURE_FILTERS}
-                selected={postureFilter}
-                onSelect={setPostureFilter}
-              />
-              <FilterBar
-                label="種類"
-                filters={CATEGORY_FILTERS}
-                selected={categoryFilter}
-                onSelect={setCategoryFilter}
-              />
+            {/* 部位（常設） */}
+            <View className="mt-2.5 flex-row gap-1.5">
+              {BODY_PART_FILTERS.map((filter) => {
+                const isSelected = bodyPartFilter === filter;
+                return (
+                  <Pressable
+                    key={filter}
+                    onPress={() => setBodyPartFilter(filter)}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: isSelected }}
+                    accessibilityLabel={`部位: ${filter}`}
+                    className={`h-[38px] flex-1 items-center justify-center rounded-full ${
+                      isSelected ? "bg-navy" : "border border-line bg-card"
+                    }`}
+                  >
+                    <Text
+                      className={`text-[13px] ${
+                        isSelected
+                          ? "font-semibold text-white"
+                          : "font-medium text-ink2"
+                      }`}
+                    >
+                      {filter}
+                    </Text>
+                  </Pressable>
+                );
+              })}
             </View>
 
-            <View className="h-4" />
+            {/* 適用中の絞り込みチップ */}
+            {sheetActiveCount > 0 && (
+              <View className="mt-2 flex-row flex-wrap gap-1.5">
+                {postureFilter !== "すべて" && (
+                  <ActiveChip
+                    label={`姿勢: ${postureFilter}`}
+                    onClear={() => setPostureFilter("すべて")}
+                  />
+                )}
+                {categoryFilter !== "すべて" && (
+                  <ActiveChip
+                    label={`種類: ${categoryFilter}`}
+                    onClear={() => setCategoryFilter("すべて")}
+                  />
+                )}
+              </View>
+            )}
           </View>
         }
         ListEmptyComponent={
-          <View className="items-center px-4 py-20">
-            <Text className="text-lg text-ink2">
+          <View className="items-center px-8 py-20">
+            <Text className="text-lg font-bold text-ink2">
               該当する運動がありません
             </Text>
-            <Text className="mt-2 text-sm text-ink3">
-              フィルタや検索条件を変更してください
+            <Text className="mt-2 text-center text-sm text-ink3">
+              検索語や絞り込みを変えてみてください
             </Text>
+            <Pressable
+              onPress={() => {
+                setSearchText("");
+                setBodyPartFilter("すべて");
+                setPostureFilter("すべて");
+                setCategoryFilter("すべて");
+              }}
+              accessibilityRole="button"
+              accessibilityLabel="条件をすべて解除"
+              className="mt-5 h-11 justify-center rounded-xl bg-navy px-6"
+            >
+              <Text className="font-bold text-white">条件をすべて解除</Text>
+            </Pressable>
           </View>
         }
         renderItem={({ item }) => (
-          <View className="px-4">
+          <View className="px-4 pt-2.5">
             <ExerciseCard
               exercise={item}
               isSelected={selectedIds.has(item.id)}
-              onToggle={() => {
-                if (selectedIds.has(item.id)) {
-                  removeExercise(item.id);
-                } else {
-                  addExercise(item.id);
-                }
-              }}
+              onToggle={() => toggle(item.id)}
+              onOpenDetail={() => setDetailExercise(item)}
             />
           </View>
         )}
         ListFooterComponent={
           <View className="mt-4 items-center px-4 pb-4">
             <Pressable
-              onPress={() =>
-                Linking.openURL(
-                  "https://docs.google.com/forms/d/e/1FAIpQLSdnlPwtqKpPcYBHKTdR4XfThPmxwbd3qjPAj3PTih2LD9LhxQ/viewform"
-                )
-              }
+              onPress={() => Linking.openURL(FEEDBACK_URL)}
               accessibilityRole="button"
               accessibilityLabel="ご意見・ご要望を送る"
-              className="mb-3 rounded-lg border border-line bg-card px-4 py-2.5"
+              className="mb-3 h-11 justify-center rounded-lg border border-line bg-card px-4"
             >
               <Text className="text-[13px] font-medium text-ink2">
                 ご意見・ご要望
@@ -201,10 +279,9 @@ export default function ExerciseLibrary() {
             <View className="flex-row justify-center gap-4">
               <Pressable
                 onPress={() =>
-                  Linking.openURL(
-                    "https://toresaku-app.github.io/privacy-policy/"
-                  )
+                  Linking.openURL("https://toresaku-app.github.io/privacy-policy/")
                 }
+                hitSlop={{ top: 8, bottom: 8 }}
               >
                 <Text className="text-xs text-ink3 underline">
                   プライバシーポリシー
@@ -216,6 +293,7 @@ export default function ExerciseLibrary() {
                     "https://toresaku-app.github.io/privacy-policy/terms.html"
                   )
                 }
+                hitSlop={{ top: 8, bottom: 8 }}
               >
                 <Text className="text-xs text-ink3 underline">利用規約</Text>
               </Pressable>
@@ -224,9 +302,26 @@ export default function ExerciseLibrary() {
         }
       />
 
-      {/* 下部CTA */}
+      {/* 下部: 選択トレイ + CTA */}
       {selectedCount > 0 && (
-        <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-3">
+        <View className="absolute bottom-0 left-0 right-0 border-t border-line bg-card px-5 pb-7 pt-2.5">
+          <Pressable
+            onPress={() => setSelectionOpen(true)}
+            accessibilityRole="button"
+            accessibilityLabel={`選択中の運動を確認（${selectedCount}種目）`}
+            className="mb-2 flex-row items-center gap-2 rounded-[10px] bg-[#F4F6FA] px-3 py-2"
+          >
+            <Text className="text-[12px] font-semibold text-navy">
+              選択中
+            </Text>
+            <Text
+              className="flex-1 text-[12px] text-ink2"
+              numberOfLines={1}
+            >
+              {selectedNames}
+            </Text>
+            <Text className="text-[12px] text-ink3">確認 ›</Text>
+          </Pressable>
           <Pressable
             onPress={() => router.push("/preview")}
             accessibilityRole="button"
@@ -239,9 +334,7 @@ export default function ExerciseLibrary() {
               shadowOffset: { width: 0, height: 8 },
             }}
           >
-            <Text className="text-base font-bold text-white">
-              指導書を作成
-            </Text>
+            <Text className="text-base font-bold text-white">指導書を作成</Text>
             <View className="ml-2.5 rounded-full bg-white/20 px-2.5 py-0.5">
               <Text className="text-[13px] font-bold text-white">
                 {selectedCount}
@@ -250,6 +343,72 @@ export default function ExerciseLibrary() {
           </Pressable>
         </View>
       )}
+
+      <FilterSheet
+        visible={isFilterOpen}
+        onClose={() => setFilterOpen(false)}
+        resultCount={filteredExercises.length}
+        activeCount={sheetActiveCount}
+        onReset={() => {
+          setPostureFilter("すべて");
+          setCategoryFilter("すべて");
+        }}
+        sections={[
+          {
+            label: "姿勢",
+            options: POSTURE_FILTERS,
+            selected: postureFilter,
+            onSelect: (v) => setPostureFilter(v as "すべて" | Posture),
+          },
+          {
+            label: "種類",
+            options: CATEGORY_FILTERS,
+            selected: categoryFilter,
+            onSelect: (v) => setCategoryFilter(v as "すべて" | Category),
+          },
+        ]}
+      />
+
+      <ExerciseDetailModal
+        exercise={detailExercise}
+        isSelected={detailExercise ? selectedIds.has(detailExercise.id) : false}
+        onToggle={() => {
+          if (detailExercise) toggle(detailExercise.id);
+        }}
+        onClose={() => setDetailExercise(null)}
+      />
+
+      <SelectionSheet
+        visible={isSelectionOpen}
+        selected={selectedExercises}
+        onClose={() => setSelectionOpen(false)}
+        onRemove={removeExercise}
+        onProceed={() => {
+          setSelectionOpen(false);
+          router.push("/preview");
+        }}
+      />
     </SafeAreaView>
+  );
+}
+
+function ActiveChip({
+  label,
+  onClear,
+}: {
+  label: string;
+  onClear: () => void;
+}) {
+  return (
+    <Pressable
+      onPress={onClear}
+      accessibilityRole="button"
+      accessibilityLabel={`${label} を解除`}
+      hitSlop={{ top: 8, bottom: 8 }}
+      className="flex-row items-center gap-1.5 rounded-full bg-[#EEF2F9] px-3 py-1.5"
+    >
+      <Text className="text-[12px] font-semibold text-navy">{label}</Text>
+      <Text className="text-[12px] font-bold text-navy">✕</Text>
+    </Pressable>
   );
 }

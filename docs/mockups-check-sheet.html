@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>実施チェック表 デザイン案</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+    color: #0F172A;
+    background: #E5E9F0;
+    padding: 24px 12px;
+  }
+  .sheet {
+    width: 100%; max-width: 740px; margin: 0 auto;
+    background: #fff; padding: 38px 36px;
+    box-shadow: 0 4px 24px rgba(15,23,42,.15);
+  }
+
+  /* ── ヘッダー（既存PDFと同型） ── */
+  .page-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding-bottom: 8px; border-bottom: 3px solid #0B2545;
+  }
+  .brand { font-size: 10px; color: #94A3B8; letter-spacing: 1px; margin-bottom: 2px; }
+  .title { font-size: 24px; font-weight: 700; color: #0B2545; line-height: 1.2; }
+  .issue { font-size: 12px; color: #475569; margin-top: 3px; }
+  .page-badge {
+    padding: 4px 10px; border-radius: 6px;
+    background: #0B2545; color: #fff;
+    font-size: 12px; font-weight: 700; white-space: nowrap;
+  }
+
+  /* ── 使い方の帯 ── */
+  .howto {
+    margin-top: 12px; padding: 8px 12px;
+    background: #EEF2F9; border-radius: 8px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .howto-label {
+    background: #0B2545; color: #fff;
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; white-space: nowrap;
+  }
+  .howto-body { font-size: 13px; color: #0B2545; font-weight: 500; line-height: 1.5; }
+  .howto-body b { font-size: 15px; }
+
+  /* ── 週ブロック ── */
+  .week { margin-top: 14px; }
+  .week-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  .week-num {
+    font-size: 13px; font-weight: 700; color: #0B2545;
+    padding-left: 8px; border-left: 4px solid #0B2545;
+  }
+  .week-date { font-size: 12px; color: #94A3B8; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  th, td { border: 1px solid #D5DCE6; }
+  th {
+    background: #0B2545; color: #fff;
+    font-size: 11px; font-weight: 700; padding: 4px 2px; text-align: center;
+  }
+  th.ex-col { width: 34%; text-align: left; padding-left: 8px; }
+  th.sun { color: #FCA5A5; }
+  th.sat { color: #93C5FD; }
+  td { height: 34px; background: #fff; }
+  td.ex-cell { padding: 3px 8px; background: #FAFBFD; }
+  .ex-name { font-size: 12px; font-weight: 700; color: #0F172A; line-height: 1.25; }
+  .ex-rx { font-size: 10px; color: #475569; margin-top: 1px; }
+
+  /* ── メモ欄 ── */
+  .memo { margin-top: 16px; }
+  .memo-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+  .memo-bar { width: 4px; height: 16px; background: #0B2545; border-radius: 2px; }
+  .memo-title { font-size: 14px; font-weight: 700; color: #0F172A; }
+  .memo-sub { font-size: 11px; color: #94A3B8; }
+  .memo-lines { border: 1px solid #E6EAF0; border-radius: 8px; padding: 0 12px; }
+  .memo-line { height: 30px; border-bottom: 1px dashed #D5DCE6; }
+  .memo-line:last-child { border-bottom: none; }
+
+  /* ── フッター ── */
+  .page-footer {
+    margin-top: 14px; padding-top: 8px; border-top: 1px solid #E6EAF0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10px; color: #94A3B8;
+  }
+  .bring {
+    font-size: 11px; font-weight: 700; color: #B91C1C;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="page-header">
+    <div>
+      <div class="brand">トレさく — 自主トレ指導書作成アプリ</div>
+      <div class="title">実施チェック表</div>
+      <div class="issue">発行日　2026年7月31日</div>
+    </div>
+    <div class="page-badge">第 4 枚 / 全 4 枚</div>
+  </div>
+
+  <div class="howto">
+    <span class="howto-label">使い方</span>
+    <span class="howto-body">運動が<b>できた日に ○</b> を書きましょう。全部できなくても大丈夫です。</span>
+  </div>
+
+  <!-- 週ブロック × 4 -->
+  <div class="week">
+    <div class="week-head"><span class="week-num">第 1 週</span><span class="week-date">（　　月　　日 〜）</span></div>
+    <table>
+      <tr>
+        <th class="ex-col">運動</th>
+        <th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th class="sat">土</th><th class="sun">日</th>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">1. パテラセッティング</div><div class="ex-rx">20回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">2. SLR（下肢伸展挙上）</div><div class="ex-rx">10回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">3. ブリッジ</div><div class="ex-rx">10回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="week">
+    <div class="week-head"><span class="week-num">第 2 週</span><span class="week-date">（　　月　　日 〜）</span></div>
+    <table>
+      <tr>
+        <th class="ex-col">運動</th>
+        <th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th class="sat">土</th><th class="sun">日</th>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">1. パテラセッティング</div><div class="ex-rx">20回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">2. SLR（下肢伸展挙上）</div><div class="ex-rx">10回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">3. ブリッジ</div><div class="ex-rx">10回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="week">
+    <div class="week-head"><span class="week-num">第 3 週</span><span class="week-date">（　　月　　日 〜）</span></div>
+    <table>
+      <tr>
+        <th class="ex-col">運動</th>
+        <th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th class="sat">土</th><th class="sun">日</th>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">1. パテラセッティング</div><div class="ex-rx">20回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">2. SLR（下肢伸展挙上）</div><div class="ex-rx">10回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">3. ブリッジ</div><div class="ex-rx">10回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="week">
+    <div class="week-head"><span class="week-num">第 4 週</span><span class="week-date">（　　月　　日 〜）</span></div>
+    <table>
+      <tr>
+        <th class="ex-col">運動</th>
+        <th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th class="sat">土</th><th class="sun">日</th>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">1. パテラセッティング</div><div class="ex-rx">20回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">2. SLR（下肢伸展挙上）</div><div class="ex-rx">10回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+        <td class="ex-cell"><div class="ex-name">3. ブリッジ</div><div class="ex-rx">10回 × 2セット</div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="memo">
+    <div class="memo-head">
+      <span class="memo-bar"></span>
+      <span class="memo-title">メモ</span>
+      <span class="memo-sub">気づいたこと・困ったことがあれば書いてください</span>
+    </div>
+    <div class="memo-lines">
+      <div class="memo-line"></div>
+      <div class="memo-line"></div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>トレさく — 自主トレ指導書作成アプリ</span>
+    <span class="bring">次回の外来・リハビリの際に、この用紙をお持ちください</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,24 +1,26 @@
 import "../global.css";
 import { useEffect, useState } from "react";
-import { AppState, Platform, Pressable, Text, View, Alert } from "react-native";
+import { AppState, Platform, Pressable, Text, View } from "react-native";
 import { Stack, useRouter } from "expo-router";
 
 function BackToLibrary() {
   const router = useRouter();
+  // 選択内容はストアに保持されるため確認は不要（戻っても失われない）
   const handleBack = () => {
     if (Platform.OS === "web") {
-      if (window.confirm("運動ライブラリに戻りますか？")) {
-        router.replace("/");
-      }
+      router.replace("/");
     } else {
-      Alert.alert("確認", "運動ライブラリに戻りますか？", [
-        { text: "キャンセル", style: "cancel" },
-        { text: "戻る", onPress: () => router.back() },
-      ]);
+      router.back();
     }
   };
   return (
-    <Pressable onPress={handleBack} style={{ marginLeft: 4 }}>
+    <Pressable
+      onPress={handleBack}
+      accessibilityRole="button"
+      accessibilityLabel="運動ライブラリに戻る"
+      hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+      style={{ marginLeft: 4 }}
+    >
       <Text style={{ fontSize: 20, color: "#0B2545" }}>←</Text>
     </Pressable>
   );
@@ -50,7 +52,7 @@ export default function RootLayout() {
         <Stack.Screen
           name="preview"
           options={{
-            title: "指導書プレビュー",
+            title: "内容を調整",
             headerLeft: () => <BackToLibrary />,
           }}
         />

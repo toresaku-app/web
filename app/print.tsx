@@ -7,7 +7,8 @@ import { Asset } from "expo-asset";
 import { generateHtml } from "../src/utils/generateHtml";
 
 export default function PrintScreen() {
-  const { selectedExercises, sheetPurpose, orientation } = useHepStore();
+  const { selectedExercises, sheetPurpose, orientation, includeCheckSheet } =
+    useHepStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -32,20 +33,37 @@ export default function PrintScreen() {
           }
         }
       }
-      const html = generateHtml(selectedExercises, imageUris, sheetPurpose, orientation);
-      // 戻るボタンを追加したHTMLに書き換え
-      const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+      const html = generateHtml(selectedExercises, imageUris, sheetPurpose, orientation, true, includeCheckSheet);
+
+      const ua = navigator.userAgent;
+      const isIOS = /iPhone|iPad|iPod/i.test(ua);
+      const isAndroid = /Android/i.test(ua);
+      const isMobile = isIOS || isAndroid;
+
+      // 画面は A4 幅の viewport で描画され、端末幅に合わせて縮小表示される。
+      // ツールバーはその縮小を打ち消さないと文字が極端に小さくなるため、逆数で拡大する。
+      const pageWidth = orientation === "landscape" ? 1123 : 794;
+      const screenWidth = Math.min(window.screen.width, window.screen.height);
+      const k = isMobile ? Math.max(1, pageWidth / screenWidth) : 1;
+      const px = (n: number) => Math.round(n * k);
+
+      // 共有メニューの入口はOSで異なる（iOS Safari は「⋯」、Android Chrome は「⋮」）
+      const printHint = isIOS
+        ? "⋯ → 共有 → プリント"
+        : "⋮ → 共有 → 印刷";
       const printButton = isMobile
-        ? `<span style="color:#94A3B8;font-size:13px;">共有 → プリントでPDF保存</span>`
-        : `<button onclick="window.print()" style="color:#fff;background:#0EA5E9;border:none;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:bold;cursor:pointer;">印刷 / PDF保存</button>`;
+        ? `<span style="color:#E2E8F0;font-size:${px(14)}px;font-weight:600;">${printHint}</span>`
+        : `<button onclick="window.print()" style="color:#0B2545;background:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:bold;cursor:pointer;">印刷 / PDF保存</button>`;
+
+      const toolbarH = px(26) + px(12) * 2;
       const wrappedHtml = html.replace(
         "</body>",
-        `<div id="print-toolbar" style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#0B2545;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;">
-          <button onclick="window.location.href=window.location.pathname.replace('/print','/preview')" style="color:#fff;background:none;border:none;font-size:16px;font-weight:bold;cursor:pointer;">← 戻る</button>
+        `<div id="print-toolbar" style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#0B2545;padding:${px(12)}px ${px(16)}px;display:flex;justify-content:space-between;align-items:center;gap:${px(12)}px;">
+          <button onclick="window.location.href=window.location.pathname.replace('/print','/preview')" style="color:#fff;background:none;border:none;font-size:${px(16)}px;font-weight:bold;cursor:pointer;white-space:nowrap;">← 戻る</button>
           ${printButton}
         </div>
         <style>
-          body { padding-top: 52px; -webkit-user-select: none; user-select: none; }
+          body { padding-top: ${toolbarH}px; -webkit-user-select: none; user-select: none; }
           @media print { #print-toolbar { display: none !important; } body { padding-top: 0; } }
         </style>
         <script>

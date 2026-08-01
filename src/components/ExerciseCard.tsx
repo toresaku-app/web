@@ -6,9 +6,15 @@ interface Props {
   exercise: Exercise;
   isSelected: boolean;
   onToggle: () => void;
+  onOpenDetail: () => void;
 }
 
-export function ExerciseCard({ exercise, isSelected, onToggle }: Props) {
+export function ExerciseCard({
+  exercise,
+  isSelected,
+  onToggle,
+  onOpenDetail,
+}: Props) {
   const illustration = ILLUSTRATIONS[exercise.id];
 
   return (
@@ -26,9 +32,12 @@ export function ExerciseCard({ exercise, isSelected, onToggle }: Props) {
           : { shadowColor: "#0F172A", shadowOpacity: 0.03, shadowRadius: 2, shadowOffset: { width: 0, height: 1 } }
       }
     >
-      {/* サムネイル */}
+      {/* サムネイル（タップで詳細を開く。カード本体のタップは選択トグル） */}
       {illustration && (
-        <View
+        <Pressable
+          onPress={onOpenDetail}
+          accessibilityRole="button"
+          accessibilityLabel={`${exercise.name}の詳細を見る`}
           className={`h-[72px] w-[92px] items-center justify-center overflow-hidden rounded-[10px] border p-1 ${
             isSelected ? "border-[#C7D7F5] bg-primary-soft" : "border-line bg-[#F4F6FA]"
           }`}
@@ -38,7 +47,10 @@ export function ExerciseCard({ exercise, isSelected, onToggle }: Props) {
             style={{ width: "100%", height: "100%" }}
             resizeMode="contain"
           />
-        </View>
+          <View className="absolute bottom-0.5 right-0.5 h-[18px] w-[18px] items-center justify-center rounded-full bg-white/90">
+            <Text className="text-[11px] font-bold text-ink3">i</Text>
+          </View>
+        </Pressable>
       )}
 
       {/* テキスト情報 */}
