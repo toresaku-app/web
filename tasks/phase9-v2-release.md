@@ -72,6 +72,13 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
   - [x] 別リポジトリ toresaku-app/privacy-policy へ反映（利用者作業）— 公開URL 200・GA4記載を確認
   - [x] GA4管理画面: データ保持14ヶ月 / サイト内検索OFF / カスタムディメンション6件登録
 - [x] Web 第2デプロイ（2枚化・GA4計測・ポリシー反映を同便で）— PR #13 / 2026-08-01
+- [ ] **イラストの是正**（2026-08-02 レビュー・[docs/illustration-review-2026-08.md](../docs/illustration-review-2026-08.md)）
+  - [ ] Tier A 9枚の再生成 — 患者が違う運動を実行しかねないもの。学会前に片付けたい
+        `ankle-dorsiflexion` `ankle-plantarflexion` `hip-flexor-stretch` `gait-backward`
+        `knee-extension-rom` `side-plank` `tandem-stance` `chest-stretch` `forearm-stretch`
+  - [ ] Tier C 12種を1枚表示に戻す — **生成コストゼロ**（`START_ILLUSTRATIONS` から外すだけ）
+  - [ ] Tier B 11種の再生成 — 余裕があれば。開始/動作で対象関節以外が動く問題
+  - 再生成ルール: 開始と動作は「対象関節の角度だけが違う同一構図」。支持物・足位置・道具・視点・人物サイズを固定
 - [ ] **印刷高の再測定と DESIGN §7 の是正**（2026-08-01 発見・iOS提出前に片付けたい）
   - 本番実測で運動ページは縦736px / 横619px。しかし DESIGN §7 と `check-print-layout.mjs` の
     `PROVEN_SAFE = { portrait: 700, landscape: 480 }` は「運動ページ＝縦700px で収まっている」を根拠にしている
