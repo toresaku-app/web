@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { View, Text, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
-import { ILLUSTRATIONS } from "../src/constants/illustrations";
+import { ILLUSTRATIONS, START_ILLUSTRATIONS } from "../src/constants/illustrations";
 import { Asset } from "expo-asset";
 import { generateHtml } from "../src/utils/generateHtml";
 
@@ -22,18 +22,34 @@ export default function PrintScreen() {
     }
 
     (async () => {
+      const resolve = async (source: number): Promise<string | null> => {
+        const asset = Asset.fromModule(source);
+        await asset.downloadAsync();
+        return asset.localUri || asset.uri || null;
+      };
+
       const imageUris: Record<string, string> = {};
+      const startImageUris: Record<string, string> = {};
       for (const sel of selectedExercises) {
         const source = ILLUSTRATIONS[sel.exerciseId];
         if (source) {
-          const asset = Asset.fromModule(source);
-          await asset.downloadAsync();
-          if (asset.localUri || asset.uri) {
-            imageUris[sel.exerciseId] = asset.localUri || asset.uri;
-          }
+          const uri = await resolve(source);
+          if (uri) imageUris[sel.exerciseId] = uri;
+        }
+        // 2枚化済みの運動のみ開始姿勢を追加（未生成の運動は1枚のまま）
+        const startSource = START_ILLUSTRATIONS[sel.exerciseId];
+        if (startSource) {
+          const uri = await resolve(startSource);
+          if (uri) startImageUris[sel.exerciseId] = uri;
         }
       }
-      const html = generateHtml(selectedExercises, imageUris, sheetPurpose, orientation, true, includeCheckSheet);
+      const html = generateHtml(selectedExercises, imageUris, {
+        sheetPurpose,
+        orientation,
+        forScreen: true,
+        includeCheckSheet,
+        startImageUris,
+      });
 
       const ua = navigator.userAgent;
       const isIOS = /iPhone|iPad|iPod/i.test(ua);

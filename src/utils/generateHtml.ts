@@ -38,7 +38,8 @@ function renderPage(
   isLast: boolean,
   imageUri?: string,
   sheetPurpose?: string,
-  landscape?: boolean
+  landscape?: boolean,
+  startImageUri?: string
 ): string {
   const rxCells: string[] = [
     rxCell("回数", String(sel.reps), "回"),
@@ -94,7 +95,21 @@ function renderPage(
       ${sel.purpose ? `<div class="ex-purpose">${esc(sel.purpose)}</div>` : ""}
     </div>`;
 
-  const illustBlock = `
+  // 開始姿勢がある運動は2枚（開始 → 動作中）、無ければ従来どおり1枚
+  const illustBlock = startImageUri && imageUri
+    ? `
+    <div class="illust illust-pair">
+      <div class="illust-item">
+        <div class="illust-frame"><img src="${esc(startImageUri)}" alt=""/></div>
+        <div class="illust-cap">① 開始</div>
+      </div>
+      <div class="illust-arrow">▶</div>
+      <div class="illust-item">
+        <div class="illust-frame"><img src="${esc(imageUri)}" alt=""/></div>
+        <div class="illust-cap">② 動作</div>
+      </div>
+    </div>`
+    : `
     <div class="illust">
       ${imageUri ? `<img src="${esc(imageUri)}" alt=""/>` : `<div class="illust-placeholder">${esc(ex.name)}</div>`}
     </div>`;
@@ -198,6 +213,27 @@ export const PDF_STYLE = `
   }
   .illust img { max-width: 100%; max-height: 100%; object-fit: contain; }
   .illust-placeholder { font-size: 11pt; color: #94A3B8; }
+
+  /* ── イラスト2枚（開始姿勢 → 動作中） ── */
+  /* 枠の高さ(.illust)は1枚時と同じに保つ。変えると印刷のページ数較正が崩れる */
+  .illust-pair { gap: 6px; padding: 6px 8px; }
+  .illust-item {
+    flex: 1; min-width: 0; height: 100%;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .illust-frame {
+    flex: 1; min-height: 0; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .illust-cap {
+    font-size: 10pt; font-weight: 700; color: #0B2545;
+    background: #EEF2F9; border-radius: 4px;
+    padding: 1px 8px; margin-top: 2px; white-space: nowrap;
+  }
+  .illust-arrow {
+    flex-shrink: 0; color: #B91C1C;
+    font-size: 22pt; font-weight: 700; line-height: 1;
+  }
 
   /* ── 処方ストリップ ── */
   .rx-strip { display: flex; gap: 6px; margin-top: 10px; }
@@ -423,7 +459,8 @@ const WEEKDAYS = ["月", "火", "水", "木", "金", "土", "日"] as const;
 /** 1週分のチェック表（行=運動 × 列=曜日） */
 function renderWeekBlock(
   weekNumber: number,
-  rows: { name: string; rx: string }[]
+  rows: { name: string; rx: string }[],
+  numberOffset = 0
 ): string {
   const head = WEEKDAYS.map((d) => {
     const cls = d === "土" ? " check-sat" : d === "日" ? " check-sun" : "";
@@ -435,7 +472,7 @@ function renderWeekBlock(
       (r, i) => `
       <tr>
         <td class="check-ex-cell">
-          <span class="check-ex-name">${i + 1}. ${esc(r.name)}</span><span class="check-ex-rx">${esc(r.rx)}</span>
+          <span class="check-ex-name">${numberOffset + i + 1}. ${esc(r.name)}</span><span class="check-ex-rx">${esc(r.rx)}</span>
         </td>
         ${WEEKDAYS.map(() => "<td></td>").join("")}
       </tr>`
@@ -487,22 +524,43 @@ function renderCheckSheets(
     ? { fixed: 123, perWeek: 72, rowH: 20, memo: 75, budget: 480, columns: 2 }
     : { fixed: 133, perWeek: 52, rowH: 20, memo: 77, budget: 700, columns: 1 };
 
-  const estimate = (weeks: number): number => {
+  const estimateFor = (weeks: number, rowCount: number): number => {
     const weekRows = Math.ceil(weeks / m.columns);
-    return m.fixed + weekRows * (m.perWeek + m.rowH * rows.length) + m.memo;
+    return m.fixed + weekRows * (m.perWeek + m.rowH * rowCount) + m.memo;
   };
 
-  const weeksPerSheet = [4, 2, 1].find((w) => estimate(w) <= m.budget) ?? 1;
+  // 種目が多いと1週だけでも収まらないため、運動そのものも分割する
+  const maxRowsPerSheet = Math.max(
+    1,
+    Math.floor((m.budget - m.fixed - m.memo - m.perWeek) / m.rowH)
+  );
+  const rowChunks: (typeof rows)[] = [];
+  for (let i = 0; i < rows.length; i += maxRowsPerSheet) {
+    rowChunks.push(rows.slice(i, i + maxRowsPerSheet));
+  }
 
-  const sheets: number[][] = [];
+  // 週数は最も行数の多いチャンクに合わせる（全シートで週の区切りを揃える）
+  const maxChunkRows = Math.max(...rowChunks.map((c) => c.length));
+  const weeksPerSheet =
+    [4, 2, 1].find((w) => estimateFor(w, maxChunkRows) <= m.budget) ?? 1;
+
+  const weekGroups: number[][] = [];
   for (let w = 1; w <= 4; w += weeksPerSheet) {
-    sheets.push(
+    weekGroups.push(
       Array.from({ length: weeksPerSheet }, (_, i) => w + i).filter((n) => n <= 4)
     );
   }
 
+  // シート = 週グループ × 運動チャンク
+  const sheets: { weeks: number[]; rows: typeof rows; offset: number }[] = [];
+  for (const weeks of weekGroups) {
+    rowChunks.forEach((chunk, ci) => {
+      sheets.push({ weeks, rows: chunk, offset: ci * maxRowsPerSheet });
+    });
+  }
+
   return sheets
-    .map((weeks, sheetIndex) => {
+    .map(({ weeks, rows: sheetRows, offset }, sheetIndex) => {
       const isLastSheet = sheetIndex === sheets.length - 1;
       const badge =
         sheets.length > 1
@@ -524,7 +582,7 @@ function renderCheckSheets(
       <span class="howto-body">運動が<b>できた日に ○</b> を書きましょう。全部できなくても大丈夫です。</span>
     </div>
 
-    <div class="weeks">${weeks.map((w) => renderWeekBlock(w, rows)).join("")}</div>
+    <div class="weeks">${weeks.map((w) => renderWeekBlock(w, sheetRows, offset)).join("")}</div>
 
     ${
       isLastSheet
@@ -629,14 +687,28 @@ const screenStyle = (pageWidthPx: number) => `
     }
   }`;
 
+interface GenerateOptions {
+  sheetPurpose?: string;
+  orientation?: "portrait" | "landscape";
+  /** 画面表示用（Web の /print）。PDF生成時は false のまま使う */
+  forScreen?: boolean;
+  includeCheckSheet?: boolean;
+  /** 開始姿勢の画像。登録がある運動だけ2枚表示になる */
+  startImageUris?: Record<string, string>;
+}
+
 export function generateHtml(
   selectedExercises: SelectedExercise[],
   imageUris: Record<string, string>,
-  sheetPurpose?: string,
-  orientation?: "portrait" | "landscape",
-  forScreen = false,
-  includeCheckSheet = false
+  options: GenerateOptions = {}
 ) {
+  const {
+    sheetPurpose,
+    orientation,
+    forScreen = false,
+    includeCheckSheet = false,
+    startImageUris = {},
+  } = options;
   const sorted = [...selectedExercises].sort((a, b) => a.order - b.order);
   const total = sorted.length;
   const purpose = sheetPurpose?.trim() || undefined;
@@ -654,7 +726,11 @@ export function generateHtml(
       if (!ex) return "";
       // チェック表が続く場合は最終運動ページの後にも改ページが必要
       const isLast = i === sorted.length - 1 && !checkSheets;
-      return renderPage(sel, ex, i + 1, total, isLast, imageUris[sel.exerciseId], purpose, isLandscape);
+      return renderPage(
+        sel, ex, i + 1, total, isLast,
+        imageUris[sel.exerciseId], purpose, isLandscape,
+        startImageUris[sel.exerciseId]
+      );
     })
     .join("\n");
 
