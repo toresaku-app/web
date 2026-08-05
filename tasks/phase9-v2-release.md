@@ -78,7 +78,9 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
         `ankle-dorsiflexion` `ankle-plantarflexion` `hip-flexor-stretch` `gait-backward`
         `knee-extension-rom` `side-plank` `tandem-stance` `chest-stretch` `forearm-stretch`
         - 人物基準画像（`shoulder-shrug.png`）を毎回添付する運用にした。顔のばらつき再発防止
-  - [ ] Tier C 12種を1枚表示に戻す — **生成コストゼロ**（`START_ILLUSTRATIONS` から外すだけ）
+  - [x] Tier C 12種を1枚表示に戻した — `START_ILLUSTRATIONS` 65→53件。生成不要
+        1枚あたり 64×48mm → **71×53mm**（面積で約23%増）。枠高220px・ページ高736pxは不変
+        `{id}-start.webp` はディスクに残置（require していないので同梱されない）
   - [ ] Tier B 11種の再生成 — 余裕があれば。開始/動作で対象関節以外が動く問題
   - 再生成ルール: 開始と動作は「対象関節の角度だけが違う同一構図」。支持物・足位置・道具・視点・人物サイズを固定
 - [ ] **印刷高の再測定と DESIGN §7 の是正**（2026-08-01 発見・iOS提出前に片付けたい）

@@ -115,9 +115,21 @@ export const ILLUSTRATIONS: Record<string, number> = {
  *   2. 下に `"{id}": require("../../assets/illustrations/{id}-start.webp"),` を追記
  *
  * 生成プロンプト: scripts/batch8-start-frames.md
+ *
+ * ---
+ * 意図的に登録していないもの（2026-08-02・docs/illustration-review-2026-08.md Tier C）
+ *
+ * 等尺性・保持系で、開始と動作の差が矢印だけになる12種は 1枚表示に戻した。
+ * 2枚に割ると1枚あたりが小さくなるだけで、伝達力が上がらないため。
+ *   chin-tuck / codman-exercise / draw-in / forearm-pronation-supination /
+ *   patella-setting / pelvic-tilt / scapular-depression / scapular-elevation /
+ *   scapular-retraction / single-leg-calf-raise / toe-raise / weight-shift-lr
+ *
+ * `{id}-start.webp` はディスク上に残してある（require していないので同梱されない）。
+ * 差分が読み取れる絵に描き直せた場合は、ここに1行足せば2枚表示に戻る。
  */
 export const START_ILLUSTRATIONS: Record<string, number> = {
-  // Batch 8（頻用30種）+ Batch 9（可動域の大きい35種）
+  // Batch 8（頻用30種）+ Batch 9（可動域の大きい35種）から Tier C 12種を除いた 53種
   "adductor-stretch": require("../../assets/illustrations/adductor-stretch-start.webp"),
   "ankle-dorsiflexion": require("../../assets/illustrations/ankle-dorsiflexion-start.webp"),
   "ankle-plantarflexion": require("../../assets/illustrations/ankle-plantarflexion-start.webp"),
@@ -127,17 +139,13 @@ export const START_ILLUSTRATIONS: Record<string, number> = {
   "calf-raise": require("../../assets/illustrations/calf-raise-start.webp"),
   "calf-stretch": require("../../assets/illustrations/calf-stretch-start.webp"),
   "chair-stand": require("../../assets/illustrations/chair-stand-start.webp"),
-  "chin-tuck": require("../../assets/illustrations/chin-tuck-start.webp"),
   "clamshell": require("../../assets/illustrations/clamshell-start.webp"),
-  "codman-exercise": require("../../assets/illustrations/codman-exercise-start.webp"),
   "dead-bug": require("../../assets/illustrations/dead-bug-start.webp"),
-  "draw-in": require("../../assets/illustrations/draw-in-start.webp"),
   "dynamic-reach": require("../../assets/illustrations/dynamic-reach-start.webp"),
   "elbow-extension": require("../../assets/illustrations/elbow-extension-start.webp"),
   "elbow-flexion": require("../../assets/illustrations/elbow-flexion-start.webp"),
   "finger-extension": require("../../assets/illustrations/finger-extension-start.webp"),
   "finger-opposition": require("../../assets/illustrations/finger-opposition-start.webp"),
-  "forearm-pronation-supination": require("../../assets/illustrations/forearm-pronation-supination-start.webp"),
   "hamstring-curl": require("../../assets/illustrations/hamstring-curl-start.webp"),
   "hamstring-stretch": require("../../assets/illustrations/hamstring-stretch-start.webp"),
   "hand-grip": require("../../assets/illustrations/hand-grip-start.webp"),
@@ -148,21 +156,15 @@ export const START_ILLUSTRATIONS: Record<string, number> = {
   "knee-flexion-rom": require("../../assets/illustrations/knee-flexion-rom-start.webp"),
   "lateral-trunk-stretch": require("../../assets/illustrations/lateral-trunk-stretch-start.webp"),
   "mckenzie-exercise": require("../../assets/illustrations/mckenzie-exercise-start.webp"),
-  "patella-setting": require("../../assets/illustrations/patella-setting-start.webp"),
-  "pelvic-tilt": require("../../assets/illustrations/pelvic-tilt-start.webp"),
   "prone-hip-extension": require("../../assets/illustrations/prone-hip-extension-start.webp"),
   "quad-stretch": require("../../assets/illustrations/quad-stretch-start.webp"),
   "reach-training": require("../../assets/illustrations/reach-training-start.webp"),
-  "scapular-depression": require("../../assets/illustrations/scapular-depression-start.webp"),
-  "scapular-elevation": require("../../assets/illustrations/scapular-elevation-start.webp"),
-  "scapular-retraction": require("../../assets/illustrations/scapular-retraction-start.webp"),
   "seated-knee-ext": require("../../assets/illustrations/seated-knee-ext-start.webp"),
   "seated-march": require("../../assets/illustrations/seated-march-start.webp"),
   "shoulder-abduction": require("../../assets/illustrations/shoulder-abduction-start.webp"),
   "shoulder-external-rotation": require("../../assets/illustrations/shoulder-external-rotation-start.webp"),
   "shoulder-flexion": require("../../assets/illustrations/shoulder-flexion-start.webp"),
   "shoulder-internal-rotation": require("../../assets/illustrations/shoulder-internal-rotation-start.webp"),
-  "single-leg-calf-raise": require("../../assets/illustrations/single-leg-calf-raise-start.webp"),
   "single-leg-stand": require("../../assets/illustrations/single-leg-stand-start.webp"),
   "sit-to-stand": require("../../assets/illustrations/sit-to-stand-start.webp"),
   "sit-up": require("../../assets/illustrations/sit-up-start.webp"),
@@ -171,7 +173,6 @@ export const START_ILLUSTRATIONS: Record<string, number> = {
   "step-up": require("../../assets/illustrations/step-up-start.webp"),
   "step-up-advanced": require("../../assets/illustrations/step-up-advanced-start.webp"),
   "tandem-stance": require("../../assets/illustrations/tandem-stance-start.webp"),
-  "toe-raise": require("../../assets/illustrations/toe-raise-start.webp"),
   "towel-gather": require("../../assets/illustrations/towel-gather-start.webp"),
   "trunk-rotation": require("../../assets/illustrations/trunk-rotation-start.webp"),
   "turning": require("../../assets/illustrations/turning-start.webp"),
@@ -179,7 +180,6 @@ export const START_ILLUSTRATIONS: Record<string, number> = {
   "wall-climbing": require("../../assets/illustrations/wall-climbing-start.webp"),
   "wall-pushup": require("../../assets/illustrations/wall-pushup-start.webp"),
   "weight-shift-ap": require("../../assets/illustrations/weight-shift-ap-start.webp"),
-  "weight-shift-lr": require("../../assets/illustrations/weight-shift-lr-start.webp"),
   "williams-exercise": require("../../assets/illustrations/williams-exercise-start.webp"),
   "wrist-extension": require("../../assets/illustrations/wrist-extension-start.webp"),
   "wrist-flexion": require("../../assets/illustrations/wrist-flexion-start.webp"),

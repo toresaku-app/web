@@ -25,7 +25,7 @@
 <meta name="twitter:description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。完全無料・アカウント不要。"/>
 <meta name="twitter:image" content="https://toresaku-app.github.io/web/assets/og-image.png"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"医療・介護の現場で使える自主トレ指導書作成アプリ","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"指導書に入力した内容と作成したPDFは、お使いの端末内で処理され、外部へ自動送信されません。Web版では、サービス改善のため、プライバシーポリシーに記載した利用状況をGoogleアナリティクスへ送信します。iOSアプリ版はアクセス解析を使用していません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレ・ストレッチを中心に100種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワットなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"Web版はPC・スマホのブラウザからご利用いただけます。iOSアプリはApp Storeで配信中です。"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"指導書に入力した内容と作成したPDFは、お使いの端末内で処理され、外部へ自動送信されません。Web版では、サービス改善のため、プライバシーポリシーに記載した利用状況をGoogleアナリティクスへ送信します。iOSアプリ版はアクセス解析を使用していません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレ・ストレッチを中心に100種類の運動を収録。パテラセッティング、SLR、ブリッジ、スクワットなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"Web版はPC・スマホのブラウザからご利用いただけます。iOSアプリはApp Storeで配信中です。"}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"トレさく","url":"https://toresaku-app.github.io/web/","logo":"https://toresaku-app.github.io/web/assets/icon-512.png","description":"医療・介護の現場で使える自主トレ指導書作成アプリ","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"toresaku.app@gmail.com"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://toresaku-app.github.io/web/"},{"@type":"ListItem","position":2,"name":"ランディングページ","item":"https://toresaku-app.github.io/web/lp.html"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -37,6 +37,7 @@
   --teal: #0F766E;
   --teal-light: #99F6E4;
   --teal-muted: #5EEAD4;
+  --teal-soft: #E6F4F2;
   --amber: #D97706;
   --amber-light: #FDE68A;
   --cream: #FDFAF6;
@@ -132,7 +133,7 @@ img { max-width: 100%; height: auto; display: block }
 .header-cta {
   background: var(--teal-deep);
   color: var(--teal-light);
-  padding: 10px 24px;
+  padding: 12px 24px;
   border-radius: 100px;
   text-decoration: none;
   font-size: 13px; font-weight: 700;
@@ -356,6 +357,44 @@ img { max-width: 100%; height: auto; display: block }
   border-radius: 16px;
 }
 
+/* ── Stats band ── */
+.stats-band {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 24px;
+}
+.stats-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--teal-deep);
+  line-height: 1.2;
+}
+.stat-num span {
+  font-size: 16px;
+  font-weight: 700;
+  margin-left: 2px;
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--stone);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+@media (max-width: 720px) {
+  .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 24px }
+  .stat-num { font-size: 32px }
+}
+
 /* ── Section ── */
 .section-wrap { padding: 100px 24px }
 .section-inner { max-width: 960px; margin: 0 auto }
@@ -470,13 +509,9 @@ img { max-width: 100%; height: auto; display: block }
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 16px;
   font-size: 22px;
+  background: var(--teal-soft);
+  color: var(--teal);
 }
-.feature-icon.fi-teal { background: #CCFBF1; color: var(--teal) }
-.feature-icon.fi-amber { background: #FEF3C7; color: var(--amber) }
-.feature-icon.fi-rose { background: #FFE4E6; color: #E11D48 }
-.feature-icon.fi-sky { background: #E0F2FE; color: #0284C7 }
-.feature-icon.fi-violet { background: #EDE9FE; color: #7C3AED }
-.feature-icon.fi-emerald { background: #D1FAE5; color: #059669 }
 .feature-card h3 {
   font-family: var(--font-display);
   font-size: 16px; font-weight: 700;
@@ -629,7 +664,7 @@ img { max-width: 100%; height: auto; display: block }
   z-index: 1;
 }
 .supervision-body { position: relative; z-index: 1 }
-.supervision-body h3 {
+.supervision-body h2 {
   font-family: var(--font-display);
   font-size: 18px; font-weight: 700;
   color: var(--charcoal);
@@ -651,10 +686,15 @@ img { max-width: 100%; height: auto; display: block }
 }
 .faq-item.open { box-shadow: 0 4px 16px rgba(0,0,0,0.04) }
 .faq-q {
+  font: inherit;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
   padding: 18px 24px;
   font-size: 15px; font-weight: 700;
   color: var(--charcoal);
-  cursor: pointer;
   display: flex; justify-content: space-between; align-items: center;
   transition: background 0.2s;
   font-family: var(--font-display);
@@ -773,6 +813,24 @@ img { max-width: 100%; height: auto; display: block }
   margin: 10px auto 0; line-height: 1.7;
 }
 
+/* ── Accessibility ── */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .gallery-track,
+  .gallery-track-reverse {
+    animation: none;
+  }
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .hero { padding: 120px 20px 60px; min-height: auto }
@@ -854,7 +912,7 @@ img { max-width: 100%; height: auto; display: block }
 <section class="section-wrap steps-bg">
   <div class="section-inner">
     <div class="section-label reveal">HOW IT WORKS</div>
-    <div class="section-title reveal">たった3ステップで完成</div>
+    <h2 class="section-title reveal">たった3ステップで完成</h2>
     <p class="section-desc reveal">運動を選んで、パラメータを設定、PDFを出力。<br/>最短3分で指導書が完成します。</p>
     <div class="steps-grid">
       <div class="steps-list">
@@ -891,7 +949,7 @@ img { max-width: 100%; height: auto; display: block }
 <section class="section-wrap">
   <div class="section-inner section-center">
     <div class="section-label reveal">FEATURES</div>
-    <div class="section-title reveal">トレさくの特徴</div>
+    <h2 class="section-title reveal">トレさくの特徴</h2>
     <p class="section-desc reveal">現場の「あったらいいな」を形にしました</p>
     <div class="features-grid">
       <div class="feature-card reveal reveal-delay-1">
@@ -932,7 +990,7 @@ img { max-width: 100%; height: auto; display: block }
 <section class="section-wrap gallery-bg">
   <div class="section-inner section-center">
     <div class="section-label reveal">EXERCISES</div>
-    <div class="section-title reveal">収録されている運動</div>
+    <h2 class="section-title reveal">収録されている運動</h2>
     <p class="section-desc reveal">臨床で頻用される筋トレ・ストレッチ・バランス訓練を収録。<br/>すべてイラスト付きで、患者さんにそのまま渡せます。</p>
   </div>
   <div class="gallery-rows reveal">
@@ -1006,7 +1064,7 @@ img { max-width: 100%; height: auto; display: block }
 <section class="section-wrap scenes-bg">
   <div class="section-inner section-center">
     <div class="section-label reveal">USE CASES</div>
-    <div class="section-title reveal">こんな場面で使えます</div>
+    <h2 class="section-title reveal">こんな場面で使えます</h2>
     <p class="section-desc reveal">様々な臨床・現場シーンに対応</p>
     <div class="scenes-grid">
       <div class="scene-card reveal reveal-delay-1">
@@ -1047,7 +1105,7 @@ img { max-width: 100%; height: auto; display: block }
     <div class="supervision-card reveal">
       <img class="supervision-img" src="assets/lp/pt-portrait.webp" alt="監修理学療法士"/>
       <div class="supervision-body">
-        <h3>現役理学療法士が開発・監修</h3>
+        <h2>現役理学療法士が開発・監修</h2>
         <p>収録されている運動メニュー・指導内容は、臨床経験を持つ現役の理学療法士が開発・監修しています。エビデンスに基づいた運動を厳選し、安全にご利用いただけるよう配慮しています。</p>
       </div>
     </div>
@@ -1058,7 +1116,7 @@ img { max-width: 100%; height: auto; display: block }
 <section class="section-wrap" style="background:var(--cream-dark)">
   <div class="section-inner section-center">
     <div class="section-label reveal">FAQ</div>
-    <div class="section-title reveal">よくある質問</div>
+    <h2 class="section-title reveal">よくある質問</h2>
     <div class="faq-list reveal">
       <div class="faq-item open">
         <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
