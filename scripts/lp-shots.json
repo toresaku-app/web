@@ -1,0 +1,64 @@
+[
+  {
+    "name": "app-pc",
+    "width": 1470,
+    "height": 798,
+    "scale": 2,
+    "mobile": false,
+    "settle": 9000,
+    "steps": [
+      {
+        "js": "(()=>{const names=['パテラセッティング','SLR（下肢伸展挙上）','ブリッジ（ヒップリフト）','クラムシェル'];const cbs=[...document.querySelectorAll('[role=\"checkbox\"]')];let n=0;names.forEach(t=>{const el=cbs.find(c=>(c.getAttribute('aria-label')||'').startsWith(t));if(el){el.dispatchEvent(new MouseEvent('click',{bubbles:true}));n++;}});return n;})()",
+        "wait": 2500
+      },
+      {
+        "js": "(()=>{const s=[...document.querySelectorAll('*')].filter(e=>e.scrollHeight>e.clientHeight+50&&e.clientHeight>200);s.forEach(e=>e.scrollTop=0);window.scrollTo(0,0);return s.length;})()",
+        "wait": 1200
+      }
+    ]
+  },
+  {
+    "name": "app-library",
+    "width": 390,
+    "height": 844,
+    "scale": 3,
+    "mobile": true,
+    "settle": 9000,
+    "steps": [
+      {
+        "js": "(()=>{const cbs=[...document.querySelectorAll('[role=\"checkbox\"]')];const el=cbs.find(c=>(c.getAttribute('aria-label')||'').startsWith('パテラセッティング'));if(el)el.dispatchEvent(new MouseEvent('click',{bubbles:true}));return !!el;})()",
+        "wait": 2500
+      },
+      {
+        "js": "(()=>{const s=[...document.querySelectorAll('*')].filter(e=>e.scrollHeight>e.clientHeight+50&&e.clientHeight>200);s.forEach(e=>e.scrollTop=0);window.scrollTo(0,0);return s.length;})()",
+        "wait": 1200
+      }
+    ]
+  },
+  {
+    "name": "app-preview",
+    "width": 390,
+    "height": 844,
+    "scale": 3,
+    "mobile": true,
+    "settle": 9000,
+    "steps": [
+      {
+        "js": "(()=>{const names=['パテラセッティング','SLR（下肢伸展挙上）','ブリッジ（ヒップリフト）'];const cbs=[...document.querySelectorAll('[role=\"checkbox\"]')];let n=0;names.forEach(t=>{const el=cbs.find(c=>(c.getAttribute('aria-label')||'').startsWith(t));if(el){el.dispatchEvent(new MouseEvent('click',{bubbles:true}));n++;}});return n;})()",
+        "wait": 2500
+      },
+      {
+        "js": "(()=>document.body.innerText.match(/指導書を作成\\s*\\d+/)?.[0]||'no-cta')()",
+        "wait": 800
+      }
+    ],
+    "gotoAfter": "/preview",
+    "afterSettle": 8000,
+    "afterSteps": [
+      {
+        "js": "(()=>{const s=[...document.querySelectorAll('*')].filter(e=>e.scrollHeight>e.clientHeight+50&&e.clientHeight>200);s.forEach(e=>e.scrollTop=0);window.scrollTo(0,0);return document.body.innerText.slice(0,50).replace(/\\n/g,' | ');})()",
+        "wait": 1500
+      }
+    ]
+  }
+]

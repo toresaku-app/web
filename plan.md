@@ -55,6 +55,8 @@
    - ✅ 2演題の同一セッション進行を事務局確認済み（P07-5-1から約20分後にP07-5-4）
    - ⏳ 共同演者追記、最終確認、2026-09-14 12:00までの事前登録
 3. **[v1.2.0 リリース計画](./tasks/phase9-v2-release.md)** — 学会10/9逆算の統合計画（Web最新化 → 2枚化 → iOS提出 9/8-12 → ゲート9/19）。iOS審査再提出はこの中で実施
+   - ✅ Web第1弾（UI/UXリデザイン, PR #12）・第2弾（2枚化65種 + GA4 + プライバシー是正, PR #13）を本番反映
+   - ⏳ 印刷高の再測定: 運動ページの実測（縦736px）が DESIGN §7 と印刷ガードの根拠値（700px）と食い違う。iOS提出前に是正
 
 #### 優先度 中 — アプリの実用性向上
 4. [UI/UX リデザイン](./docs/ui-ux-redesign.md) — 臨床フロー9段階から支援範囲を再定義し3バッチで実施
@@ -66,3 +68,5 @@
 
 #### 優先度 低 — あると嬉しい
 7. [共有方法の拡充（ローカル完結）](./tasks/phase5-sharing.md) — 1ページ2種目レイアウト、画像出力等。現行のPDF共有で最低限は満たしている
+8. **iOS シミュレータ向けビルドの修復**（2026-08-06 発見） — `xcodebuild -workspace ios/app.xcworkspace -scheme app` が Pods の ReactCodegen「Generate Specs」フェーズで `Cannot find module '@react-native/codegen/package.json'` により失敗する。モジュール自体は node_modules に実在するため、Xcode から使われる node のパス（`ios/.xcode.env`）まわりのモジュール解決問題。LP スクショは Web 版から撮って回避済みだが、実機ビルド・EAS 前のローカル確認ができない状態
+9. **LP ステップ節のインタラクティブ化**（任意） — 「たった3ステップで完成」の 1〜3 は現在クリックできない。クリックで対応スクショを出し分けるなら、ステップごとのスクショ計3枚が必要（[scripts/shoot-lp-screenshots.cjs](./scripts/shoot-lp-screenshots.cjs) で撮れる）

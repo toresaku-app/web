@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
+import { useIssuerStore, formatIssuerLine, ISSUER_MAX } from "../src/stores/issuerStore";
 import { EXERCISES } from "../src/constants/exercises";
 import { ILLUSTRATIONS, START_ILLUSTRATIONS } from "../src/constants/illustrations";
 import { Asset } from "expo-asset";
@@ -51,9 +52,12 @@ const FREQUENCY_OPTIONS = [
 export default function PreviewScreen() {
   const { selectedExercises, updateExercise, removeExercise, reorderExercises, clearAll, sheetPurpose, setSheetPurpose, orientation, setOrientation, includeCheckSheet, setIncludeCheckSheet } =
     useHepStore();
+  const { facilityName, staffName, setFacilityName, setStaffName } = useIssuerStore();
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [showIssuer, setShowIssuer] = useState(false);
+  const issuerLine = formatIssuerLine(facilityName, staffName);
 
   const handleExport = async () => {
     setIsExporting(true);
@@ -104,6 +108,7 @@ export default function PreviewScreen() {
         orientation,
         includeCheckSheet,
         startImageUris,
+        issuerLine,
       });
       const { uri } = await printToFileAsync({ html });
       fileUri = uri;
@@ -290,6 +295,53 @@ export default function PreviewScreen() {
           </Text>
           <Text className="text-[11px] text-ink3">患者さんの記録用</Text>
         </Pressable>
+
+        {/* 発行者（任意）。一度入れたら端末に残るので、既定は畳んでおく */}
+        <Pressable
+          onPress={() => setShowIssuer(!showIssuer)}
+          accessibilityRole="button"
+          accessibilityState={{ expanded: showIssuer }}
+          accessibilityLabel="発行者情報を編集する"
+          className="mb-2 h-11 flex-row items-center gap-2 rounded-[10px] border border-line bg-[#F4F6FA] px-3"
+        >
+          <Text className="text-[13px] font-semibold text-ink">発行者</Text>
+          <Text
+            className={`flex-1 text-[13px] ${issuerLine ? "text-ink2" : "text-ink3"}`}
+            numberOfLines={1}
+          >
+            {issuerLine ?? "未設定（任意）"}
+          </Text>
+          <Text className="text-[12px] text-ink3">{showIssuer ? "▲" : "▼"}</Text>
+        </Pressable>
+        {showIssuer && (
+          <View className="mb-2 gap-2 rounded-[10px] border border-line bg-[#F4F6FA] p-3">
+            <Text className="text-[12px] text-ink3">
+              指導書の表紙に入ります。患者さんの情報は入れないでください
+            </Text>
+            <TextInput
+              className="rounded-lg border border-line bg-card px-3 py-2.5 text-[16px] text-ink"
+              placeholder="施設名（例: 〇〇総合病院）"
+              placeholderTextColor="#94A3B8"
+              value={facilityName}
+              onChangeText={setFacilityName}
+              maxLength={ISSUER_MAX.facility}
+              autoCorrect={false}
+              autoComplete="off"
+              spellCheck={false}
+            />
+            <TextInput
+              className="rounded-lg border border-line bg-card px-3 py-2.5 text-[16px] text-ink"
+              placeholder="担当者名（例: 理学療法士 佐藤）"
+              placeholderTextColor="#94A3B8"
+              value={staffName}
+              onChangeText={setStaffName}
+              maxLength={ISSUER_MAX.staff}
+              autoCorrect={false}
+              autoComplete="off"
+              spellCheck={false}
+            />
+          </View>
+        )}
 
         {/* 用紙の向き */}
         <View className="mb-2 flex-row items-center justify-center gap-2">

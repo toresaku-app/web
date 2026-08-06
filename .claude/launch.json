@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["expo", "start", "--web", "--port", "8081"],
       "port": 8081
+    },
+    {
+      "name": "lp-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["http-server", "public", "-p", "8090", "-c-1"],
+      "port": 8090
     }
   ]
 }

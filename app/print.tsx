@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { View, Text, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useHepStore } from "../src/stores/hepStore";
+import { useIssuerStore, formatIssuerLine } from "../src/stores/issuerStore";
 import { ILLUSTRATIONS, START_ILLUSTRATIONS } from "../src/constants/illustrations";
 import { Asset } from "expo-asset";
 import { generateHtml } from "../src/utils/generateHtml";
@@ -9,6 +10,7 @@ import { generateHtml } from "../src/utils/generateHtml";
 export default function PrintScreen() {
   const { selectedExercises, sheetPurpose, orientation, includeCheckSheet } =
     useHepStore();
+  const { facilityName, staffName } = useIssuerStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -49,6 +51,7 @@ export default function PrintScreen() {
         forScreen: true,
         includeCheckSheet,
         startImageUris,
+        issuerLine: formatIssuerLine(facilityName, staffName),
       });
 
       const ua = navigator.userAgent;

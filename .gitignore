@@ -43,3 +43,6 @@ assets/illustrations/originals/
 # generated native folders
 /ios
 /android
+
+# LP スクショ撮影の中間出力（scripts/shoot-lp-screenshots.cjs）
+scripts/.lp-shots-out/

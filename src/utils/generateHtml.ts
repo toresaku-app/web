@@ -302,6 +302,14 @@ export const PDF_STYLE = `
     font-size: 10pt; color: #94A3B8;
   }
   .page-num { color: #475569; font-weight: 500; }
+  /* 発行者（表紙のみ）。フッター右端に置く。
+     **折り返すと表紙が伸びてページ較正が崩れる**ため、1行に固定する。
+     入力側でも文字数を制限しているので、実運用で ellipsis は出ない想定 */
+  .cover-issuer {
+    color: #475569; font-weight: 500; text-align: right;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 72%; padding-left: 12px;
+  }
 
   /* ── 表紙 ── */
   .cover { padding: 8px 0; }
@@ -613,6 +621,7 @@ function renderCoverPage(
   sorted: SelectedExercise[],
   sheetPurpose?: string,
   isLandscape?: boolean,
+  issuerLine?: string,
 ): string {
   const rows = sorted
     .map((sel, i) => {
@@ -666,6 +675,7 @@ function renderCoverPage(
     </div>
     <footer class="page-footer">
       <span>トレさく — 自主トレ指導書作成アプリ</span>
+      ${issuerLine ? `<span class="cover-issuer">${esc(issuerLine)}</span>` : ""}
     </footer>
   </section>`;
 }
@@ -695,6 +705,11 @@ interface GenerateOptions {
   includeCheckSheet?: boolean;
   /** 開始姿勢の画像。登録がある運動だけ2枚表示になる */
   startImageUris?: Record<string, string>;
+  /**
+   * 発行者（施設名・担当者名）を1行にしたもの。任意。
+   * 表紙のフッターに右寄せで入る。行を増やさないので表紙の高さは変わらない。
+   */
+  issuerLine?: string;
 }
 
 export function generateHtml(
@@ -708,13 +723,14 @@ export function generateHtml(
     forScreen = false,
     includeCheckSheet = false,
     startImageUris = {},
+    issuerLine,
   } = options;
   const sorted = [...selectedExercises].sort((a, b) => a.order - b.order);
   const total = sorted.length;
   const purpose = sheetPurpose?.trim() || undefined;
   const isLandscape = orientation === "landscape";
 
-  const coverPage = renderCoverPage(sorted, purpose, isLandscape);
+  const coverPage = renderCoverPage(sorted, purpose, isLandscape, issuerLine?.trim() || undefined);
 
   const checkSheets = includeCheckSheet
     ? renderCheckSheets(sorted, isLandscape)

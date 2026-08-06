@@ -25,9 +25,11 @@
 UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop にしかなく、
 **院内ユーザーが使う本番Web版は改善前のまま**。これを最初に届ける。
 
-- [ ] develop → main の PR 作成（差分サマリ付き）
-- [ ] 利用者がプレビューで確認 → マージ承認（マージは利用者の明示承認が必須）
-- [ ] デプロイ後、スマホ実機で本番URLを一巡確認
+- [x] develop → main の PR 作成（差分サマリ付き）
+- [x] 利用者がプレビューで確認 → マージ承認（マージは利用者の明示承認が必須）— PR #12 / #13
+- [x] デプロイ後、本番URLを一巡確認（2026-08-01、375px ビューポートで実施）
+  - 選択 → 調整 → PDF出力、2枚化/1枚混在、チェック表ON、縦横、GA4送信内容、入力欄16px、コンソールエラーなし
+  - **残**: 実機（iPhone Safari）からの実印刷は未実施。§7 の実効印刷領域に関わるため下記の再測定と併せて行う
 
 効果: 実ユーザーへの即時価値 + iOS 提出前のソークテスト（枯らし）を兼ねる。
 
@@ -35,9 +37,11 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
 
 - [x] 利用者: 30種リストの確認（scripts/batch8-start-frames.md、差し替え自由）
 - [x] Codex: パイロット1枚（patella-setting）生成 → 利用者検収 → 量産29枚
-- [ ] Opus: 混在対応の実装（illustration2 型・詳細モーダル・PDF 2枚横並び+遷移矢印・1枚フォールバック）
+- [x] Opus: 混在対応の実装（illustration2 型・詳細モーダル・PDF 2枚横並び+遷移矢印・1枚フォールバック）
   - **印刷回帰テストを同じPRに同梱**（生成HTMLの高さ見積もりと実測の突き合わせ。実効印刷領域の再発防止）
-- [ ] 生成済み分の WebP 変換・illustrations.ts 登録・PDF縦横検証
+  - ガードの対象はチェック表のみ。運動ページ・表紙は未カバー（下記「印刷高の再測定」参照）
+- [x] 生成済み分の WebP 変換・illustrations.ts 登録・PDF縦横検証 — 65種登録、1枚のみ34種
+  - 本番実測: `.illust` は 1枚/2枚とも縦220px・横150px で完全一致。ページ数較正は崩れていない
 - ゲート 9/19: 揃った枚数で締める（混在対応により何枚でも出荷可能）
 
 ### Track 3: iOS v1.2.0 提出（9/8〜12）
@@ -58,16 +62,37 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
 
 ### Track 5: 小物・基盤（隙間に1個ずつ。詰め込まない）
 
-- [ ] 発行者情報（施設名・担当者名）のPDF記載 — v1.2.0 に同梱したい（設定1項目・ローカル保存）
+- [x] 発行者情報（施設名・担当者名）のPDF記載 — 実装済み。どちらも任意
+  - 保存先は `issuerStore`（Web=localStorage / iOS=expo-sqlite kv-store）。hepStore と違い**セッションを跨いで保持**
+  - 表紙フッター右端に1行。**折り返すと表紙が伸びるため nowrap 固定 + 入力を18/10文字に制限**（実測で決定）
+  - [ ] **プライバシーポリシーの公開反映が必要** ← 継続保存は既存の記述と矛盾するため
+        `docs/privacy-policy.md` は修正済み。別リポジトリ toresaku-app/privacy-policy への反映が未了（利用者作業）
 - [x] GA4 イベント設計と実装（チェック表ON率 / 運動選択頻度 / 出力ファネル）— 4622b84
   - Web版のみ。iOS は見送り（docs/decisions.md に記録）
   - 自由入力は型で送信不可にした。機微情報の漏れゼロを実機検証済み
-- [ ] **プライバシーポリシーの公開反映** ← GA4計測の公開前提
-  - [ ] Codex にレビュー依頼（docs/privacy-policy-review-request.md）
-  - [ ] 指摘を反映
-  - [ ] 別リポジトリ toresaku-app/privacy-policy へ反映（利用者作業）
-  - [ ] GA4管理画面: データ保持14ヶ月 / Googleシグナル OFF / カスタムディメンション登録
-- [ ] Web 第2デプロイ（2枚化・GA4計測・ポリシー反映を同便で）
+- [x] **プライバシーポリシーの公開反映** ← GA4計測の公開前提
+  - [x] Codex にレビュー依頼（docs/privacy-policy-review-request.md）
+  - [x] 指摘を反映（要修正7件・推奨5件）
+  - [x] 別リポジトリ toresaku-app/privacy-policy へ反映（利用者作業）— 公開URL 200・GA4記載を確認
+  - [x] GA4管理画面: データ保持14ヶ月 / サイト内検索OFF / カスタムディメンション6件登録
+- [x] Web 第2デプロイ（2枚化・GA4計測・ポリシー反映を同便で）— PR #13 / 2026-08-01
+- [ ] **イラストの是正**（2026-08-02 レビュー・[docs/illustration-review-2026-08.md](../docs/illustration-review-2026-08.md)）
+  - [x] Tier A の生成プロンプト作成 — [scripts/batch10-tier-a-fixes.md](../scripts/batch10-tier-a-fixes.md)
+  - [ ] Tier A 9運動 **10枚**の生成（`tandem-stance` は開始・動作の2枚）→ 検収 → WebP差し替え
+        `ankle-dorsiflexion` `ankle-plantarflexion` `hip-flexor-stretch` `gait-backward`
+        `knee-extension-rom` `side-plank` `tandem-stance` `chest-stretch` `forearm-stretch`
+        - 人物基準画像（`shoulder-shrug.png`）を毎回添付する運用にした。顔のばらつき再発防止
+  - [x] Tier C 12種を1枚表示に戻した — `START_ILLUSTRATIONS` 65→53件。生成不要
+        1枚あたり 64×48mm → **71×53mm**（面積で約23%増）。枠高220px・ページ高736pxは不変
+        `{id}-start.webp` はディスクに残置（require していないので同梱されない）
+  - [ ] Tier B 11種の再生成 — 余裕があれば。開始/動作で対象関節以外が動く問題
+  - 再生成ルール: 開始と動作は「対象関節の角度だけが違う同一構図」。支持物・足位置・道具・視点・人物サイズを固定
+- [ ] **印刷高の再測定と DESIGN §7 の是正**（2026-08-01 発見・iOS提出前に片付けたい）
+  - 本番実測で運動ページは縦736px / 横619px。しかし DESIGN §7 と `check-print-layout.mjs` の
+    `PROVEN_SAFE = { portrait: 700, landscape: 480 }` は「運動ページ＝縦700px で収まっている」を根拠にしている
+  - つまり**根拠として引いている実測値が現物と合っていない**。2枚化が原因ではない（`.illust` は 220/150 で不変）
+  - やること: 実機で1回印刷して実効領域を測り直す → DESIGN §7 の表と PROVEN_SAFE を実測値に更新 →
+    ガードの対象を運動ページ・表紙にも広げる
 - [ ] 大文字モード（PDF文字サイズ「標準/大きめ」）— 余裕があれば同梱、なければ学会後
 - [ ] トークン掃除（primary削除・準トークンのconfig昇格）— 審査提出後の落ち穂拾い
 

@@ -30,6 +30,52 @@
 
 **新しい画像は両方に置く**。片方だけだとどちらかの環境で表示されない。
 
+lp.html 内の画像パスは**相対パス**（`assets/lp/...`）で書く。`/web/assets/...` と絶対で書くと
+本番（`/web/lp.html` 配信）では通るがローカルプレビューで 404 になる。
+
+---
+
+## LP のスクショを撮り直す手順
+
+アプリ UI を変えたら LP のスクショも古くなる。**運動数・フィルタ・パラメータが写り込む**ので、
+これらを変更したら必ず撮り直す（2026-08-06 に「22 件」表示のまま 3 ヶ月放置していた前例あり）。
+
+対象は 3 枚。すべて Web 版から撮る（iOS 実機・シミュレータは不要）。
+
+| ファイル | 画面 | サイズ |
+|---|---|---|
+| `app-pc.png` | 運動ライブラリ（4 種選択） | 1470×798 @2x |
+| `app-library.webp` | 運動ライブラリ（1 種選択） | 390×844 @3x |
+| `app-preview.webp` | 内容を調整（3 種目） | 390×844 @3x |
+
+```bash
+npx expo start --web --port 8081        # 別ターミナルで起動しておく
+node scripts/shoot-lp-screenshots.cjs   # scripts/.lp-shots-out/ に PNG が出る
+```
+
+撮る画面・選択する運動・遷移先は `scripts/lp-shots.json` で定義する。
+ショットごとに localStorage をクリアするので、前のショットの選択状態は持ち越さない。
+
+撮影後の加工:
+
+1. **スマホ 2 枚は上端に白帯 168px を足す**。lp.html のスマホ枠は CSS でノッチ（`.mockup-phone-island`）を
+   描いており、Web 版のスクショには iOS ステータスバーが無いため、足さないとノッチが画面上端の見出しに被る
+   ```bash
+   python3 -c "
+   from PIL import Image
+   for n in ['app-library','app-preview']:
+       im=Image.open(f'scripts/.lp-shots-out/{n}.png').convert('RGB')
+       out=Image.new('RGB',(im.width,im.height+168),(255,255,255)); out.paste(im,(0,168))
+       out.save(f'scripts/.lp-shots-out/{n}-band.png')"
+   ```
+2. WebP 化して両ディレクトリへ配置（`app-pc.png` は PNG のまま `public/` のみ）
+   ```bash
+   cwebp -q 82 scripts/.lp-shots-out/app-library-band.png -o public/assets/lp/app-library.webp
+   cwebp -q 82 scripts/.lp-shots-out/app-preview-band.png -o public/assets/lp/app-preview.webp
+   cp public/assets/lp/app-{library,preview}.webp assets/lp/
+   cp scripts/.lp-shots-out/app-pc.png public/assets/lp/app-pc.png
+   ```
+
 ---
 
 ## 運動データの追加手順
