@@ -78,21 +78,31 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
 - [x] Web 第2デプロイ（2枚化・GA4計測・ポリシー反映を同便で）— PR #13 / 2026-08-01
 - [ ] **イラストの是正**（2026-08-02 レビュー・[docs/illustration-review-2026-08.md](../docs/illustration-review-2026-08.md)）
   - [x] Tier A の生成プロンプト作成 — [scripts/batch10-tier-a-fixes.md](../scripts/batch10-tier-a-fixes.md)
-  - [ ] Tier A 9運動 **10枚**の生成（`tandem-stance` は開始・動作の2枚）→ 検収 → WebP差し替え
+  - [x] Tier A 9運動 **10枚**の生成 → 検収 → WebP差し替え（完了）
         `ankle-dorsiflexion` `ankle-plantarflexion` `hip-flexor-stretch` `gait-backward`
         `knee-extension-rom` `side-plank` `tandem-stance` `chest-stretch` `forearm-stretch`
         - 人物基準画像（`shoulder-shrug.png`）を毎回添付する運用にした。顔のばらつき再発防止
+        - 1巡目で6枚合格、3運動が不合格。[batch10b](../scripts/batch10b-tier-a-retry.md) で追い込み
+        - 教訓: 壊れている絵を image-to-image の参照に使うと、直したい姿勢がそのまま残る。
+          別の運動の絵を構図基準にすると通った（side-plank→plank / chest-stretch→wall-pushup）
+        - 教訓: **2D投影から関節角度を機械的に測る検収は使えない**。前腕が手前を向くと短縮するため、
+          手本の plank ですら「肘156度」と出た。最終判断は現物の目視で行う
+  - [ ] （任意）`chest-stretch` の矢印 — 前方指定に対し上向きになっている。
+        正面構図なので、両肩から外側へ向かう2本の方が「胸を開く」に近い
   - [x] Tier C 12種を1枚表示に戻した — `START_ILLUSTRATIONS` 65→53件。生成不要
         1枚あたり 64×48mm → **71×53mm**（面積で約23%増）。枠高220px・ページ高736pxは不変
         `{id}-start.webp` はディスクに残置（require していないので同梱されない）
   - [ ] Tier B 11種の再生成 — 余裕があれば。開始/動作で対象関節以外が動く問題
   - 再生成ルール: 開始と動作は「対象関節の角度だけが違う同一構図」。支持物・足位置・道具・視点・人物サイズを固定
-- [ ] **印刷高の再測定と DESIGN §7 の是正**（2026-08-01 発見・iOS提出前に片付けたい）
-  - 本番実測で運動ページは縦736px / 横619px。しかし DESIGN §7 と `check-print-layout.mjs` の
-    `PROVEN_SAFE = { portrait: 700, landscape: 480 }` は「運動ページ＝縦700px で収まっている」を根拠にしている
-  - つまり**根拠として引いている実測値が現物と合っていない**。2枚化が原因ではない（`.illust` は 220/150 で不変）
-  - やること: 実機で1回印刷して実効領域を測り直す → DESIGN §7 の表と PROVEN_SAFE を実測値に更新 →
-    ガードの対象を運動ページ・表紙にも広げる
+- [x] **印刷高の再測定と DESIGN §7 の是正**（2026-08-01 発見 → 08-05 対応）
+  - 実測: 運動ページ 縦736 / 横619px。表紙は 縦 449+27.6×N / 横 401+24.6×N
+  - DESIGN §7 を実測値に差し替え。「横の実効値は約490px」は誤りだった（横619pxが運用中）
+  - `check-print-layout.mjs` に運動ページ・表紙の高さと構成ブロックの検査を追加。
+    警告は出すがビルドは止めない（既存の状態を壊さないため）
+  - **判明した新しいリスク**: 表紙は縦10種目（725px）で既に PROVEN_SAFE 700px を超えている。
+    実運用は10種目程度なので直ちに問題にはならないが、多種目だと表紙が2ページに割れうる
+  - [ ] **上限の確定は実機印刷が必要**（利用者作業・3分）。手順は DESIGN.md §7 に記載
+        3種目と20種目を縦向きで印刷し、運動ページと表紙が割れないかを見る → `PROVEN_SAFE` に反映
 - [ ] 大文字モード（PDF文字サイズ「標準/大きめ」）— 余裕があれば同梱、なければ学会後
 - [ ] トークン掃除（primary削除・準トークンのconfig昇格）— 審査提出後の落ち穂拾い
 
