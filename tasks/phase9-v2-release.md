@@ -78,10 +78,17 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
 - [x] Web 第2デプロイ（2枚化・GA4計測・ポリシー反映を同便で）— PR #13 / 2026-08-01
 - [ ] **イラストの是正**（2026-08-02 レビュー・[docs/illustration-review-2026-08.md](../docs/illustration-review-2026-08.md)）
   - [x] Tier A の生成プロンプト作成 — [scripts/batch10-tier-a-fixes.md](../scripts/batch10-tier-a-fixes.md)
-  - [ ] Tier A 9運動 **10枚**の生成（`tandem-stance` は開始・動作の2枚）→ 検収 → WebP差し替え
+  - [x] Tier A 9運動 **10枚**の生成 → 検収 → WebP差し替え（完了）
         `ankle-dorsiflexion` `ankle-plantarflexion` `hip-flexor-stretch` `gait-backward`
         `knee-extension-rom` `side-plank` `tandem-stance` `chest-stretch` `forearm-stretch`
         - 人物基準画像（`shoulder-shrug.png`）を毎回添付する運用にした。顔のばらつき再発防止
+        - 1巡目で6枚合格、3運動が不合格。[batch10b](../scripts/batch10b-tier-a-retry.md) で追い込み
+        - 教訓: 壊れている絵を image-to-image の参照に使うと、直したい姿勢がそのまま残る。
+          別の運動の絵を構図基準にすると通った（side-plank→plank / chest-stretch→wall-pushup）
+        - 教訓: **2D投影から関節角度を機械的に測る検収は使えない**。前腕が手前を向くと短縮するため、
+          手本の plank ですら「肘156度」と出た。最終判断は現物の目視で行う
+  - [ ] （任意）`chest-stretch` の矢印 — 前方指定に対し上向きになっている。
+        正面構図なので、両肩から外側へ向かう2本の方が「胸を開く」に近い
   - [x] Tier C 12種を1枚表示に戻した — `START_ILLUSTRATIONS` 65→53件。生成不要
         1枚あたり 64×48mm → **71×53mm**（面積で約23%増）。枠高220px・ページ高736pxは不変
         `{id}-start.webp` はディスクに残置（require していないので同梱されない）
