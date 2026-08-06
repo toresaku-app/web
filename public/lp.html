@@ -655,13 +655,16 @@ img { max-width: 100%; height: auto; display: block }
 .supervision-img {
   width: 88px; height: 88px;
   border-radius: 50%;
-  object-fit: cover;
+  background: var(--teal-soft);
   border: 3px solid var(--cream);
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   flex-shrink: 0;
   position: relative;
   z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal);
 }
+.supervision-img svg { width: 44px; height: 44px }
 .supervision-body { position: relative; z-index: 1 }
 .supervision-body h2 {
   font-family: var(--font-display);
@@ -1121,7 +1124,9 @@ a:focus-visible, button:focus-visible {
 <section class="section-wrap">
   <div class="section-inner">
     <div class="supervision-card reveal">
-      <img class="supervision-img" src="assets/lp/pt-portrait.webp" alt="監修理学療法士"/>
+      <div class="supervision-img" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
       <div class="supervision-body">
         <h2>現役理学療法士が開発・監修</h2>
         <p>収録されている運動メニュー・指導内容は、臨床経験を持つ現役の理学療法士が開発・監修し、現場で頻用される運動から厳選しています。</p>
