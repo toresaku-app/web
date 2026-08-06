@@ -68,3 +68,5 @@
 
 #### 優先度 低 — あると嬉しい
 7. [共有方法の拡充（ローカル完結）](./tasks/phase5-sharing.md) — 1ページ2種目レイアウト、画像出力等。現行のPDF共有で最低限は満たしている
+8. **iOS シミュレータ向けビルドの修復**（2026-08-06 発見） — `xcodebuild -workspace ios/app.xcworkspace -scheme app` が Pods の ReactCodegen「Generate Specs」フェーズで `Cannot find module '@react-native/codegen/package.json'` により失敗する。モジュール自体は node_modules に実在するため、Xcode から使われる node のパス（`ios/.xcode.env`）まわりのモジュール解決問題。LP スクショは Web 版から撮って回避済みだが、実機ビルド・EAS 前のローカル確認ができない状態
+9. **LP ステップ節のインタラクティブ化**（任意） — 「たった3ステップで完成」の 1〜3 は現在クリックできない。クリックで対応スクショを出し分けるなら、ステップごとのスクショ計3枚が必要（[scripts/shoot-lp-screenshots.cjs](./scripts/shoot-lp-screenshots.cjs) で撮れる）

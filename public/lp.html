@@ -25,7 +25,7 @@
 <meta name="twitter:description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。完全無料・アカウント不要。"/>
 <meta name="twitter:image" content="https://toresaku-app.github.io/web/assets/og-image.png"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"医療・介護の現場で使える自主トレ指導書作成アプリ","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"指導書に入力した内容と作成したPDFは、お使いの端末内で処理され、外部へ自動送信されません。Web版では、サービス改善のため、プライバシーポリシーに記載した利用状況をGoogleアナリティクスへ送信します。iOSアプリ版はアクセス解析を使用していません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレ・ストレッチを中心に100種類の運動を収録。パテラセッティング、SLR、ブリッジ、スクワットなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"Web版はPC・スマホのブラウザからご利用いただけます。iOSアプリはApp Storeで配信中です。"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。広告も一切ありません。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"指導書に入力した内容と作成したPDFは、お使いの端末内で処理され、外部へ自動送信されません。Web版では、サービス改善のため、プライバシーポリシーに記載した利用状況をGoogleアナリティクスへ送信します。iOSアプリ版はアクセス解析を使用していません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレ・ストレッチを中心に100種類の運動を収録。パテラセッティング、SLR、ブリッジ、スクワットなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"Web版はPC・スマホのブラウザからご利用いただけます。iOSアプリはApp Storeで配信中です。"}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"トレさく","url":"https://toresaku-app.github.io/web/","logo":"https://toresaku-app.github.io/web/assets/icon-512.png","description":"医療・介護の現場で使える自主トレ指導書作成アプリ","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"toresaku.app@gmail.com"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://toresaku-app.github.io/web/"},{"@type":"ListItem","position":2,"name":"ランディングページ","item":"https://toresaku-app.github.io/web/lp.html"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -439,7 +439,7 @@ img { max-width: 100%; height: auto; display: block }
   cursor: default;
   border: 1.5px solid transparent;
 }
-.step:hover, .step.active {
+.step:hover {
   background: var(--cream);
   border-color: var(--border);
 }
@@ -453,9 +453,8 @@ img { max-width: 100%; height: auto; display: block }
   font-weight: 800; font-size: 16px;
   flex-shrink: 0;
 }
-.step.active .step-num {
-  background: var(--amber);
-  color: var(--white);
+.step:hover .step-num {
+  background: var(--teal);
 }
 .step-body h3 {
   font-family: var(--font-display);
@@ -820,15 +819,23 @@ a:focus-visible, button:focus-visible {
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
   .reveal {
     opacity: 1;
     transform: none;
-    transition: none;
   }
-  .gallery-track,
-  .gallery-track-reverse {
-    animation: none;
-  }
+}
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ── Responsive ── */
@@ -878,7 +885,7 @@ a:focus-visible, button:focus-visible {
       <div class="hero-cta-group">
         <a href="./" class="hero-cta-primary">Web版を使う</a>
         <a href="https://apps.apple.com/jp/app/%E3%83%88%E3%83%AC%E3%81%95%E3%81%8F/id6762547859" target="_blank" rel="noopener" style="display:inline-block">
-          <img src="/web/assets/lp/appstore-badge.svg" alt="App Storeからダウンロード" style="height:48px"/>
+          <img src="assets/lp/appstore-badge.svg" alt="App Storeからダウンロード" style="height:48px"/>
         </a>
       </div>
       <div class="hero-badges">
@@ -908,15 +915,26 @@ a:focus-visible, button:focus-visible {
   </div>
 </section>
 
+<!-- Stats band -->
+<section class="stats-band">
+  <h2 class="sr-only">トレさくの概要数値</h2>
+  <div class="stats-inner">
+    <div class="stat reveal reveal-delay-1"><div class="stat-num">100<span>種類</span></div><div class="stat-label">イラスト付き収録運動</div></div>
+    <div class="stat reveal reveal-delay-2"><div class="stat-num">3<span>ステップ</span></div><div class="stat-label">選ぶ・調整する・出力する</div></div>
+    <div class="stat reveal reveal-delay-3"><div class="stat-num">PT</div><div class="stat-label">現役理学療法士が開発・監修</div></div>
+    <div class="stat reveal reveal-delay-4"><div class="stat-num">0<span>円</span></div><div class="stat-label">完全無料・広告なし</div></div>
+  </div>
+</section>
+
 <!-- 3 Steps -->
 <section class="section-wrap steps-bg">
   <div class="section-inner">
     <div class="section-label reveal">HOW IT WORKS</div>
     <h2 class="section-title reveal">たった3ステップで完成</h2>
-    <p class="section-desc reveal">運動を選んで、パラメータを設定、PDFを出力。<br/>最短3分で指導書が完成します。</p>
+    <p class="section-desc reveal">運動を選んで、パラメータを設定、PDFを出力。<br/>この3ステップだけで指導書が完成します。</p>
     <div class="steps-grid">
       <div class="steps-list">
-        <div class="step active reveal reveal-delay-1">
+        <div class="step reveal reveal-delay-1">
           <div class="step-num">1</div>
           <div class="step-body">
             <h3>運動を選ぶ</h3>
@@ -953,34 +971,34 @@ a:focus-visible, button:focus-visible {
     <p class="section-desc reveal">現場の「あったらいいな」を形にしました</p>
     <div class="features-grid">
       <div class="feature-card reveal reveal-delay-1">
-        <div class="feature-icon fi-teal"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
         <h3>完全無料</h3>
         <p>全機能が無料で使えます。広告も一切表示されません。</p>
       </div>
       <div class="feature-card reveal reveal-delay-2">
-        <div class="feature-icon fi-emerald"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
         <h3>アカウント不要</h3>
         <p>登録なし、すぐに使い始められます。</p>
       </div>
       <div class="feature-card reveal reveal-delay-3">
-        <div class="feature-icon fi-violet"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg></div>
+        <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg></div>
         <h3>オフライン対応</h3>
         <p>インターネット接続なしで全機能が使えます。</p>
       </div>
       <div class="feature-card reveal reveal-delay-1">
-        <div class="feature-icon fi-rose"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
         <h3>プライバシー保護</h3>
         <p>指導書の入力内容とPDFは端末内で処理。外部へ自動送信されません。</p>
       </div>
       <div class="feature-card reveal reveal-delay-2">
-        <div class="feature-icon fi-sky"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-        <h3>50種類以上の運動</h3>
-        <p>下肢・体幹・上肢の筋トレ・ストレッチを収録。</p>
+        <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <h3>100種類の運動</h3>
+        <p>臨床で頻用される下肢・体幹・上肢の運動から、患者さんに合うメニューを選べます。</p>
       </div>
       <div class="feature-card reveal reveal-delay-3">
-        <div class="feature-icon fi-amber"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>
+        <div class="feature-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>
         <h3>イラスト付き</h3>
-        <p>全運動にわかりやすいイラスト付き。</p>
+        <p>全運動にイラスト付き。口頭では伝わりにくい動きも、紙面で伝えやすくなります。</p>
       </div>
     </div>
   </div>
@@ -1057,7 +1075,7 @@ a:focus-visible, button:focus-visible {
       </div>
     </div>
   </div>
-  <p class="gallery-count reveal">筋トレ・ストレッチ・バランス訓練など<br/><strong>50</strong>種類以上を収録</p>
+  <p class="gallery-count reveal">筋トレ・ストレッチ・バランス訓練など<br/><strong>100</strong>種類を収録</p>
 </section>
 
 <!-- Scenes -->
@@ -1092,7 +1110,7 @@ a:focus-visible, button:focus-visible {
         <img src="assets/lp/scene-group.webp" alt="介護予防" loading="lazy"/>
         <div class="scene-card-body">
           <h3>介護予防・通所</h3>
-          <p>高齢者向けの転倒予防・筋力維持プログラム作成に。イラスト付きでわかりやすい指導書に。</p>
+          <p>高齢者向けの運動プログラム作成に。イラスト付きでわかりやすい指導書に。</p>
         </div>
       </div>
     </div>
@@ -1106,7 +1124,7 @@ a:focus-visible, button:focus-visible {
       <img class="supervision-img" src="assets/lp/pt-portrait.webp" alt="監修理学療法士"/>
       <div class="supervision-body">
         <h2>現役理学療法士が開発・監修</h2>
-        <p>収録されている運動メニュー・指導内容は、臨床経験を持つ現役の理学療法士が開発・監修しています。エビデンスに基づいた運動を厳選し、安全にご利用いただけるよう配慮しています。</p>
+        <p>収録されている運動メニュー・指導内容は、臨床経験を持つ現役の理学療法士が開発・監修し、現場で頻用される運動から厳選しています。</p>
       </div>
     </div>
   </div>
@@ -1119,46 +1137,46 @@ a:focus-visible, button:focus-visible {
     <h2 class="section-title reveal">よくある質問</h2>
     <div class="faq-list reveal">
       <div class="faq-item open">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <button type="button" class="faq-q" aria-expanded="true" aria-controls="faq-a-1" id="faq-q-1">
           トレさくとは？
-          <div class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="faq-a">医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。</div>
+          <span class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a" id="faq-a-1" role="region" aria-labelledby="faq-q-1">医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a-2" id="faq-q-2">
           利用料金はかかりますか？
-          <div class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="faq-a">完全無料です。アカウント登録も不要で、すぐにお使いいただけます。広告も一切ありません。</div>
+          <span class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a" id="faq-a-2" role="region" aria-labelledby="faq-q-2">完全無料です。アカウント登録も不要で、すぐにお使いいただけます。広告も一切ありません。</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a-3" id="faq-q-3">
           患者データはどうなりますか？
-          <div class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="faq-a">指導書に入力した内容と作成したPDFは、お使いの端末内で処理され、外部へ自動送信されません。Web版では、サービス改善のため、プライバシーポリシーに記載した利用状況をGoogleアナリティクスへ送信します。iOSアプリ版はアクセス解析を使用していません。</div>
+          <span class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a" id="faq-a-3" role="region" aria-labelledby="faq-q-3">指導書に入力した内容と作成したPDFは、お使いの端末内で処理され、外部へ自動送信されません。Web版では、サービス改善のため、プライバシーポリシーに記載した利用状況をGoogleアナリティクスへ送信します。iOSアプリ版はアクセス解析を使用していません。</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a-4" id="faq-q-4">
           どのような運動が収録されていますか？
-          <div class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="faq-a">下肢・体幹・上肢の筋トレ・ストレッチを中心に50種類以上の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。</div>
+          <span class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a" id="faq-a-4" role="region" aria-labelledby="faq-q-4">下肢・体幹・上肢の筋トレ・ストレッチを中心に100種類の運動を収録。パテラセッティング、SLR、ブリッジ、スクワットなど臨床で頻用される運動が揃っています。</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a-5" id="faq-q-5">
           オフラインで使えますか？
-          <div class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="faq-a">はい。インターネット接続がなくても全機能をお使いいただけます。</div>
+          <span class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a" id="faq-a-5" role="region" aria-labelledby="faq-q-5">はい。インターネット接続がなくても全機能をお使いいただけます。</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a-6" id="faq-q-6">
           どの端末で使えますか？
-          <div class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="faq-a">Web版はPC・スマホのブラウザからご利用いただけます。iOSアプリはApp Storeで配信中です。</div>
+          <span class="faq-toggle"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="faq-a" id="faq-a-6" role="region" aria-labelledby="faq-q-6">Web版はPC・スマホのブラウザからご利用いただけます。iOSアプリはApp Storeで配信中です。</div>
       </div>
     </div>
   </div>
@@ -1172,7 +1190,7 @@ a:focus-visible, button:focus-visible {
     <div style="display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap">
       <a href="./" class="final-cta-btn">Web版を使う</a>
       <a href="https://apps.apple.com/jp/app/%E3%83%88%E3%83%AC%E3%81%95%E3%81%8F/id6762547859" target="_blank" rel="noopener" style="display:inline-block">
-        <img src="/web/assets/lp/appstore-badge.svg" alt="App Storeからダウンロード" style="height:48px"/>
+        <img src="assets/lp/appstore-badge.svg" alt="App Storeからダウンロード" style="height:48px"/>
       </a>
     </div>
   </div>
@@ -1211,6 +1229,15 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 reveals.forEach(el => observer.observe(el));
+
+// FAQ toggle
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const isOpen = item.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+});
 </script>
 </body>
 </html>
