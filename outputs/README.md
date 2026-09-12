@@ -9,7 +9,7 @@
 |---|---|---|
 | `toresaku-kochi2026-poster-提出用.pdf` | **提出・投影用の最終PDF**（10枚・16:9） | 事前登録 / 当日のUSB |
 | `toresaku-kochi2026-slides.pptx` | 最終版の原本（共同演者3名入り・10枚目は toresaku.com） | 内容を直すとき。直したらPDFを書き出し直す |
-| `qr-toresaku.com-lp.png` | 10枚目のQR（`https://toresaku.com/lp.html`） | QRを作り直すとき |
+| `qr-toresaku.com.png` | 10枚目のQR（`https://toresaku.com/` ＝ 運動ライブラリに直行） | QRを作り直すとき |
 | `toresaku-kochi2026-poster-読み上げ原稿.txt` | 発表7分の原稿 + 想定質問 | 当日 |
 | `toresaku-kochi2026-抄録-提出版.txt` | 登録済みの抄録（595字） | 発表内容と抄録の整合を確認するとき |
 | `slide-screenshots/` | 5枚目に使った実画面（本番Webから3倍解像度で撮影） | 画面を撮り直すとき |
@@ -27,7 +27,7 @@
 
 - 10枚・1440×810pt（16:9）
 - 1枚目に共同演者3名（佐藤 竜成・藤田 淳・大町勇都）、2枚目にCOI
-- 10枚目の文字が `toresaku.com/lp.html`、QRをデコードすると `https://toresaku.com/lp.html`
+- 10枚目の文字が `toresaku.com`、QRをデコードすると `https://toresaku.com/`（LPを経由せず運動ライブラリに直行）
 - 動画・アニメーションなし
 
 ## PDFの書き出し方
