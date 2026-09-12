@@ -63,6 +63,17 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
 
 ### Track 5: 小物・基盤（隙間に1個ずつ。詰め込まない）
 
+- [x] **独自ドメイン toresaku.com へ移行**（2026-09-12・PR #16）— 学会ポスターに載せるため
+  - DNS: Cloudflare（Oshipass001 アカウント）、A×4/AAAA×4/www CNAME、すべて「DNSのみ」
+  - GitHub Pages に cname を API で設定 → 証明書は約1分で発行（Let's Encrypt、www 込み）→ HTTPS 強制
+  - `baseUrl: "/web"` を廃止してルート配信に。旧URL `toresaku-app.github.io/web/*` は GitHub が `/web` を落として新ドメインへ301（実測）
+  - 本番確認済み: アプリ描画 / 資産 `/_expo/` / `/lp.html` / `/manifest.json` / SPAフォールバック / http→https / www→ルート / プライバシーポリシーへのリンク
+  - 後続（学会後でよい）:
+    - [ ] SEO系の絶対URLを toresaku.com に（canonical・OG・構造化データ・sitemap・robots・llms.txt）。`deploy-web.yml` と `public/lp.html` の二重保持、`app/+html.tsx` の canonical
+    - [ ] Google Search Console に toresaku.com を新プロパティとして登録し、サイトマップを送信
+    - [ ] App Store の説明文・サポートURLの表記（`docs/appstore-metadata.md`）
+    - [ ] GitHub の verified domains に toresaku.com を登録（ドメイン乗っ取り対策）
+    - [ ] 問い合わせ用メールを独自ドメインに（Cloudflare Email Routing）
 - [x] 発行者情報（施設名・担当者名）のPDF記載 — 実装済み。どちらも任意
   - 保存先は `issuerStore`（Web=localStorage / iOS=expo-sqlite kv-store）。hepStore と違い**セッションを跨いで保持**
   - 表紙フッター右端に1行。**折り返すと表紙が伸びるため nowrap 固定 + 入力を18/10文字に制限**（実測で決定）
