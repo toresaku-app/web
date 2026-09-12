@@ -46,9 +46,10 @@ jobs:
           python3 << 'PYEOF'
           with open("dist/index.html", "r") as f:
               html = f.read()
-          seo_tags = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-J12ZXEXNSN"></script>
+          seo_tags = """<script>(function(){var p=location.pathname;if(p==="/web"||p.indexOf("/web/")===0){location.replace((p.slice(4)||"/")+location.search+location.hash);}})();</script>
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-J12ZXEXNSN"></script>
           <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-J12ZXEXNSN');</script>
-          <link rel="manifest" href="/web/manifest.json" />
+          <link rel="manifest" href="/manifest.json" />
           <meta name="theme-color" content="#0B2545" />
           <meta name="description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要・オフライン対応。" />
           <meta name="keywords" content="自主トレ,指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく,自主トレ指導書作成,リハビリ運動イラスト,患者教育ツール" />

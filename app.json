@@ -27,9 +27,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "experiments": {
-      "baseUrl": "/web"
-    },
     "scheme": "rehab-hep",
     "plugins": [
       "expo-router",

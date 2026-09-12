@@ -46,3 +46,6 @@ assets/illustrations/originals/
 
 # LP スクショ撮影の中間出力（scripts/shoot-lp-screenshots.cjs）
 scripts/.lp-shots-out/
+
+# Office の一時ロックファイル
+~$*
