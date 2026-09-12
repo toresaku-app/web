@@ -46,7 +46,8 @@ jobs:
           python3 << 'PYEOF'
           with open("dist/index.html", "r") as f:
               html = f.read()
-          seo_tags = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-J12ZXEXNSN"></script>
+          seo_tags = """<script>(function(){var p=location.pathname;if(p==="/web"||p.indexOf("/web/")===0){location.replace((p.slice(4)||"/")+location.search+location.hash);}})();</script>
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-J12ZXEXNSN"></script>
           <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-J12ZXEXNSN');</script>
           <link rel="manifest" href="/manifest.json" />
           <meta name="theme-color" content="#0B2545" />
