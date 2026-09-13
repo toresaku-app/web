@@ -13,6 +13,8 @@
 | `toresaku-kochi2026-poster-読み上げ原稿.txt` | 発表7分の原稿 + 想定質問 | 当日 |
 | `toresaku-kochi2026-抄録-提出版.txt` | 登録済みの抄録（595字） | 発表内容と抄録の整合を確認するとき |
 | `slide-screenshots/` | 5枚目に使った実画面（本番Webから3倍解像度で撮影） | 画面を撮り直すとき |
+| `toresaku-kochi2026-POP-A4.pdf` | モニター横に置くA4の卓上POP（QR → `https://toresaku.com/`） | 当日印刷して設置（事務局の可否確認後） |
+| `toresaku-kochi2026-POP-A4.html` | POPの原本。Chromeで開いて印刷すれば同じものが出る | 文言を直すとき |
 
 > 抄録は `docs/marketing-abstract-kochi2026.md` の §7-2 が提出版。§7 は不採用の別ドラフト。
 
@@ -42,5 +44,6 @@
 
 - [ ] 事前登録（**締切 9/14 12:00**・`info2@rehacarekochi2026.com`・登録後の差し替え不可）
 - [ ] 当日用USBメモリに同じPDFを入れる
+- [ ] A4のPOPをモニター横に置いてよいか事務局に確認 → 可なら印刷して持参（白黒でも可）
 
 進行管理は [tasks/conference-2026-kochi.md](../tasks/conference-2026-kochi.md)。
