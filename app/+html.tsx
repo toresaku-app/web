@@ -11,7 +11,7 @@ export default function Root({ children }: PropsWithChildren) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
-        <link rel="canonical" href="https://toresaku-app.github.io/web/" />
+        <link rel="canonical" href="https://toresaku.com/" />
         <ScrollViewStyleReset />
       </head>
       <body>{children}</body>

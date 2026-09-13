@@ -53,26 +53,26 @@ jobs:
           <meta name="theme-color" content="#0B2545" />
           <meta name="description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料・アカウント不要・オフライン対応。" />
           <meta name="keywords" content="自主トレ,指導書,理学療法,リハビリ,PDF,運動指導,ホームエクササイズ,HEP,トレさく,自主トレ指導書作成,リハビリ運動イラスト,患者教育ツール" />
-          <link rel="canonical" href="https://toresaku-app.github.io/web/" />
+          <link rel="canonical" href="https://toresaku.com/" />
           <meta property="og:title" content="トレさく | 自主トレ指導書をサクッと作成" />
           <meta property="og:description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。完全無料。" />
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://toresaku-app.github.io/web/" />
+          <meta property="og:url" content="https://toresaku.com/" />
           <meta property="og:locale" content="ja_JP" />
           <meta property="og:site_name" content="トレさく" />
-          <meta property="og:image" content="https://toresaku-app.github.io/web/assets/og-image.png" />
+          <meta property="og:image" content="https://toresaku.com/assets/og-image.png" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
           <meta property="og:image:alt" content="トレさく - 自主トレ指導書をサクッと作成" />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content="トレさく | 自主トレ指導書をサクッと作成" />
           <meta name="twitter:description" content="医療・介護の現場で使える自主トレ指導書作成アプリ。完全無料・アカウント不要。" />
-          <meta name="twitter:image" content="https://toresaku-app.github.io/web/assets/og-image.png" />
+          <meta name="twitter:image" content="https://toresaku.com/assets/og-image.png" />
           <meta name="google-site-verification" content="4gQNvVamoDVNHmUhyOA6QAUV3nOLNxJ7kVi7qDHXe98" />
-          <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"医療・介護の現場で使える自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。","url":"https://toresaku-app.github.io/web/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"トレさく","description":"医療・介護の現場で使える自主トレ指導書作成アプリ。運動を選んで回数・セットを設定、イラスト付きA4指導書をPDF出力。","url":"https://toresaku.com/","applicationCategory":"HealthApplication","operatingSystem":"Web, iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"inLanguage":"ja","isAccessibleForFree":true}</script>
           <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"トレさくとは？","acceptedAnswer":{"@type":"Answer","text":"医療・介護の現場で使える自主トレ指導書作成アプリです。運動を選んで回数・セットを設定するだけで、イラスト付きA4指導書をPDF出力できます。"}},{"@type":"Question","name":"利用料金はかかりますか？","acceptedAnswer":{"@type":"Answer","text":"完全無料です。アカウント登録も不要で、すぐにお使いいただけます。広告も一切ありません。"}},{"@type":"Question","name":"患者データはどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"指導書に入力した内容と作成したPDFは、お使いの端末内で処理され、外部へ自動送信されません。Web版では、サービス改善のため、プライバシーポリシーに記載した利用状況をGoogleアナリティクスへ送信します。iOSアプリ版はアクセス解析を使用していません。"}},{"@type":"Question","name":"どのような運動が収録されていますか？","acceptedAnswer":{"@type":"Answer","text":"下肢・体幹・上肢の筋トレを中心に100種類の運動を収録。パテラセッティング、SLR、ブリッジ、スクワット、プランクなど臨床で頻用される運動が揃っています。"}},{"@type":"Question","name":"オフラインで使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。インターネット接続がなくても全機能をお使いいただけます。"}},{"@type":"Question","name":"どの端末で使えますか？","acceptedAnswer":{"@type":"Answer","text":"iPhone（iOS）アプリとしてApp Storeで配信中。Web版はPC・スマホのブラウザからもご利用いただけます。"}}]}</script>
-          <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"トレさく","url":"https://toresaku-app.github.io/web/","logo":"https://toresaku-app.github.io/web/assets/icon-512.png","description":"医療・介護の現場で使える自主トレ指導書作成アプリ","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"toresaku.app@gmail.com"}}</script>
-          <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://toresaku-app.github.io/web/"}]}</script>
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"トレさく","url":"https://toresaku.com/","logo":"https://toresaku.com/assets/icon-512.png","description":"医療・介護の現場で使える自主トレ指導書作成アプリ","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"toresaku.app@gmail.com"}}</script>
+          <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://toresaku.com/"}]}</script>
           """
           html = html.replace("</head>", seo_tags + "</head>")
           with open("dist/index.html", "w") as f:
@@ -85,7 +85,7 @@ jobs:
           cat > dist/robots.txt << 'ROBOTS'
           User-agent: *
           Allow: /
-          Sitemap: https://toresaku-app.github.io/web/sitemap.xml
+          Sitemap: https://toresaku.com/sitemap.xml
 
           User-agent: GPTBot
           Allow: /
@@ -107,7 +107,7 @@ jobs:
           <?xml version="1.0" encoding="UTF-8"?>
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
-              <loc>https://toresaku-app.github.io/web/</loc>
+              <loc>https://toresaku.com/</loc>
               <lastmod>2026-04-23</lastmod>
               <changefreq>monthly</changefreq>
               <priority>1.0</priority>
@@ -130,7 +130,7 @@ jobs:
           - 完全無料・アカウント不要・オフライン対応
 
           ## URL
-          - Web版: https://toresaku-app.github.io/web/
+          - Web版: https://toresaku.com/
           - プライバシーポリシー: https://toresaku-app.github.io/privacy-policy/
           LLMS
 
@@ -146,13 +146,13 @@ jobs:
           <?xml version="1.0" encoding="UTF-8"?>
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
-              <loc>https://toresaku-app.github.io/web/</loc>
+              <loc>https://toresaku.com/</loc>
               <lastmod>2026-04-23</lastmod>
               <changefreq>monthly</changefreq>
               <priority>1.0</priority>
             </url>
             <url>
-              <loc>https://toresaku-app.github.io/web/lp.html</loc>
+              <loc>https://toresaku.com/lp.html</loc>
               <lastmod>2026-04-23</lastmod>
               <changefreq>monthly</changefreq>
               <priority>0.9</priority>
