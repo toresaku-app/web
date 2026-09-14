@@ -72,7 +72,7 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
   - 本番確認済み: アプリ描画 / 資産 `/_expo/` / `/lp.html` / `/manifest.json` / SPAフォールバック / http→https / www→ルート / プライバシーポリシーへのリンク
   - 後続（学会後でよい）:
     - [x] SEO系の絶対URLを toresaku.com に（2026-09-14・PR #17）— canonical・OG・JSON-LD・sitemap・robots・llms.txt。本番で新URLになったことを確認、旧URLの残存なし（プライバシーポリシーへのリンクは別サイトなので据え置き）
-    - [ ] Google Search Console に toresaku.com を新プロパティとして登録し、サイトマップを送信
+    - [x] Google Search Console に toresaku.com をドメインプロパティとして登録（2026-09-14）— Cloudflare の Domain Connect で確認用 TXT を追加して所有権を証明。`https://toresaku.com/sitemap.xml` を送信し「成功しました」（検出2ページ）。**TXT は削除しないこと**
     - [ ] App Store の説明文・サポートURLの表記（`docs/appstore-metadata.md`）
     - [ ] GitHub の verified domains に toresaku.com を登録（ドメイン乗っ取り対策）
     - [ ] 問い合わせ用メールを独自ドメインに（Cloudflare Email Routing）
