@@ -55,14 +55,27 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
 
 ### Track 4: 学会事務（利用者のみ・締切駆動）
 
-- [ ] ⚠️ ポスターに共同演者を追記 → 最終確認（**本番用・編集用の両方**）
-- [ ] ⚠️ 本番用PDFの書き出し（現在 outputs/ にPDFがない。規定は「PDFを投影」）
-- [ ] ⚠️ **事前登録の提出（締切 9/14 12:00・登録後の差し替え不可）**
+- [x] ポスターに共同演者を追記（2026-09-09・予演会で大きなFBなし）
+  - 反映先は新ファイル `outputs/toresaku-kochi2026-slides.pptx`（佐藤 竜成・藤田 淳・大町勇都）。旧「本番用-画像版」「編集用-テキスト版」は共同演者なし＝古い版
+- [x] 提出用PDFの書き出し（2026-09-12）— 10枚目の文字とQRを `toresaku.com` に差し替えて書き出し（LPを経由せず運動ライブラリに直行させる）
+  - `outputs/toresaku-kochi2026-poster-提出用.pdf`。全10枚を描画・テキスト抽出・QRデコードで確認済み
+- [x] 事前登録の提出（2026-09-13 送付・締切 9/14 12:00）
 - [ ] 学会当日用USBメモリの準備（同一PDF）
 - [ ] （推奨・任意）商標出願の判断: 学会で全国露出する前が適期（J-PlatPat確認済み・類似なし）
 
 ### Track 5: 小物・基盤（隙間に1個ずつ。詰め込まない）
 
+- [x] **独自ドメイン toresaku.com へ移行**（2026-09-12・PR #16）— 学会ポスターに載せるため
+  - DNS: Cloudflare（Oshipass001 アカウント）、A×4/AAAA×4/www CNAME、すべて「DNSのみ」
+  - GitHub Pages に cname を API で設定 → 証明書は約1分で発行（Let's Encrypt、www 込み）→ HTTPS 強制
+  - `baseUrl: "/web"` を廃止してルート配信に。旧URL `toresaku-app.github.io/web/*` は GitHub が `/web` を落として新ドメインへ301（実測）
+  - 本番確認済み: アプリ描画 / 資産 `/_expo/` / `/lp.html` / `/manifest.json` / SPAフォールバック / http→https / www→ルート / プライバシーポリシーへのリンク
+  - 後続（学会後でよい）:
+    - [ ] SEO系の絶対URLを toresaku.com に（canonical・OG・構造化データ・sitemap・robots・llms.txt）。`deploy-web.yml` と `public/lp.html` の二重保持、`app/+html.tsx` の canonical
+    - [ ] Google Search Console に toresaku.com を新プロパティとして登録し、サイトマップを送信
+    - [ ] App Store の説明文・サポートURLの表記（`docs/appstore-metadata.md`）
+    - [ ] GitHub の verified domains に toresaku.com を登録（ドメイン乗っ取り対策）
+    - [ ] 問い合わせ用メールを独自ドメインに（Cloudflare Email Routing）
 - [x] 発行者情報（施設名・担当者名）のPDF記載 — 実装済み。どちらも任意
   - 保存先は `issuerStore`（Web=localStorage / iOS=expo-sqlite kv-store）。hepStore と違い**セッションを跨いで保持**
   - 表紙フッター右端に1行。**折り返すと表紙が伸びるため nowrap 固定 + 入力を18/10文字に制限**（実測で決定）

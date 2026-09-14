@@ -1,34 +1,49 @@
 # 学会発表の成果物（リハケア高知2026・演題 P07-5-1）
 
-デジタルポスター10枚と読み上げ原稿。制作ブリーフは
-[docs/marketing-poster-kochi2026.md](../docs/marketing-poster-kochi2026.md)、
+制作ブリーフは [docs/marketing-poster-kochi2026.md](../docs/marketing-poster-kochi2026.md)、
 数値の根拠は [docs/marketing-poster-data-kochi2026.md](../docs/marketing-poster-data-kochi2026.md)。
+
+## 使うファイル
 
 | ファイル | 中身 | 使うとき |
 |---|---|---|
-| `toresaku-kochi2026-poster-本番用-画像版.pptx` | **全10枚が画像**（1920×1080）。文字はレイアウトごと焼いてある | **提出・投影用。これが最終版** |
-| `toresaku-kochi2026-poster-編集用-テキスト版.pptx` | 同じ10枚だがテキストが生きている | 内容を直すとき。ここを直して画像版を作り直す |
+| `toresaku-kochi2026-poster-提出用.pdf` | **提出・投影用の最終PDF**（10枚・16:9） | 事前登録 / 当日のUSB |
+| `toresaku-kochi2026-slides.pptx` | 最終版の原本（共同演者3名入り・10枚目は toresaku.com） | 内容を直すとき。直したらPDFを書き出し直す |
+| `qr-toresaku.com.png` | 10枚目のQR（`https://toresaku.com/` ＝ 運動ライブラリに直行） | QRを作り直すとき |
 | `toresaku-kochi2026-poster-読み上げ原稿.txt` | 発表7分の原稿 + 想定質問 | 当日 |
-| `toresaku-kochi2026-抄録-提出版.txt` | **実際に登録された抄録本文**（595字） | 発表内容と抄録の整合を確認するとき |
+| `toresaku-kochi2026-抄録-提出版.txt` | 登録済みの抄録（595字） | 発表内容と抄録の整合を確認するとき |
+| `slide-screenshots/` | 5枚目に使った実画面（本番Webから3倍解像度で撮影） | 画面を撮り直すとき |
+| `toresaku-kochi2026-POP-A4.pdf` | モニター横に置くA4の卓上POP（QR → `https://toresaku.com/`） | 当日印刷して設置（事務局の可否確認後） |
+| `toresaku-kochi2026-POP-A4.html` | POPの原本。Chromeで開いて印刷すれば同じものが出る | 文言を直すとき |
 
-> 抄録は `docs/marketing-abstract-kochi2026.md` の §7-2 が提出版。
-> 同ファイルの §7 は不採用の別ドラフトなので取り違えに注意。
+> 抄録は `docs/marketing-abstract-kochi2026.md` の §7-2 が提出版。§7 は不採用の別ドラフト。
 
-## なぜ2種類あるか
+## 使わないファイル（古い版）
 
-PowerPoint で開く環境によってフォントやレイアウトが崩れるため、
-最終版は各スライドを画像に焼いてある（"safe" の由来）。
-そのぶん**画像版は中身を編集できない**ので、編集用のテキスト版を残している。
+- `toresaku-kochi2026-poster-本番用-画像版.pptx` — 共同演者のプレースホルダが未記入・旧URL
+- `toresaku-kochi2026-poster-編集用-テキスト版.pptx` — 共同演者なし・旧URL
 
-修正が必要になったら **テキスト版を直す → 画像版を作り直す** の順。
-画像版だけを直そうとしないこと。
+名前に「本番用」と付いているが**最終版ではない**。学会後に整理する。
 
-## 未了（2026-08-08 時点）
+## 提出前の確認（2026-09-12 実施）
 
-- [ ] **共同演者の追記**。画像版の1枚目に「共同演者：［ここに追記］」のテキストボックスがあるが未入力。
-      テキスト版の1枚目には共同演者の行そのものが無いので、そちらにも追加が要る
-- [ ] **本番用PDFの書き出し**。大会規定は「PDFをフルハイビジョンモニターに投影」。
-      以前あった PDF は画像版より古い版からの書き出しだったため削除済み
+- 10枚・1440×810pt（16:9）
+- 1枚目に共同演者3名（佐藤 竜成・藤田 淳・大町勇都）、2枚目にCOI
+- 10枚目の文字が `toresaku.com`、QRをデコードすると `https://toresaku.com/`（LPを経由せず運動ライブラリに直行）
+- 動画・アニメーションなし
+
+## PDFの書き出し方
+
+手作業なら **ファイル → エクスポート → PDF** で問題ない。
+
+自動化する場合の注意: PowerPoint for Mac はサンドボックス化されており、許可していないフォルダへ
+新規保存しようとすると許可ダイアログで止まる。`~/Library/Containers/com.microsoft.Powerpoint/Data/`
+の中にコピーして開き、そこへ書き出してから取り出すと止まらない。
+
+## 未了
+
+- [x] 事前登録（2026-09-13 送付済み。登録後の差し替え不可）
 - [ ] 当日用USBメモリに同じPDFを入れる
+- [ ] A4のPOPをモニター横に置いてよいか → 9/13 の登録メールで質問済み、**返信待ち**。可なら印刷して持参（白黒でも可）
 
-進行管理は [tasks/conference-2026-kochi.md](../tasks/conference-2026-kochi.md) を参照。
+進行管理は [tasks/conference-2026-kochi.md](../tasks/conference-2026-kochi.md)。
