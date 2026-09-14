@@ -20,9 +20,36 @@ import { ILLUSTRATIONS, START_ILLUSTRATIONS } from "../src/constants/illustratio
 import { Asset } from "expo-asset";
 
 // Native-only modules - lazy imported to avoid web bundler errors
-let printToFileAsync: typeof import("expo-print").printToFileAsync;
-let shareAsync: typeof import("expo-sharing").shareAsync;
-let FileSystem: typeof import("expo-file-system/legacy");
+type NativeModules = {
+  printToFileAsync: typeof import("expo-print").printToFileAsync;
+  shareAsync: typeof import("expo-sharing").shareAsync;
+  FileSystem: typeof import("expo-file-system/legacy");
+};
+
+// 3モジュールを1つのPromiseにまとめてモジュールスコープにキャッシュする。
+// 失敗したらキャッシュを破棄し、次回呼び出しで再importできるようにする
+// （そうしないと「再試行」を押しても未解決のまま同じエラーを繰り返すため）。
+let nativeModulesPromise: Promise<NativeModules> | null = null;
+
+function loadNativeModules(): Promise<NativeModules> {
+  if (!nativeModulesPromise) {
+    nativeModulesPromise = Promise.all([
+      import("expo-print"),
+      import("expo-sharing"),
+      import("expo-file-system/legacy"),
+    ])
+      .then(([printModule, sharingModule, fileSystemModule]) => ({
+        printToFileAsync: printModule.printToFileAsync,
+        shareAsync: sharingModule.shareAsync,
+        FileSystem: fileSystemModule,
+      }))
+      .catch((error) => {
+        nativeModulesPromise = null;
+        throw error;
+      });
+  }
+  return nativeModulesPromise;
+}
 
 // expo-print の型定義では printToFileAsync の引数(FilePrintOptions)に orientation が
 // 含まれていないが、iOS ネイティブ実装は printAsync と共通の PrintOptions 構造体を使うため
@@ -31,22 +58,10 @@ type PrintToFileOptions = import("expo-print").FilePrintOptions & {
   orientation?: import("expo-print").PrintOptions["orientation"];
 };
 
-// A4は72dpiで595×842pt。iOSのexpo-printはHTML側の@page sizeを無視し
+// A4は72dpiで595×842pt(縦向き)。iOSのexpo-printはHTML側の@page sizeを無視し
 // 既定でUSレター(612×792pt)を使うため、width/heightで明示する。
 const A4_WIDTH_PT = 595;
 const A4_HEIGHT_PT = 842;
-
-if (Platform.OS !== "web") {
-  import("expo-print")
-    .then((m) => (printToFileAsync = m.printToFileAsync))
-    .catch(() => console.warn("expo-print failed to load"));
-  import("expo-sharing")
-    .then((m) => (shareAsync = m.shareAsync))
-    .catch(() => console.warn("expo-sharing failed to load"));
-  import("expo-file-system/legacy")
-    .then((m) => (FileSystem = m))
-    .catch(() => console.warn("expo-file-system failed to load"));
-}
 import { SelectedExercise } from "../src/types/exercise";
 import { generateHtml } from "../src/utils/generateHtml";
 import { track } from "../src/utils/analytics";
@@ -87,10 +102,13 @@ export default function PreviewScreen() {
       return;
     }
 
-    // Native: expo-print + expo-sharing
-    // 動的import解決前にボタンが押されると printToFileAsync が undefined になり得るため、
-    // 未解決なら（従来どおりの文言・挙動で）ここで打ち切る。
-    if (!printToFileAsync) {
+    // Native: expo-print + expo-sharing + expo-file-system
+    // 3モジュールすべてが解決するまで待つ。未解決（初回import前や失敗後）なら
+    // ここで打ち切り、失敗時はキャッシュが破棄されているので「再試行」で再importされる。
+    let native: NativeModules;
+    try {
+      native = await loadNativeModules();
+    } catch {
       setIsExporting(false);
       Alert.alert(
         "PDF出力エラー",
@@ -102,13 +120,14 @@ export default function PreviewScreen() {
       );
       return;
     }
+    const { printToFileAsync, shareAsync, FileSystem } = native;
 
     let fileUri: string | null = null;
     try {
       const toDataUri = async (source: number): Promise<string | null> => {
         const asset = Asset.fromModule(source);
         await asset.downloadAsync();
-        if (!asset.localUri || !FileSystem) return null;
+        if (!asset.localUri) return null;
         const base64 = await FileSystem.readAsStringAsync(asset.localUri, {
           encoding: FileSystem.EncodingType.Base64,
         });
@@ -137,10 +156,15 @@ export default function PreviewScreen() {
         startImageUris,
         issuerLine,
       });
+      const isLandscape = orientation === "landscape";
       const printOptions: PrintToFileOptions = {
         html,
-        width: A4_WIDTH_PT,
-        height: A4_HEIGHT_PT,
+        // 横向きはJS側でwidth/heightを入れ替えて渡す。iOSはheight > widthのときだけ
+        // 反転するため二重反転しない（node_modules/expo-print/ios/PrintOptions.swift:55-57）。
+        // Androidはorientationを===で比較するPrintPDFRenderTask.kt:71の分岐に依存せず、
+        // 常に正しい向きの寸法をそのまま使える。
+        width: isLandscape ? A4_HEIGHT_PT : A4_WIDTH_PT,
+        height: isLandscape ? A4_WIDTH_PT : A4_HEIGHT_PT,
         orientation,
       };
       const { uri } = await printToFileAsync(printOptions);

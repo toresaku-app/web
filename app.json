@@ -14,7 +14,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ryuseisato.toresaku"
+      "bundleIdentifier": "com.ryuseisato.toresaku",
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "ja"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +31,9 @@
       "favicon": "./assets/favicon.png"
     },
     "scheme": "rehab-hep",
+    "locales": {
+      "ja": "./locales/ja.json"
+    },
     "plugins": [
       "expo-router",
       "expo-sqlite"
