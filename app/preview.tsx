@@ -24,6 +24,18 @@ let printToFileAsync: typeof import("expo-print").printToFileAsync;
 let shareAsync: typeof import("expo-sharing").shareAsync;
 let FileSystem: typeof import("expo-file-system/legacy");
 
+// expo-print の型定義では printToFileAsync の引数(FilePrintOptions)に orientation が
+// 含まれていないが、iOS ネイティブ実装は printAsync と共通の PrintOptions 構造体を使うため
+// 実際には orientation を解釈する。型定義に忠実にしつつ orientation を渡せるよう拡張する。
+type PrintToFileOptions = import("expo-print").FilePrintOptions & {
+  orientation?: import("expo-print").PrintOptions["orientation"];
+};
+
+// A4は72dpiで595×842pt。iOSのexpo-printはHTML側の@page sizeを無視し
+// 既定でUSレター(612×792pt)を使うため、width/heightで明示する。
+const A4_WIDTH_PT = 595;
+const A4_HEIGHT_PT = 842;
+
 if (Platform.OS !== "web") {
   import("expo-print")
     .then((m) => (printToFileAsync = m.printToFileAsync))
@@ -76,6 +88,21 @@ export default function PreviewScreen() {
     }
 
     // Native: expo-print + expo-sharing
+    // 動的import解決前にボタンが押されると printToFileAsync が undefined になり得るため、
+    // 未解決なら（従来どおりの文言・挙動で）ここで打ち切る。
+    if (!printToFileAsync) {
+      setIsExporting(false);
+      Alert.alert(
+        "PDF出力エラー",
+        "指導書の生成に失敗しました。もう一度お試しください。",
+        [
+          { text: "キャンセル", style: "cancel" },
+          { text: "再試行", onPress: handleExport },
+        ]
+      );
+      return;
+    }
+
     let fileUri: string | null = null;
     try {
       const toDataUri = async (source: number): Promise<string | null> => {
@@ -110,7 +137,13 @@ export default function PreviewScreen() {
         startImageUris,
         issuerLine,
       });
-      const { uri } = await printToFileAsync({ html });
+      const printOptions: PrintToFileOptions = {
+        html,
+        width: A4_WIDTH_PT,
+        height: A4_HEIGHT_PT,
+        orientation,
+      };
+      const { uri } = await printToFileAsync(printOptions);
       fileUri = uri;
       setIsExporting(false);
       await new Promise((r) => setTimeout(r, 500));
