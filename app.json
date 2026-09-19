@@ -17,7 +17,8 @@
       "bundleIdentifier": "com.ryuseisato.toresaku",
       "infoPlist": {
         "CFBundleDevelopmentRegion": "ja"
-      }
+      },
+      "appleTeamId": "8937F4X2Q8"
     },
     "android": {
       "adaptiveIcon": {

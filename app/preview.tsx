@@ -62,6 +62,11 @@ type PrintToFileOptions = import("expo-print").FilePrintOptions & {
 // 既定でUSレター(612×792pt)を使うため、width/heightで明示する。
 const A4_WIDTH_PT = 595;
 const A4_HEIGHT_PT = 842;
+// 余白10mm（Web版の@page marginと同じ）。iOSは@page marginも無視し、未指定だと
+// 余白0で紙端まで描画されるため、ネイティブのmarginsで明示する（2026-09 シミュレータで実測）。
+const PAGE_MARGIN_PT = 28.35;
+// 72dpi(iOS印刷) / 96dpi(Web印刷)
+const NATIVE_CSS_ZOOM = 0.75;
 import { SelectedExercise } from "../src/types/exercise";
 import { generateHtml } from "../src/utils/generateHtml";
 import { track } from "../src/utils/analytics";
@@ -157,8 +162,11 @@ export default function PreviewScreen() {
         issuerLine,
       });
       const isLandscape = orientation === "landscape";
+      // iOSの印刷はCSS 1px = 1pt(1/72in)で描画し、Web(Chrome)の1px = 1/96inより1.33倍大きくなる。
+      // zoomで縮尺をWebに揃え、DESIGN.md §7のページ高さ較正（Chromeで実測）をそのまま効かせる。
+      const nativeHtml = html.replace("</head>", `<style>html{zoom:${NATIVE_CSS_ZOOM}}</style></head>`);
       const printOptions: PrintToFileOptions = {
-        html,
+        html: nativeHtml,
         // 横向きはJS側でwidth/heightを入れ替えて渡す。iOSはheight > widthのときだけ
         // 反転するため二重反転しない（node_modules/expo-print/ios/PrintOptions.swift:55-57）。
         // Androidはorientationを===で比較するPrintPDFRenderTask.kt:71の分岐に依存せず、
@@ -166,6 +174,12 @@ export default function PreviewScreen() {
         width: isLandscape ? A4_HEIGHT_PT : A4_WIDTH_PT,
         height: isLandscape ? A4_WIDTH_PT : A4_HEIGHT_PT,
         orientation,
+        margins: {
+          top: PAGE_MARGIN_PT,
+          bottom: PAGE_MARGIN_PT,
+          left: PAGE_MARGIN_PT,
+          right: PAGE_MARGIN_PT,
+        },
       };
       const { uri } = await printToFileAsync(printOptions);
       fileUri = uri;
