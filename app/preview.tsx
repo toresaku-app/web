@@ -17,6 +17,10 @@ import { useHepStore } from "../src/stores/hepStore";
 import { useIssuerStore, formatIssuerLine, ISSUER_MAX } from "../src/stores/issuerStore";
 import { EXERCISES } from "../src/constants/exercises";
 import { ILLUSTRATIONS, START_ILLUSTRATIONS } from "../src/constants/illustrations";
+import {
+  SHEET_PURPOSE_MAX_LENGTH,
+  EXERCISE_PURPOSE_MAX_LENGTH,
+} from "../src/constants/textLimits";
 import { Asset } from "expo-asset";
 
 // Native-only modules - lazy imported to avoid web bundler errors
@@ -70,6 +74,17 @@ const NATIVE_CSS_ZOOM = 0.75;
 import { SelectedExercise } from "../src/types/exercise";
 import { generateHtml } from "../src/utils/generateHtml";
 import { track } from "../src/utils/analytics";
+
+/**
+ * 共有シートに表示するファイル名用に、端末のローカル日付を YYYY-MM-DD 形式にする。
+ * Date#toISOString はUTC基準になるため使わず、ローカルのgetFullYear/getMonth/getDateから組み立てる。
+ */
+function formatLocalDateForFilename(date: Date): string {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 const FREQUENCY_OPTIONS = [
   "1日1回",
@@ -128,6 +143,8 @@ export default function PreviewScreen() {
     const { printToFileAsync, shareAsync, FileSystem } = native;
 
     let fileUri: string | null = null;
+    let renamedFileUri: string | null = null;
+    let shareTempDir: string | null = null;
     try {
       const toDataUri = async (source: number): Promise<string | null> => {
         const asset = Asset.fromModule(source);
@@ -164,7 +181,11 @@ export default function PreviewScreen() {
       const isLandscape = orientation === "landscape";
       // iOSの印刷はCSS 1px = 1pt(1/72in)で描画し、Web(Chrome)の1px = 1/96inより1.33倍大きくなる。
       // zoomで縮尺をWebに揃え、DESIGN.md §7のページ高さ較正（Chromeで実測）をそのまま効かせる。
-      const nativeHtml = html.replace("</head>", `<style>html{zoom:${NATIVE_CSS_ZOOM}}</style></head>`);
+      // Android(未リリース)は描画の縮尺が異なるため、実測済みのiOSだけに適用する。
+      const nativeHtml =
+        Platform.OS === "ios"
+          ? html.replace("</head>", `<style>html{zoom:${NATIVE_CSS_ZOOM}}</style></head>`)
+          : html;
       const printOptions: PrintToFileOptions = {
         html: nativeHtml,
         // 横向きはJS側でwidth/heightを入れ替えて渡す。iOSはheight > widthのときだけ
@@ -185,7 +206,33 @@ export default function PreviewScreen() {
       fileUri = uri;
       setIsExporting(false);
       await new Promise((r) => setTimeout(r, 500));
-      await shareAsync(uri, { UTI: ".pdf", mimeType: "application/pdf" });
+
+      // 共有シートに出るファイル名がprintToFileAsyncのUUID名のままだと何のファイルか
+      // 分からないため、分かりやすい名前にリネームしてから共有する。Caches/Print/配下を
+      // 直接上書きすると同じ日に複数回出力した際に衝突しうるので、都度ユニークな
+      // 一時フォルダを作ってその中に置く。
+      let shareUri = uri;
+      const cacheDir = FileSystem.cacheDirectory;
+      if (cacheDir) {
+        try {
+          const dateLabel = formatLocalDateForFilename(new Date());
+          shareTempDir = `${cacheDir}hep-share-${Date.now()}/`;
+          await FileSystem.makeDirectoryAsync(shareTempDir, { intermediates: true });
+          const candidateUri = `${shareTempDir}自主トレ指導書_${dateLabel}.pdf`;
+          // moveAsyncだと失敗時に元ファイルが既に消えている/中途半端な状態になっている
+          // 恐れがあり、フォールバック先の安全性が下がるため、失敗しても元ファイルを
+          // 確実に残せるcopyAsyncを使う。
+          await FileSystem.copyAsync({ from: uri, to: candidateUri });
+          renamedFileUri = candidateUri;
+          shareUri = candidateUri;
+        } catch {
+          // リネームに失敗しても元のUUID名ファイル(uri)はそのまま残っているので、
+          // それを共有して従来どおり動作を継続する。
+          shareUri = uri;
+        }
+      }
+
+      await shareAsync(shareUri, { UTI: ".pdf", mimeType: "application/pdf" });
     } catch {
       setIsExporting(false);
       Alert.alert(
@@ -197,9 +244,13 @@ export default function PreviewScreen() {
         ]
       );
     } finally {
-      if (fileUri) {
-        await FileSystem.deleteAsync(fileUri, { idempotent: true });
-      }
+      // 3つの削除を独立して実行する（allSettledなので1つ失敗しても残りは実行され、
+      // finally自体が例外を投げて未処理rejectionになることもない）。
+      await Promise.allSettled([
+        fileUri ? FileSystem.deleteAsync(fileUri, { idempotent: true }) : Promise.resolve(),
+        renamedFileUri ? FileSystem.deleteAsync(renamedFileUri, { idempotent: true }) : Promise.resolve(),
+        shareTempDir ? FileSystem.deleteAsync(shareTempDir, { idempotent: true }) : Promise.resolve(),
+      ]);
     }
   };
 
@@ -280,6 +331,7 @@ export default function PreviewScreen() {
             placeholderTextColor="#94A3B8"
             value={sheetPurpose}
             onChangeText={setSheetPurpose}
+            maxLength={SHEET_PURPOSE_MAX_LENGTH}
             autoCorrect={false}
             autoComplete="off"
             spellCheck={false}
@@ -679,6 +731,7 @@ function ExerciseEditCard({
               placeholderTextColor="#94A3B8"
               value={sel.purpose}
               onChangeText={(text) => onUpdate({ purpose: text })}
+              maxLength={EXERCISE_PURPOSE_MAX_LENGTH}
               autoCorrect={false}
               autoComplete="off"
               spellCheck={false}
