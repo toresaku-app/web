@@ -48,9 +48,24 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
 
 前提: Track 1 のソーク結果に大きな問題なし + Track 2 の混在対応マージ済み。
 
-- [ ] バージョン 1.2.0 / What's New 文面（appstore-metadata.md は更新済み）
-- [ ] ストア用スクリーンショット撮り直し（新UIで。LP画像も同時に更新）
-- [ ] シミュレータ + 実機での総点検（選択→調整→PDF共有、チェック表ON/OFF、縦横）
+公開中の iOS 版は 1.0（2026-04-21）。7月に 1.0.6 / 1.1.0 のアーカイブは作ったが、ストアにはリリースされていない。
+
+- [x] バージョン 1.2.0 / What's New 文面（appstore-metadata.md は更新済み）
+- [x] ストア用スクリーンショット撮り直し（2026-09-19、Release ビルド・ステータスバー 9:41 固定）。`docs/store-screenshots/v1.2.0/` に iPhone 6.9"（1320×2868）と iPad 13"（2064×2752）各4枚: 01 運動ライブラリ / 02 絞り込み / 03 内容を調整 / 04 出力（チェック表ON）
+- [x] LP画像の更新 — 不要と確認（2026-08-06 の cd75255 で現行UIに撮り直し済み。以降に画面の見た目の変更なし）
+- [x] 共有シートのPDFファイル名が UUID（例: C36FF249-….pdf）。「自主トレ指導書_日付.pdf」などに改名してから共有する（学会後の改善候補）— app/preview.tsxで一時フォルダに「自主トレ指導書_YYYY-MM-DD.pdf」としてコピーしてから共有（失敗時は元ファイルで共有）、app/print.tsxはdocument.titleを上書きして対応（2026-09-19）
+- [ ] シミュレータ + 実機での総点検（選択→調整→PDF共有、チェック表ON/OFF、縦横）— シミュレータ分は完了（2026-09-19）。残りは実機で1回（利用者）
+- [x] iOS の PDF が US レター（612×792pt）で出力されていた（expo-print iOS は @page を無視）。A4 と向きを明示して修正
+- [x] iOS の PDF 余白と縮尺を修正（2026-09-19 シミュレータ実測）。@page margin も iOS では無視され余白 0mm だったため `margins` 28.35pt(10mm) を指定。さらに iOS 印刷は CSS 1px=1pt で Web(1px=1/96in) の1.33倍に描画され、20種目で表紙が2ページに割れていたため `html{zoom:0.75}` で Web と同縮尺に揃えた
+- [x] iOS の PDF 実測（iPhone 17 Pro Max シミュレータ・Release）: 縦3種目=4p、縦20種目+チェック表=25p（表紙1p）、横20種目+チェック表=26p。全ページ A4・四辺10mm以上・紙端接触なし。2枚イラスト・発行者（18字上限で切り詰め、1行表示）・チェック表4p を目視確認
+- [x] 既知: 横向き20種目で表紙のフッター1行だけが2ページ目に押し出され、ほぼ白紙のページが1枚できる（内容の欠けなし。Web と同じ印刷範囲なので Web も同様のはず）。学会後に表紙の行高を詰めて対応
+  → 2026-09-19 修正。`.landscape` の表紙テーブル行間・`.cover-notice`・表紙フッターの余白を詰め、横向き表紙の高さを 401+24.6×N→335+17.7×N に圧縮（headless Chromeで縦横3/4/10/15/20種目を実測、縦向きは無変更）。詳細は DESIGN.md §7
+- [x] 既知: 指導書の目的欄（`sheetPurpose`）が2行に折り返すと横向き20種目の表紙が2ページに割れる
+  → 2026-09-20 修正。`.cover-purpose`/`.sheet-purpose` を1行固定（nowrap+ellipsis）、運動ごとの目的（`.ex-purpose`）は最大2行固定（line-clamp）にし、入力側にも上限を追加（`src/constants/textLimits.ts`: `SHEET_PURPOSE_MAX_LENGTH`=30字 / `EXERCISE_PURPOSE_MAX_LENGTH`=40字）。縦横・チェック表・発行者名ありの組み合わせで headless Chrome の `--print-to-pdf` により表紙1枚に収まることを確認。詳細は DESIGN.md §7
+- [ ] ビルドした IPA で、日本語のローカライズ（`expo.locales` の ja / `CFBundleDevelopmentRegion`）が実際に入っていることを確認する
+- [ ] App Store Connect で「規制対象医療機器」の申告欄が表示されたら、全地域で「該当しない」と回答する（利用者）
+- [ ] 年齢レーティングの質問票を最新版で回答し直す（利用者）
+- [ ] 審査メモを貼る（`docs/appstore-metadata.md` の「審査メモ（App Review への備考）」の文案、利用者）
 - [ ] 提出（利用者）→ 審査対応
 
 ### Track 4: 学会事務（利用者のみ・締切駆動）
@@ -73,7 +88,7 @@ UI/UXリデザイン一式（バッチ1〜3 + 実機FB対応）は develop に�
   - 後続（学会後でよい）:
     - [x] SEO系の絶対URLを toresaku.com に（2026-09-14・PR #17）— canonical・OG・JSON-LD・sitemap・robots・llms.txt。本番で新URLになったことを確認、旧URLの残存なし（プライバシーポリシーへのリンクは別サイトなので据え置き）
     - [x] Google Search Console に toresaku.com をドメインプロパティとして登録（2026-09-14）— Cloudflare の Domain Connect で確認用 TXT を追加して所有権を証明。`https://toresaku.com/sitemap.xml` を送信し「成功しました」（検出2ページ）。**TXT は削除しないこと**
-    - [ ] App Store の説明文・サポートURLの表記（`docs/appstore-metadata.md`）
+    - [x] App Store の説明文・サポートURLの表記（`docs/appstore-metadata.md`）— マーケティングURLに toresaku.com を追加。サポート/プライバシーポリシーURLは別サイトのため据え置き（2026-09-19）
     - [ ] GitHub の verified domains に toresaku.com を登録（ドメイン乗っ取り対策）
     - [ ] 問い合わせ用メールを独自ドメインに（Cloudflare Email Routing）
 - [x] 発行者情報（施設名・担当者名）のPDF記載 — 実装済み。どちらも任意

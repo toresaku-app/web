@@ -7,6 +7,17 @@ import { ILLUSTRATIONS, START_ILLUSTRATIONS } from "../src/constants/illustratio
 import { Asset } from "expo-asset";
 import { generateHtml } from "../src/utils/generateHtml";
 
+/**
+ * 「PDFに保存」時の既定ファイル名(document.title由来)用に、ローカル日付をYYYY-MM-DD形式にする。
+ * Date#toISOString はUTC基準になるため使わず、ローカルのgetFullYear/getMonth/getDateから組み立てる。
+ */
+function formatLocalDateForFilename(date: Date): string {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 export default function PrintScreen() {
   const { selectedExercises, sheetPurpose, orientation, includeCheckSheet } =
     useHepStore();
@@ -96,6 +107,10 @@ export default function PrintScreen() {
       document.open();
       document.write(wrappedHtml);
       document.close();
+
+      // ブラウザの「PDFに保存」の既定ファイル名は document.title から決まる。
+      // generateHtml.ts側の<title>は固定文言（日付なし）のため、write後にここで上書きする。
+      document.title = `自主トレ指導書_${formatLocalDateForFilename(new Date())}`;
     })();
   }, []);
 
