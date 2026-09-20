@@ -2,7 +2,7 @@
   "expo": {
     "name": "トレさく",
     "slug": "toresaku",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ryuseisato.toresaku"
+      "bundleIdentifier": "com.ryuseisato.toresaku",
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "ja"
+      },
+      "appleTeamId": "8937F4X2Q8"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +32,9 @@
       "favicon": "./assets/favicon.png"
     },
     "scheme": "rehab-hep",
+    "locales": {
+      "ja": "./locales/ja.json"
+    },
     "plugins": [
       "expo-router",
       "expo-sqlite"

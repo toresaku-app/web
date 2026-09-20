@@ -1,5 +1,18 @@
 # App Store メタデータ
 
+## What's New（v1.2.0）
+前バージョンからの主な変更点です。
+
+・運動メニューを10種類から100種類に拡大
+・部位・姿勢・種類で運動を絞り込めるように
+・画面デザインを全面リニューアル
+・一部運動で開始姿勢と動作の2枚イラスト表示に対応
+・実施チェック表のON/OFF切り替えに対応
+・発行者情報（施設名・担当者名、任意）を指導書に印字可能に
+・横向き印刷に対応
+・休息時間と指導書全体の目的を設定可能に
+・イラストの品質を改善
+
 ## アプリ名
 トレさく
 
@@ -7,7 +20,7 @@
 自主トレ指導書をサクッと作成・PDF出力
 
 ## プロモーションテキスト（170文字以内）
-医療・介護の現場で使える自主トレ指導書作成アプリ。運動を選んで、回数・セットを設定して、PDFを出力。手書きやWordで時間がかかっていた指導書作成が、たった3分で完了します。イラスト付きA4指導書を患者さんにすぐ渡せます。
+医療・介護の現場で使える自主トレ指導書作成アプリ。運動を選ぶ・回数やセットを調整する・PDFを出力する、の3ステップで作成できます。イラスト付きA4指導書を患者さんにすぐ渡せます。
 
 ## 説明文
 「トレさく」は、医療・介護の現場で患者さんに渡す自主トレーニング指導書をサクッと作れるアプリです。
@@ -58,7 +71,10 @@
 セカンダリ: 仕事効率化
 
 ## 年齢レーティング
-4+（医療情報を含むが、制限コンテンツなし）
+App Store Connect の最新の質問票（Health or Wellness Topics / Medical or Treatment Information を含む）に正確に回答し、算出された結果に従う。固定の等級をここに書き込まない。
+
+## マーケティングURL
+https://toresaku.com/
 
 ## サポートURL
 https://toresaku-app.github.io/privacy-policy/
@@ -68,3 +84,21 @@ https://toresaku-app.github.io/privacy-policy/
 
 ## App Privacy
 Data Not Collected（データ収集なし）
+
+## 審査メモ（App Review への備考）
+
+App Store Connect の「App Review 情報」＞「メモ」に、日本語版・英語版のどちらか（両方併記でも可）を貼る。
+
+### 日本語
+
+本アプリは、医療従事者（理学療法士・作業療法士など）が自分で選んだ運動と実施条件（回数・セット・頻度など）を記録し、患者向けの自主トレーニング指導書としてPDFに出力するためのツールです。
+・アプリ自身が疾病の診断や治療方針を判断したり、運動を自動で推奨したりすることはありません。すべての運動選択・条件設定は利用者（医療従事者）が行います。
+・入力データはすべて端末内に保存され、外部サーバーへの送信は行いません。
+・アカウント登録・ログインは不要です。
+
+### English
+
+This app is a tool for healthcare professionals (e.g. physical therapists, occupational therapists) to record exercises and parameters (repetitions, sets, frequency, etc.) that they themselves select, and to output them as a printable PDF home exercise program for patients.
+・The app does not diagnose any condition, decide on treatment, or automatically recommend exercises. All exercise selection and parameter settings are made by the healthcare professional using the app.
+・All entered data is stored locally on the device only; nothing is transmitted to any external server.
+・No account registration or login is required.

@@ -183,11 +183,13 @@ export const PDF_STYLE = `
     font-size: 12pt; font-weight: 700; white-space: nowrap;
   }
 
-  /* ── 指導書の目的 ── */
+  /* ── 指導書の目的（各運動ページのヘッダーに毎回表示） ──
+     cover-purpose と同じ文字列(sheetPurpose)を表示するため、同じ理由で1行に固定する */
   .sheet-purpose {
     font-size: 13pt; font-weight: 500; color: #0B2545;
     padding: 4px 8px; margin-top: 6px;
     background: #EEF2F9; border-radius: 5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
   /* ── タイトルブロック ── */
@@ -200,7 +202,13 @@ export const PDF_STYLE = `
   .tag-navy { background: #EEF2F9; color: #0B2545; }
   .tag-teal { background: #E6F4F2; color: #0F766E; }
   .ex-name { font-size: 24pt; font-weight: 700; color: #0F172A; line-height: 1.2; }
-  .ex-purpose { font-size: 13pt; color: #475569; margin-top: 2px; }
+  /* 運動ごとの目的。表紙ほど余白は厳しくないが、際限なく伸びないよう最大2行に固定する
+     （EXERCISE_PURPOSE_MAX_LENGTH の文字数なら通常1行に収まる想定） */
+  .ex-purpose {
+    font-size: 13pt; color: #475569; margin-top: 2px;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
 
   /* ── イラスト ── */
   .illust {
@@ -323,10 +331,14 @@ export const PDF_STYLE = `
   .cover-subtitle {
     font-size: 13pt; color: #94A3B8; margin-top: 4px; letter-spacing: 2px;
   }
+  /* 表紙の目的欄。**折り返すと表紙が2ページに割れる**（横向き20種目は印刷可能領域に対し
+     余白が数十pxしかない）ため、必ず1行に固定する。入力側でも文字数を制限している
+     （SHEET_PURPOSE_MAX_LENGTH）ので、実運用で ellipsis は出ない想定 */
   .cover-purpose {
     margin-top: 10px; padding: 7px 14px;
     background: #EEF2F9; border-radius: 8px;
     font-size: 14pt; color: #0B2545; font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .cover-purpose-label {
     display: inline-block; background: #0B2545; color: #fff;
@@ -452,11 +464,15 @@ export const PDF_STYLE = `
   .landscape .cover-date { margin-top: 6px; font-size: 11pt; }
   .landscape .cover-summary { margin-top: 8px; }
   .landscape .cover-summary-title { font-size: 13pt; margin-bottom: 5px; }
-  .landscape .cover-table td { padding: 3px 8px; }
-  .landscape .cover-th { padding: 3px 8px; }
-  .landscape .cover-notice { margin-top: 10px; padding: 8px 12px; }
-  .landscape .cover-notice-title { margin-bottom: 4px; }
-  .landscape .cover-notice-list { line-height: 1.5; }
+  /* 20種目でも表紙+フッターが1ページに収まるよう行の上下余白と行間を詰める。
+     フォントサイズは10pt/10.5ptのまま変えない（患者が読む紙のため） */
+  .landscape .cover-table td { padding: 1px 8px; line-height: 1.05; }
+  .landscape .cover-th { padding: 2px 8px; }
+  .landscape .cover-notice { margin-top: 6px; padding: 6px 10px; }
+  .landscape .cover-notice-title { margin-bottom: 3px; }
+  .landscape .cover-notice-list { line-height: 1.35; }
+  /* 表紙のフッター（発行者名の行）だけを詰める。運動ページのフッターには影響させない */
+  .landscape .cover + .page-footer { margin-top: 3px; padding-top: 2px; }
   /* 横向きは横幅が余るので週ブロックを2列に並べて縦を節約する */
   .landscape .weeks { display: flex; flex-wrap: wrap; gap: 10px; }
   .landscape .weeks .week { width: calc(50% - 5px); }
