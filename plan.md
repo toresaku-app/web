@@ -37,7 +37,7 @@
 - [Phase 2: 運動メニュー拡充 +12種](./tasks/phase2-exercise-expansion.md) ✅ 実装完了（v1.1.0リリース待ち）
 - [Phase 4: Webアプリ化](./tasks/phase4-web.md) ✅ 公開済み
 - [Phase 7: SEO対策（徹底版）](./tasks/phase7-seo.md) ✅ 大半完了（残: Search Console サイトマップ送信、画像最適化、外部施策）
-- [Phase 8: 運動メニュー拡充（100種）](./tasks/phase8-exercise-100.md) ✅ 100種到達 + ADL・呼吸フィルタ追加 + Web デプロイ完了（残: iOS 審査再提出）
+- [Phase 8: 運動メニュー拡充（100種）](./tasks/phase8-exercise-100.md) ✅ 100種到達 + ADL・呼吸フィルタ追加 + Web デプロイ完了（iOS は v1.2.0 として 2026-09-20 に審査提出済み）
 
 ### 進行中・未着手（優先度順）
 
