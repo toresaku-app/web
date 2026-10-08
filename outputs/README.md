@@ -15,7 +15,7 @@
 | `slide-screenshots/` | 5枚目に使った実画面（本番Webから3倍解像度で撮影） | 画面を撮り直すとき |
 | `toresaku-kochi2026-POP-A4.pdf` | モニター横に置くA4の卓上POP（QR → `https://toresaku.com/`） | 当日印刷して設置（事務局の可否確認後） |
 | `toresaku-kochi2026-POP-A4.html` | POPの原本。Chromeで開いて印刷すれば同じものが出る | 文言を直すとき |
-| `toresaku-kochi2026-会場ディスプレイ.html` | MacBook に全画面で映す案内画面（QR → `https://toresaku.com/`、右側でアプリ画面が6秒ごとに切り替わる）。ネット接続なしで表示できる1ファイル | 当日ブースで表示。クリックで全画面、Escで解除 |
+| `toresaku-kochi2026-会場ディスプレイ.html` | MacBook に全画面で映す案内画面（左に案内文、右に大きなQR → `https://toresaku.com/`）。ネット接続なしで表示できる1ファイル | 当日ブースで表示。クリックで全画面、Escで解除 |
 
 > 抄録は `docs/marketing-abstract-kochi2026.md` の §7-2 が提出版。§7 は不採用の別ドラフト。
 
